@@ -9,7 +9,7 @@ class ProductController extends BaseController
 {
     private $productModel;
 
-    private function __construct()
+    public function __construct()
     {
         $this->productModel = new M_Product();
     }
@@ -17,13 +17,13 @@ class ProductController extends BaseController
     public function allProduct()
     {
         $data['products'] = $this->productModel->getAllProduct();
-        return view("produk/v_produk_list", $data);
+        return view("product/v_product_list", $data);
     }
 
     public function detailProduct($id)
     {
         $data['products'] = $this->productModel->getProductById($id);
-        return view('', $data);
+        return view('/product/v_product_detail', $data);
     }
 
     public function createProduct()
@@ -42,10 +42,10 @@ class ProductController extends BaseController
 
     public function goCreateProduct()
     {
-        return view("");
+        return view("/product/v_product_form");
     }
 
-    public function editProduct($id)
+    public function editProduct()
     {
         $id = $this->request->getPost("id");
         $nama = $this->request->getPost("nama");
@@ -62,10 +62,10 @@ class ProductController extends BaseController
     public function goEditProduct($id)
     {
         $data["products"] = $this->productModel->getProductById($id);
-        return view("", $data);
+        return view("/product/v_product_form", $data);
     }
 
-    public function delete($id)
+    public function deleteProduct($id)
     {
         $this->productModel->deleteProduct($id);
         return redirect()->to("/product");
