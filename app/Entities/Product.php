@@ -1,7 +1,7 @@
 <?php
 namespace App\Entities;
 
-class Produk
+class Product
 {
     private $id;
     private $nama;
