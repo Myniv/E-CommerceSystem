@@ -45,7 +45,7 @@ class M_Product
     {
         foreach ($this->product as $key => $value) {
             if ($value->getId() == $product->getId()) {
-                $this->student[$key] = $product;
+                $this->product[$key] = $product;
                 $this->saveData();
             }
         }
