@@ -9,7 +9,7 @@ class M_Product
 
     private $session;
 
-    private function __construct()
+    public function __construct()
     {
         $this->session = session();
         $this->product = $this->session->get('products') ?? [];
