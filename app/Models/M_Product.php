@@ -51,7 +51,7 @@ class M_Product
         }
     }
 
-    public function removeProduct($id)
+    public function deleteProduct($id)
     {
         foreach ($this->product as $key => $value) {
             if ($value->getId() == $id) {
