@@ -1,3 +1,6 @@
+<?= $this->extend('layout/master') ?>
+<?= $this->section('content') ?>
+
 <h2>Produk List</h2>
 <a href="/product/create">Tambah Mahasiswa</a>
 <table border="1">
@@ -18,7 +21,7 @@
             <td><?= $product->getKategori(); ?></td>
             <td>
                 <button onclick="location.href='/product/detail/<?= $product->getId(); ?>'">Detail</button>
-                <button onclick="location.href='/product/edit/<?= $product->getId(); ?>'">Edit</button>
+                <button onclick="location.href='/product/edit   /<?= $product->getId(); ?>'">Edit</button>
                 <form action="/product/delete/<?= $product->getId(); ?>" method="post" style="display:inline;">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
@@ -29,3 +32,4 @@
         </tr>
     <?php } ?>
 </table>
+<?= $this->endSection() ?>
