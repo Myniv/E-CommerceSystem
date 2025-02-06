@@ -21,9 +21,9 @@
                     <tr>
                         <td><?= $item->getId(); ?></td>
                         <td><?= $item->getProduct(); ?></td>
-                        <td><?= number_format($item->getTotal(), 2); ?></td>
+                        <td>Rp <?= $item->getTotal() ?></td>
                         <td>
-                            <span class="badge <?= $item->getStatus() == 'Pending' ? 'bg-warning' : 'bg-success' ?>">
+                            <span>
                                 <?= $item->getStatus(); ?>
                             </span>
                         </td>

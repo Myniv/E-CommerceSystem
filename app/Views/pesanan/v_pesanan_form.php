@@ -20,7 +20,7 @@
                     <?php foreach ($produk as $item): ?>
                         <option value="<?= $item->getId(); ?>" data-nama="<?= $item->getNama(); ?>"
                             data-harga="<?= $item->getHarga(); ?>">
-                            <?= $item->getNama(); ?> - Rp <?= number_format($item->getHarga(), 2); ?>
+                            <?= $item->getNama(); ?> - Rp <?= $item->getHarga() ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -64,10 +64,10 @@
         const productPrice = parseFloat(selectedOption.getAttribute("data-harga"));
 
 
-        //add product to the array
+        //add produk ke array
         selectedProducts.push({ id: productId, harga: productPrice });
 
-        //show the add product
+        //show the added produk
         const listItem = document.createElement("li");
         listItem.textContent = `${productName} - Rp ${productPrice}`;
         document.getElementById("produkList").appendChild(listItem);

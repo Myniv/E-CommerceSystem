@@ -23,7 +23,7 @@
                     <tr>
                         <td><?= $product->getId(); ?></td>
                         <td><?= $product->getNama(); ?></td>
-                        <td>Rp <?= number_format($product->getHarga(), 0, ',', '.'); ?></td>
+                        <td>Rp <?= $product->getHarga() ?></td>
                         <td><?= $product->getStok(); ?></td>
                         <td><?= $product->getKategori(); ?></td>
                         <td>
