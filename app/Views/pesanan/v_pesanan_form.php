@@ -1,39 +1,52 @@
-<h2><?= isset($pesanan) ? 'Edit Pesanan' : 'Tambah Pesanan'; ?></h2>
+<?= $this->extend('layout/master') ?>
+<?= $this->section('content') ?>
 
-<form method="post" action="<?= isset($pesanan) ? '/pesanan/edit' : '/pesanan/add'; ?>">
-    <input type="hidden" name="nim" value="<?= isset($pesanan) ? $pesanan->getId() : ''; ?>">
+<div class="container mt-4">
+    <h2 class="mb-3"><?= isset($pesanan) ? 'Edit Pesanan' : 'Tambah Pesanan'; ?></h2>
 
-    <label>Id:</label>
-    <input type="text" name="id" value="<?= isset($pesanan) ? $pesanan->getId() : ''; ?>" <?= isset($pesanan) ? 'readonly' : ''; ?> required><br>
+    <form method="post" action="<?= isset($pesanan) ? '/pesanan/edit' : '/pesanan/add'; ?>" class="mb-3">
+        <input type="hidden" name="nim" value="<?= isset($pesanan) ? $pesanan->getId() : ''; ?>">
 
-    <label>Produk:</label>
-    <select id="produkSelect">
-        <?php foreach ($produk as $item): ?>
-            <option value="<?= $item->getId(); ?>" data-nama="<?= $item->getNama(); ?>"
-                data-harga="<?= $item->getHarga(); ?>">
-                <?= $item->getNama(); ?> - <?= $item->getHarga(); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <button type="button" onclick="addProduct()">Tambah Produk</button>
+        <div class="mb-3">
+            <label class="form-label">Id:</label>
+            <input type="text" class="form-control" name="id" value="<?= isset($pesanan) ? $pesanan->getId() : ''; ?>"
+                <?= isset($pesanan) ? 'readonly' : ''; ?> required>
+        </div>
 
-    <h3>Daftar Produk:</h3>
-    <ul id="produkList"></ul>
+        <div class="mb-3">
+            <label class="form-label">Produk:</label>
+            <div class="input-group">
+                <select id="produkSelect" class="form-select">
+                    <?php foreach ($produk as $item): ?>
+                        <option value="<?= $item->getId(); ?>" data-nama="<?= $item->getNama(); ?>"
+                            data-harga="<?= $item->getHarga(); ?>">
+                            <?= $item->getNama(); ?> - Rp <?= number_format($item->getHarga(), 2); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="button" class="btn btn-success" onclick="addProduct()">Tambah Produk</button>
+            </div>
+        </div>
 
-    <!-- Hidden input to store selected product IDs -->
-    <input type="hidden" name="produk_ids" id="produkIds" value="">
+        <h4 class="mt-3">Daftar Produk:</h4>
+        <ul id="produkList" class="list-group mb-3"></ul>
 
-    <label>Total:</label>
-    <input type="text" name="total" required><br>
+        <input type="hidden" name="produk_ids" id="produkIds" value="">
 
-    <label>Status:</label>
-    <input type="text" name="status" required><br>
+        <div class="mb-3">
+            <label class="form-label">Total:</label>
+            <input type="text" class="form-control" name="total" required readonly>
+        </div>
 
-    <button type="submit"><?= isset($pesanan) ? 'Update' : 'Simpan'; ?></button>
-</form>
+        <div class="mb-3">
+            <label class="form-label">Status:</label>
+            <input type="text" class="form-control" name="status" required>
+        </div>
 
-<a href="/pesanan">Kembali</a>
-
+        <button type="submit" class="btn btn-primary"><?= isset($pesanan) ? 'Update' : 'Simpan'; ?></button>
+        <a href="/pesanan" class="btn btn-secondary">Kembali</a>
+    </form>
+</div>
 <script>
     let selectedProducts = [];
 
@@ -60,3 +73,5 @@
         document.querySelector('input[name="total"]').value = totalHarga;
     }
 </script>
+
+<?= $this->endSection() ?>
