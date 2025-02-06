@@ -60,4 +60,14 @@ class M_Product
             }
         }
     }
+
+    public function kurangiStok($jumlah)
+    {
+        $this->product->kurangiStok($jumlah);
+    }
+
+    public function tambahStok($jumlah)
+    {
+        $this->product->tambahStok($jumlah);
+    }
 }
