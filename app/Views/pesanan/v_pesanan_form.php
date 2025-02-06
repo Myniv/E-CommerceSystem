@@ -31,16 +31,19 @@
         <h4 class="mt-3">Daftar Produk:</h4>
         <ul id="produkList" class="list-group mb-3"></ul>
 
-        <input type="hidden" name="produk_ids" id="produkIds" value="">
+        <input type="hidden" name="produk_ids" id="produkIds"
+            value="<?= isset($pesanan) ? $pesanan->getProduct() : ''; ?>">
 
         <div class="mb-3">
             <label class="form-label">Total:</label>
-            <input type="text" class="form-control" name="total" required readonly>
+            <input type="text" class="form-control" name="total" required readonly
+                value="<?= isset($pesanan) ? $pesanan->getTotal() : ''; ?>">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Status:</label>
-            <input type="text" class="form-control" name="status" required>
+            <input type="text" class="form-control" name="status" required
+                value="<?= isset($pesanan) ? $pesanan->getStatus() : ''; ?>">
         </div>
 
         <button type="submit" class="btn btn-primary"><?= isset($pesanan) ? 'Update' : 'Simpan'; ?></button>
@@ -51,27 +54,37 @@
     let selectedProducts = [];
 
     function addProduct() {
+        // get select by id and listed
         const select = document.getElementById("produkSelect");
         const selectedOption = select.options[select.selectedIndex];
+
+        //get the value by attribute
         const productId = selectedOption.value;
         const productName = selectedOption.getAttribute("data-nama");
         const productPrice = parseFloat(selectedOption.getAttribute("data-harga"));
 
+
+        //add product to the array
         selectedProducts.push({ id: productId, harga: productPrice });
 
+        //show the add product
         const listItem = document.createElement("li");
         listItem.textContent = `${productName} - Rp ${productPrice}`;
         document.getElementById("produkList").appendChild(listItem);
 
         updateTotalPrice();
 
+        //save the product id and separate it using comma (,) and update it in the hiddel element with id produkIds
         document.getElementById("produkIds").value = selectedProducts.map(p => p.id).join(",");
     }
 
     function updateTotalPrice() {
         let totalHarga = selectedProducts.reduce((total, product) => total + product.harga, 0);
+
+        //query selector same like getElementById but using element type and name, not id
         document.querySelector('input[name="total"]').value = totalHarga;
     }
+
 </script>
 
 <?= $this->endSection() ?>

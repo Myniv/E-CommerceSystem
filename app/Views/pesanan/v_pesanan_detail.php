@@ -10,17 +10,16 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>ID:</strong> <?= $products->getId() ?></li>
-                        <li class="list-group-item"><strong>Nama:</strong> <?= $products->getNama() ?></li>
-                        <li class="list-group-item"><strong>Stok:</strong> <?= $products->getStok() ?></li>
+                        <li class="list-group-item"><strong>ID:</strong> <?= $pesanan->getId() ?></li>
+                        <li class="list-group-item"><strong>Produk:</strong> <?= $pesanan->getProduct() ?></li>
                         <li class="list-group-item">
-                            <strong>Harga:</strong> Rp <?= number_format($products->getHarga(), 0, ',', '.') ?>
+                            <strong>Harga:</strong> Rp <?= number_format($pesanan->getTotal(), 0, ',', '.') ?>
                         </li>
-                        <li class="list-group-item"><strong>Kategori:</strong> <?= $products->getKategori() ?></li>
+                        <li class="list-group-item"><strong>Status:</strong> <?= $pesanan->getStatus() ?></li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="/product" class="btn btn-secondary">Kembali</a>
+                    <a href="/pesanan" class="btn btn-secondary">Kembali</a>
                 </div>
             </div>
         </div>

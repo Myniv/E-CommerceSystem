@@ -1,24 +1,49 @@
-<h2><?= isset($products) ? 'Edit Produk' : 'Tambah Produk'; ?></h2>
+<?= $this->extend('layout/master') ?>
+<?= $this->section('content') ?>
 
-<form method="post" action="<?= isset($products) ? '/product/edit' : '/product/add'; ?>">
-    <input type="hidden" name="nim" value="<?= isset($products) ? $products->getId() : ''; ?>">
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="mb-3"><?= isset($products) ? 'Edit Produk' : 'Tambah Produk'; ?></h2>
 
-    <label>Id:</label>
-    <input type="text" name="id" value="<?= isset($products) ? $products->getId() : ''; ?>" <?= isset($products) ? 'readonly' : ''; ?> required><br>
+            <form method="post" action="<?= isset($products) ? '/product/edit' : '/product/add'; ?>">
+                <input type="hidden" name="nim" value="<?= isset($products) ? $products->getId() : ''; ?>">
 
-    <label>Nama:</label>
-    <input type="text" name="nama" value="<?= isset($products) ? $products->getNama() : ''; ?>" required><br>
+                <div class="mb-3">
+                    <label class="form-label">Id:</label>
+                    <input type="text" class="form-control" name="id"
+                        value="<?= isset($products) ? $products->getId() : ''; ?>" <?= isset($products) ? 'readonly' : ''; ?> required>
+                </div>
 
-    <label>Harga:</label>
-    <input type="number" name="harga" value="<?= isset($products) ? $products->getHarga() : ''; ?>" required><br>
+                <div class="mb-3">
+                    <label class="form-label">Nama:</label>
+                    <input type="text" class="form-control" name="nama"
+                        value="<?= isset($products) ? $products->getNama() : ''; ?>" required>
+                </div>
 
-    <label>Stok:</label>
-    <input type="number" name="stok" value="<?= isset($products) ? $products->getStok() : ''; ?>" required><br>
+                <div class="mb-3">
+                    <label class="form-label">Harga:</label>
+                    <input type="number" class="form-control" name="harga"
+                        value="<?= isset($products) ? $products->getHarga() : ''; ?>" required>
+                </div>
 
-    <label>kategori:</label>
-    <input type="text" name="kategori" value="<?= isset($products) ? $products->getKategori() : ''; ?>" required><br>
+                <div class="mb-3">
+                    <label class="form-label">Stok:</label>
+                    <input type="number" class="form-control" name="stok"
+                        value="<?= isset($products) ? $products->getStok() : ''; ?>" required>
+                </div>
 
-    <button type="submit"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
-</form>
+                <div class="mb-3">
+                    <label class="form-label">Kategori:</label>
+                    <input type="text" class="form-control" name="kategori"
+                        value="<?= isset($products) ? $products->getKategori() : ''; ?>" required>
+                </div>
 
-<a href="/product">Kembali</a>
+                <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
+                <a href="/product" class="btn btn-secondary">Kembali</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>

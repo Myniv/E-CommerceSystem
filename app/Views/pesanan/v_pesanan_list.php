@@ -20,7 +20,7 @@
                 <?php foreach ($pesanan as $item) { ?>
                     <tr>
                         <td><?= $item->getId(); ?></td>
-                        <td><?= implode(', ', $item->getProduct()); ?></td>
+                        <td><?= $item->getProduct(); ?></td>
                         <td><?= number_format($item->getTotal(), 2); ?></td>
                         <td>
                             <span class="badge <?= $item->getStatus() == 'Pending' ? 'bg-warning' : 'bg-success' ?>">
