@@ -37,8 +37,13 @@ class PesananController extends BaseController
 
         $produkList = [];
         foreach ($produkIds as $produkId) {
-            $produkList[] = $this->produkModel->getProductById($produkId);
+            $product = $this->produkModel->getProductById($produkId);
+
+            $produkList[] = $product;
+            $quantity = 1;
+            $product->kurangiStok($quantity);
         }
+
 
         $pesanan = new Pesanan($id, $total, $status, $produkList);
         $this->pesananModel->addPesanan($pesanan);
@@ -58,7 +63,7 @@ class PesananController extends BaseController
         $total = $this->request->getPost("total");
         $status = $this->request->getPost("status");
         $produkIds = explode(",", $this->request->getPost("produk_ids")); // Convert to array
-        
+
         $produkList = [];
         foreach ($produkIds as $produkId) {
             $produkList[] = $this->produkModel->getProductById($produkId);
