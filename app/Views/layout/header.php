@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'My Website') ?></title>
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
-</head>
 <body>
-    <header>
-        <h1>Welcome to My Website</h1>
-        <nav>
-            <a href="<?= base_url('/') ?>">Home</a>
-            <a href="<?= base_url('/products') ?>">Products</a>
-            <a href="<?= base_url('/contact') ?>">Contact</a>
-        </nav>
+    <header
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <title>E-Commerce</title>
+                <h1 class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    E-Commerce
+                </h1>
+                <nav>
+                    <a href="<?= base_url('/') ?>">Home</a>
+                    <a href="<?= base_url('/products') ?>">Products</a>
+                    <a href="<?= base_url('/contact') ?>">Contact</a>
+                </nav>
+            </div>
+        </div>
     </header>
     <main>

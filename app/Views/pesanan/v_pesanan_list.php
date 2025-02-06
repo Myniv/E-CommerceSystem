@@ -1,33 +1,48 @@
 <?= $this->extend('layout/master') ?>
 <?= $this->section('content') ?>
 
-<h2>Pesanan List</h2>
-<a href="/pesanan/create">Tambah Mahasiswa</a>
-<table border="1">
-    <tr>
-        <th>Id</th>
-        <th>Produk</th>
-        <th>Total</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-    <?php foreach ($pesanan as $item) { ?>
-        <tr>
-            <td><?= $item->getId(); ?></td>
-            <td><?= $item->getProduct(); ?></td>
-            <td><?= $item->getTotal(); ?></td>
-            <td><?= $item->getStatus(); ?></td>
-            <td>
-                <button onclick="location.href='/pesanan/detail/<?= $item->getId(); ?>'">Detail</button>
-                <button onclick="location.href='/pesanan/edit/<?= $item->getId(); ?>'">Edit</button>
-                <form action="/pesanan/delete/<?= $item->getId(); ?>" method="post" style="display:inline;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
-                        Hapus
-                    </button>
-                </form>
-            </td>
-        </tr>
-    <?php } ?>
-</table>
+<div class="container mt-4">
+    <h2 class="mb-3">Pesanan List</h2>
+    <a href="/pesanan/create" class="btn btn-success mb-3">Tambah Pesanan</a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Produk</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($pesanan as $item) { ?>
+                    <tr>
+                        <td><?= $item->getId(); ?></td>
+                        <td><?= implode(', ', $item->getProduct()); ?></td>
+                        <td><?= number_format($item->getTotal(), 2); ?></td>
+                        <td>
+                            <span class="badge <?= $item->getStatus() == 'Pending' ? 'bg-warning' : 'bg-success' ?>">
+                                <?= $item->getStatus(); ?>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/pesanan/detail/<?= $item->getId(); ?>" class="btn btn-primary btn-sm">Detail</a>
+                            <a href="/pesanan/edit/<?= $item->getId(); ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/pesanan/delete/<?= $item->getId(); ?>" method="post" class="d-inline">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus pesanan ini?');">
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <?= $this->endSection() ?>

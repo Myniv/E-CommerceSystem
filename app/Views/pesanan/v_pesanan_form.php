@@ -9,7 +9,8 @@
     <label>Produk:</label>
     <select id="produkSelect">
         <?php foreach ($produk as $item): ?>
-            <option value="<?= $item->getId(); ?>" data-nama="<?= $item->getNama(); ?>" data-harga="<?= $item->getHarga(); ?>">
+            <option value="<?= $item->getId(); ?>" data-nama="<?= $item->getNama(); ?>"
+                data-harga="<?= $item->getHarga(); ?>">
                 <?= $item->getNama(); ?> - <?= $item->getHarga(); ?>
             </option>
         <?php endforeach; ?>
@@ -41,16 +42,21 @@
         const selectedOption = select.options[select.selectedIndex];
         const productId = selectedOption.value;
         const productName = selectedOption.getAttribute("data-nama");
-        const productPrice = selectedOption.getAttribute("data-harga");
+        const productPrice = parseFloat(selectedOption.getAttribute("data-harga"));
 
-        if (!selectedProducts.includes(productId)) {
-            selectedProducts.push(productId);
-            const listItem = document.createElement("li");
-            listItem.textContent = `${productName} - ${productPrice}`;
-            document.getElementById("produkList").appendChild(listItem);
-        }
+        selectedProducts.push({ id: productId, harga: productPrice });
 
-        // Update hidden input value
-        document.getElementById("produkIds").value = selectedProducts.join(",");
+        const listItem = document.createElement("li");
+        listItem.textContent = `${productName} - Rp ${productPrice}`;
+        document.getElementById("produkList").appendChild(listItem);
+
+        updateTotalPrice();
+
+        document.getElementById("produkIds").value = selectedProducts.map(p => p.id).join(",");
+    }
+
+    function updateTotalPrice() {
+        let totalHarga = selectedProducts.reduce((total, product) => total + product.harga, 0);
+        document.querySelector('input[name="total"]').value = totalHarga;
     }
 </script>
