@@ -21,4 +21,4 @@
     <button type="submit"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
 </form>
 
-<a href="/products">Kembali</a>
+<a href="/product">Kembali</a>
