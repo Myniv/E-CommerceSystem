@@ -55,4 +55,12 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = service('session');
     }
+
+    protected $data = [];
+
+    public function renderView($view, $data = [])
+    {
+        $this->data = array_merge($this->data, $data);
+        return view($view, $this->data);
+    }
 }

@@ -17,7 +17,7 @@ class ProductController extends BaseController
     public function allProduct()
     {
         $data['products'] = $this->productModel->getAllProduct();
-        return view("product/v_product_list", $data);
+        return $this->renderView("product/v_product_list", $data);
     }
 
     public function detailProduct($id)
