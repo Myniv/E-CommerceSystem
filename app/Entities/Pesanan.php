@@ -22,12 +22,33 @@ class Pesanan
     }
     public function getProduct()
     {
-        $productList = [];
+        $productCounts = [];
+
         foreach ($this->produk as $product) {
-            $productList[] = "{$product->getNama()}";
+            $productName = $product->getNama();
+            $quantity = 1;
+            $harga = $product->getHarga();
+
+            if (isset($productCounts[$productName])) {
+                $productCounts[$productName]['quantity'] += $quantity;
+                $productCounts[$productName]['harga'] += $harga;
+            } else {
+                $productCounts[$productName] = [
+                    'quantity' => $quantity,
+                    'harga' => $harga
+                ];
+            }
         }
-        return implode(", ", $productList); // Join products with commas
+
+        $productList = [];
+        foreach ($productCounts as $name => $data) {
+            $productList[] = "({$name} {$data['quantity']}x - Rp {$data['harga']})";
+        }
+
+        return implode(", ", $productList);
     }
+
+
 
 
     public function getTotal()
