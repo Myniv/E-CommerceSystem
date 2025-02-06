@@ -45,7 +45,7 @@ class M_Pesanan
     {
         foreach ($this->pesanan as $key => $value) {
             if ($value->getId() == $pesanan->getId()) {
-                $this->pesanan[$key] = $value;
+                $this->pesanan[$key] = $pesanan;
                 $this->saveData();
             }
         }

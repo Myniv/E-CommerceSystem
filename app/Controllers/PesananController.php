@@ -57,13 +57,14 @@ class PesananController extends BaseController
         $id = $this->request->getPost("id");
         $total = $this->request->getPost("total");
         $status = $this->request->getPost("status");
-        $produkId = $this->request->getPost("produk");
+        $produkIds = explode(",", $this->request->getPost("produk_ids")); // Convert to array
+        
+        $produkList = [];
+        foreach ($produkIds as $produkId) {
+            $produkList[] = $this->produkModel->getProductById($produkId);
+        }
 
-        $produk = $this->produkModel->getProductById($produkId);
-
-
-        $pesanan = new Pesanan($id, $total, $status, $produk);
-
+        $pesanan = new Pesanan($id, $total, $status, $produkList);
         $this->pesananModel->updatePesanan($pesanan);
 
         return redirect()->to("/pesanan");
