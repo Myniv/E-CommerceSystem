@@ -31,6 +31,14 @@
         <h4 class="mt-3">Daftar Produk:</h4>
         <ul id="produkList" class="list-group mb-3"></ul>
 
+        <?php if (isset($pesanan)): ?>
+            <?php foreach ($pesanan->getProduct() as $product): ?>
+                <li>
+                    <?= "{$product['nama']} ({$product['quantity']}x) - Rp {$product['harga']}<br>"; ?>
+                </li>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <input type="hidden" name="produk_ids" id="produkIds"
             value="<?= isset($pesanan) ? implode(',', array_column($pesanan->getProduct(), 'id')) : ''; ?>">
 
