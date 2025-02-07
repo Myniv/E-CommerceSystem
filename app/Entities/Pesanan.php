@@ -20,32 +20,29 @@ class Pesanan
     {
         return $this->id;
     }
+
     public function getProduct()
     {
-        $productCounts = [];
+        $productList = [];
 
         foreach ($this->produk as $product) {
             $productName = $product->getNama();
             $quantity = 1;
             $harga = $product->getHarga();
 
-            if (isset($productCounts[$productName])) {
-                $productCounts[$productName]['quantity'] += $quantity;
-                $productCounts[$productName]['harga'] += $harga;
+            if (isset($productList[$productName])) {
+                $productList[$productName]['quantity'] += $quantity;
+                $productList[$productName]['harga'] += $harga;
             } else {
-                $productCounts[$productName] = [
+                $productList[$productName] = [
+                    'nama' => $productName,
                     'quantity' => $quantity,
                     'harga' => $harga
                 ];
             }
         }
 
-        $productList = [];
-        foreach ($productCounts as $name => $data) {
-            $productList[] = "({$name} {$data['quantity']}x - Rp {$data['harga']})";
-        }
-
-        return implode(", ", $productList);
+        return array_values($productList); // Return as an indexed array
     }
 
 

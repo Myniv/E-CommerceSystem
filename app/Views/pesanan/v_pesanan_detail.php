@@ -11,7 +11,15 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>ID:</strong> <?= $pesanan->getId() ?></li>
-                        <li class="list-group-item"><strong>Produk:</strong> <?= $pesanan->getProduct() ?></li>
+                        <div class="list-group-item">
+                            <li class="list-group"><strong>Produk:</strong>
+                                <?php foreach ($pesanan->getProduct() as $product) { ?>
+                                <li class="ms-4">
+                                    <?= "{$product['nama']} ({$product['quantity']}x) - Rp {$product['harga']}<br>"; ?>
+                                </li>
+                            <?php } ?>
+                            </li>
+                        </div>
                         <li class="list-group-item">
                             <strong>Harga:</strong> Rp <?= number_format($pesanan->getTotal(), 0, ',', '.') ?>
                         </li>

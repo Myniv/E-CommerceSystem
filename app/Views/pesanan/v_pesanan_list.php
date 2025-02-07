@@ -20,7 +20,11 @@
                 <?php foreach ($pesanan as $item) { ?>
                     <tr>
                         <td><?= $item->getId(); ?></td>
-                        <td><?= $item->getProduct(); ?></td>
+                        <td>
+                            <?php foreach ($item->getProduct() as $product) { ?>
+                                <?= "{$product['nama']} ({$product['quantity']}x) - Rp {$product['harga']}<br>"; ?>
+                            <?php } ?>
+                        </td>
                         <td>Rp <?= $item->getTotal() ?></td>
                         <td>
                             <span>

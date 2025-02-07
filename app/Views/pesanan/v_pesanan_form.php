@@ -32,7 +32,7 @@
         <ul id="produkList" class="list-group mb-3"></ul>
 
         <input type="hidden" name="produk_ids" id="produkIds"
-            value="<?= isset($pesanan) ? $pesanan->getProduct() : ''; ?>">
+            value="<?= isset($pesanan) ? implode(',', array_column($pesanan->getProduct(), 'id')) : ''; ?>">
 
         <div class="mb-3">
             <label class="form-label">Total:</label>
