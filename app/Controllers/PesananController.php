@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Entities\PerProduct;
 use App\Entities\Pesanan;
 use App\Models\M_Pesanan;
 use App\Models\M_Product;
@@ -41,8 +42,18 @@ class PesananController extends BaseController
 
             $product = $this->produkModel->getProductById($produkId);
 
-            $produkList[] = $product;
-            $product->kurangiStok($quantity);
+            if ($product) {
+                $perPesanan = new PerProduct(
+                    $produkId,
+                    $product->getNama(),
+                    $quantity,
+                    $product->getHarga(),
+                    $product->getHarga() * $quantity
+                );
+
+                $produkList[] = $perPesanan;
+                $product->kurangiStok($quantity);
+            }
         }
 
 

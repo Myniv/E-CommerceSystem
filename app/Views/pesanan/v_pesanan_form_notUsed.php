@@ -36,7 +36,7 @@
         <?php if (isset($pesanan)): ?>
             <?php foreach ($pesanan->getProduct() as $product): ?>
                 <li>
-                    <?= "{$product['nama']} ({$product['quantity']}x) - Rp {$product['harga']}<br>"; ?>
+                    <?= "{$product->getProductName()} ({$product->getQuantity()}x) - Rp {$product->getTotalPrice()}<br>"; ?>
                 </li>
             <?php endforeach; ?>
         <?php endif; ?>

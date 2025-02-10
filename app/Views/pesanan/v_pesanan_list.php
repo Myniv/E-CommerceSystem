@@ -22,7 +22,7 @@
                         <td><?= $item->getId(); ?></td>
                         <td>
                             <?php foreach ($item->getProduct() as $product) { ?>
-                                <?= "{$product['nama']} ({$product['quantity']}x) - Rp {$product['harga']}<br>"; ?>
+                                <?= "{$product->getProductName()} ({$product->getQuantity()}x) - Rp {$product->getTotalPrice()}<br>"; ?>
                             <?php } ?>
                         </td>
                         <td>Rp <?= $item->getTotal() ?></td>

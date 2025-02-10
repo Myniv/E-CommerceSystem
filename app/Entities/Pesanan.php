@@ -23,30 +23,8 @@ class Pesanan
 
     public function getProduct()
     {
-        $productList = [];
-
-        foreach ($this->produk as $product) {
-            $productName = $product->getNama();
-            $quantity = 1;
-            $harga = $product->getHarga();
-
-            if (isset($productList[$productName])) {
-                $productList[$productName]['quantity'] += $quantity;
-                $productList[$productName]['harga'] += $harga;
-            } else {
-                $productList[$productName] = [
-                    'nama' => $productName,
-                    'quantity' => $quantity,
-                    'harga' => $harga
-                ];
-            }
-        }
-
-        return array_values($productList); // Return as an indexed array
+        return $this->produk;
     }
-
-
-
 
     public function getTotal()
     {
