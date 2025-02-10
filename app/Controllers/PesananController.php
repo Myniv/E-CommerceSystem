@@ -36,11 +36,12 @@ class PesananController extends BaseController
         $produkIds = explode(",", $this->request->getPost("produk_ids")); // Convert to array
 
         $produkList = [];
-        foreach ($produkIds as $produkId) {
+        foreach ($produkIds as $produk) {
+            list($produkId, $quantity) = explode(":", $produk); // Extract ID and Quantity
+
             $product = $this->produkModel->getProductById($produkId);
 
             $produkList[] = $product;
-            $quantity = 1;
             $product->kurangiStok($quantity);
         }
 
@@ -54,7 +55,7 @@ class PesananController extends BaseController
     public function goCreatePesanan()
     {
         $data["produk"] = $this->produkModel->getAllProduct();
-        return $this->renderView("/pesanan/v_pesanan_form", $data);
+        return $this->renderView("/pesanan/v_pesanan_form_notUsed", $data);
     }
 
     public function editPesanan()
@@ -79,7 +80,7 @@ class PesananController extends BaseController
     {
         $data["produk"] = $this->produkModel->getAllProduct();
         $data["pesanan"] = $this->pesananModel->getPesananById($id);
-        return $this->renderView("/pesanan/v_pesanan_form", $data);
+        return $this->renderView("/pesanan/v_pesanan_form_notUsed", $data);
     }
 
     public function deletePesanan($id)
