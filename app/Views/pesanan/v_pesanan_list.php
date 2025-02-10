@@ -25,7 +25,7 @@
                                 <?= "{$product->getProductName()} ({$product->getQuantity()}x) - Rp {$product->getTotalPrice()}<br>"; ?>
                             <?php } ?>
                         </td>
-                        <td>Rp <?= $item->getTotal() ?></td>
+                        <td>RP <?= $item->getTotal() ?></td>
                         <td>
                             <span>
                                 <?= $item->getStatus(); ?>

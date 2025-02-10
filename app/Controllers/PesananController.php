@@ -46,9 +46,9 @@ class PesananController extends BaseController
                 $perPesanan = new PerProduct(
                     $produkId,
                     $product->getNama(),
-                    $quantity,
-                    $product->getHarga(),
-                    $product->getHarga() * $quantity
+                    (int) $quantity,
+                    (int) $product->getHarga(),
+                    (int) $product->getHarga() * $quantity
                 );
 
                 $produkList[] = $perPesanan;
@@ -69,23 +69,54 @@ class PesananController extends BaseController
         return $this->renderView("/pesanan/v_pesanan_form_notUsed", $data);
     }
 
+    // public function editPesanan()
+    // {
+    //     $id = $this->request->getPost("id");
+    //     $total = $this->request->getPost("total");
+    //     $status = $this->request->getPost("status");
+    //     $produkIds = explode(",", $this->request->getPost("produk_ids")); // Convert to array
+
+    //     $produkList = [];
+    //     foreach ($produkIds as $produkId) {
+    //         $produkList[] = $this->produkModel->getProductById($produkId);
+    //     }
+
+    //     $pesanan = new Pesanan($id, $total, $status, $produkList);
+    //     $this->pesananModel->updatePesanan($pesanan);
+
+    //     return redirect()->to("/pesanan");
+    // }
     public function editPesanan()
     {
         $id = $this->request->getPost("id");
         $total = $this->request->getPost("total");
         $status = $this->request->getPost("status");
-        $produkIds = explode(",", $this->request->getPost("produk_ids")); // Convert to array
 
+        $produkIds = explode(",", $this->request->getPost("produk_ids"));
         $produkList = [];
-        foreach ($produkIds as $produkId) {
-            $produkList[] = $this->produkModel->getProductById($produkId);
+
+        foreach ($produkIds as $produkData) {
+            list($produkId, $quantity) = explode(":", $produkData);
+            $product = $this->produkModel->getProductById($produkId);
+
+            if ($product) {
+                $produkList[] = new PerProduct(
+                    $product->getId(),
+                    $product->getNama(),
+                    $quantity,
+                    $product->getHarga(),
+                    $product->getHarga() * $quantity
+                );
+            }
         }
 
         $pesanan = new Pesanan($id, $total, $status, $produkList);
+
         $this->pesananModel->updatePesanan($pesanan);
 
-        return redirect()->to("/pesanan");
+        return redirect()->to('/pesanan');
     }
+
 
     public function goEditPesanan($id)
     {

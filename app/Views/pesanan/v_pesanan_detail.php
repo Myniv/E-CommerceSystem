@@ -15,13 +15,13 @@
                             <li class="list-group"><strong>Produk:</strong>
                                 <?php foreach ($pesanan->getProduct() as $product) { ?>
                                 <li class="ms-4">
-                                    <?= "{$product['nama']} ({$product['quantity']}x) - Rp {$product['harga']}<br>"; ?>
+                                    <?= "{$product->getProductName()} ({$product->getQuantity()}x) - Rp {$product->getTotalPrice()}<br>"; ?>
                                 </li>
                             <?php } ?>
                             </li>
                         </div>
                         <li class="list-group-item">
-                            <strong>Harga:</strong> Rp <?= number_format($pesanan->getTotal(), 0, ',', '.') ?>
+                            <strong>Harga:</strong> Rp <?= $pesanan->getTotal() ?>
                         </li>
                         <li class="list-group-item"><strong>Status:</strong> <?= $pesanan->getStatus() ?></li>
                     </ul>
