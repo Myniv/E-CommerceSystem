@@ -6,7 +6,8 @@
         <div class="card-body">
             <h2 class="mb-3"><?= isset($products) ? 'Edit Produk' : 'Tambah Produk'; ?></h2>
 
-            <form method="post" action="<?= isset($products) ? '/product/edit' : '/product/add'; ?>">
+            <form method="post"
+                action="<?= isset($products) ? base_url('api/product/edit') : base_url('api/product/add'); ?>">
                 <input type="hidden" name="nim" value="<?= isset($products) ? $products->getId() : ''; ?>">
 
                 <div class="mb-3">
@@ -40,7 +41,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
-                <a href="/product" class="btn btn-secondary">Kembali</a>
+                <a href=<?= base_url('api/product') ?> class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>

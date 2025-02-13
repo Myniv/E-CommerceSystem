@@ -20,7 +20,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="/product" class="btn btn-secondary">Kembali</a>
+                    <a href="/api/product" class="btn btn-secondary">Kembali</a>
                 </div>
             </div>
         </div>
