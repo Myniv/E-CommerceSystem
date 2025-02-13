@@ -27,13 +27,13 @@ class UserController extends BaseController
     public function role($username)
     {
         $data['user'] = $this->userModel->getUserByUsername($username);
-        return view('user/v_user_detail', $data);
+        return view('user/v_user_role', $data);
     }
 
     public function settings($name)
     {
         $data['user'] = $this->userModel->getUserByName($name);
-        return view('user/v_user_detail', $data);
+        return view('user/v_user_settings', $data);
     }
 
     public function create()
