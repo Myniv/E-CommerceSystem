@@ -7,13 +7,11 @@
     <form method="post" action="<?= isset($pesanan) ? '/pesanan/edit' : '/pesanan/add'; ?>" class="mb-3">
         <input type="hidden" name="id" value="<?= isset($pesanan) ? $pesanan->getId() : ''; ?>">
 
-        <!-- Order ID -->
         <div class="mb-3">
             <label class="form-label">ID Pesanan:</label>
             <input type="text" class="form-control" value="<?= isset($pesanan) ? $pesanan->getId() : ''; ?>" name="id">
         </div>
 
-        <!-- Product Selection -->
         <div class="mb-3">
             <label class="form-label">Pilih Produk:</label>
             <div class="input-group">
@@ -31,7 +29,6 @@
             </div>
         </div>
 
-        <!-- Product List -->
         <h4 class="mt-3">Daftar Produk:</h4>
         <ul id="produkList" class="list-group mb-3">
             <?php if (isset($pesanan)): ?>
@@ -46,11 +43,9 @@
             <?php endif; ?>
         </ul>
 
-        <!-- Hidden Input for Products -->
         <input type="hidden" name="produk_ids" id="produkIds"
             value="<?= isset($pesanan) ? implode(',', array_map(fn($p) => "{$p->getId()}:{$p->getQuantity()}", $pesanan->getProduct())) : ''; ?>">
 
-        <!-- Total Price -->
         <div class="mb-3">
             <label class="form-label">Total Harga:</label>
             <div class="input-group">
@@ -61,7 +56,6 @@
         </div>
 
 
-        <!-- Order Status -->
         <div class="mb-3">
             <label class="form-label">Status:</label>
             <select class="form-select" name="status" required>
@@ -78,13 +72,11 @@
             </select>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary"><?= isset($pesanan) ? 'Update' : 'Simpan'; ?></button>
         <a href="/pesanan" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 
-<!-- JavaScript to Manage Products -->
 <script>
     let selectedProducts = <?= isset($pesanan) ? json_encode(array_map(fn($p) => [
         'id' => $p->getId(),
@@ -118,8 +110,8 @@
                 ${productName} - <span id="qty-${productId}">1</span>x 
                 Rp <span id="price-${productId}">${productPrice}</span>
                 <div>
-                    <button onclick="updateQuantity('${productId}', 1)" class="btn btn-sm btn-primary ms-2">+</button>
                     <button onclick="updateQuantity('${productId}', -1)" class="btn btn-sm btn-warning">-</button>
+                    <button onclick="updateQuantity('${productId}', 1)" class="btn btn-sm btn-primary ms-2">+</button>
                     <button onclick="removeProduct('${productId}')" class="btn btn-sm btn-danger">Hapus</button>
                 </div>
             `;
@@ -141,7 +133,7 @@
             removeProduct(productId);
         } else {
             document.getElementById(`qty-${productId}`).textContent = product.quantity;
-            document.getElementById(`price-${productId}`).textContent = `Rp ${product.quantity * product.harga}`;
+            document.getElementById(`price-${productId}`).textContent = `${product.quantity * product.harga}`;
         }
 
         updateTotalPrice();
