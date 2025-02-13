@@ -6,11 +6,11 @@
         <div class="col-md-6">
             <div class="card shadow-lg">
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4">User Role</h2>
+                    <h2 class="card-title text-center mb-4">Settings</h2>
 
                     <ul class="list-group">
-                        <li class="list-group-item"><strong>Role:</strong>
-                            <?= $user->getRole(); ?>
+                        <li class="list-group-item"><strong>Name:</strong>
+                            <?= $user->getName(); ?>
                         </li>
                     </ul>
 

@@ -42,6 +42,8 @@
                                     Hapus
                                 </button>
                             </form>
+                            <a href="/admin/user/role/<?= $user->getUsername(); ?>" class="btn btn-info btn-sm">Role</a>
+                            <a href="/admin/user/settings/<?= $user->getName(); ?>" class="btn btn-info btn-sm">Settings</a>
                         </td>
                     </tr>
                 <?php } ?>
