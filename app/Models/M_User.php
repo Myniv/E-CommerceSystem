@@ -34,6 +34,35 @@ class M_User
         return null;
     }
 
+    public function getUserByUsername($username)
+    {
+        foreach ($this->user as $key => $value) {
+            if ($value->getUsername() == $username) {
+                return $value;
+            }
+        }
+        return null;
+    }
+    public function getUserByUsernameandID($username, $id)
+    {
+        foreach ($this->user as $key => $value) {
+            if ($value->getUsername() == $username && $value->getId() == $id) {
+                return $value;
+            }
+        }
+        return null;
+    }
+
+    public function getUserByName($name)
+    {
+        foreach ($this->user as $key => $value) {
+            if ($value->getName() == $name) {
+                return $value;
+            }
+        }
+        return null;
+    }
+
     public function addUser(User $user)
     {
         $this->user[] = $user;

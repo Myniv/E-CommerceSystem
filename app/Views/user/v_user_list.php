@@ -12,6 +12,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Nama</th>
+                    <th>Username</th>
                     <th>Telepon</th>
                     <th>Email</th>
                     <th>Alamat</th>
@@ -22,10 +23,10 @@
             </thead>
             <tbody>
                 <?php foreach ($users as $user) { ?>
-                    <p>test</p>
                     <tr>
                         <td><?= $user->getId(); ?></td>
                         <td><?= $user->getName(); ?></td>
+                        <td><?= $user->getUsername(); ?></td>
                         <td><?= $user->getPhone(); ?></td>
                         <td><?= $user->getEmail(); ?></td>
                         <td><?= $user->getAddress(); ?></td>

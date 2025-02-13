@@ -5,16 +5,18 @@ class User
 {
     private $id;
     private $name;
+    private $username;
     private $phone;
     private $email;
     private $address;
     private $sex;
     private $role;
 
-    public function __construct($id, $name, $phone, $email, $address, $sex, $role)
+    public function __construct($id, $name, $username, $phone, $email, $address, $sex, $role)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->username = $username;
         $this->phone = $phone;
         $this->email = $email;
         $this->address = $address;
@@ -38,6 +40,15 @@ class User
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+    public function setUsername($username)
+    {
+        $this->username = $username;
     }
 
     public function getPhone()

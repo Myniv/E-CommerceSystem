@@ -43,6 +43,7 @@ $routes->group('api/pesanan', function ($routes) {
 $routes->group('admin/user', function ($routes) {
     $routes->get('/', [UserController::class, 'index']);
     $routes->get('profile/(:num)', [UserController::class, 'detail']);
+    $routes->get('role/(:alphanumeric)', [UserController::class, 'detail']);
     $routes->match(['get', 'post'], 'create', [UserController::class, 'create']);
     $routes->match(['get', 'put'], 'update/(:num)', [UserController::class, 'update/$1']);
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);

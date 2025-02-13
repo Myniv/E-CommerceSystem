@@ -11,6 +11,7 @@
                     <ul class="list-group">
                         <li class="list-group-item"><strong>ID:</strong> <?= $user->getId(); ?></li>
                         <li class="list-group-item"><strong>Nama:</strong> <?= $user->getName(); ?></li>
+                        <li class="list-group-item"><strong>Username:</strong> <?= $user->getUsername(); ?></li>
                         <li class="list-group-item"><strong>Telepon:</strong> <?= $user->getPhone(); ?></li>
                         <li class="list-group-item"><strong>Email:</strong> <?= $user->getEmail(); ?></li>
                         <li class="list-group-item"><strong>Alamat:</strong> <?= $user->getAddress(); ?></li>

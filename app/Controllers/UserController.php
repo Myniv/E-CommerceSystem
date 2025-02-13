@@ -24,6 +24,17 @@ class UserController extends BaseController
         $data['user'] = $this->userModel->getUserById($id);
         return view('user/v_user_detail', $data);
     }
+    public function role($username)
+    {
+        $data['user'] = $this->userModel->getUserByUsername($username);
+        return view('user/v_user_detail', $data);
+    }
+
+    public function settings($name)
+    {
+        $data['user'] = $this->userModel->getUserByName($name);
+        return view('user/v_user_detail', $data);
+    }
 
     public function create()
     {
@@ -37,6 +48,7 @@ class UserController extends BaseController
             $data = [
                 'id' => $this->request->getPost("id"),
                 'name' => $this->request->getPost("name"),
+                'username' => $this->request->getPost("username"),
                 'phone' => $this->request->getPost("phone"),
                 'email' => $this->request->getPost("email"),
                 'address' => $this->request->getPost("address"),
@@ -46,6 +58,7 @@ class UserController extends BaseController
             $rule = [
                 'id' => 'required|integer',
                 'name' => 'required|max_length[255]',
+                'username' => 'required|max_length[255]',
                 'phone' => 'required|max_length[255]|integer',
                 'email' => 'required|max_length[255]|valid_email',
                 'address' => 'required|max_length[255]',
@@ -57,7 +70,7 @@ class UserController extends BaseController
                 return view("user/v_user_form", ['errors' => $this->validator->getErrors()]);
             }
 
-            $user = new User($data['id'], $data['name'], $data['phone'], $data['email'], $data['address'], $data['sex'], $data['role']);
+            $user = new User($data['id'], $data['name'], $data['username'], $data['phone'], $data['email'], $data['address'], $data['sex'], $data['role']);
 
             $this->userModel->addUser($user);
             return redirect()->to("admin/user");
@@ -78,6 +91,7 @@ class UserController extends BaseController
             $formData = [
                 'id' => $this->request->getPost("id"),
                 'name' => $this->request->getPost("name"),
+                'username' => $this->request->getPost("username"),
                 'phone' => $this->request->getPost("phone"),
                 'email' => $this->request->getPost("email"),
                 'address' => $this->request->getPost("address"),
@@ -85,21 +99,22 @@ class UserController extends BaseController
                 'role' => $this->request->getPost("role")
             ];
             $rule = [
-                'id' => 'required|integer',
-                'name' => 'required|max_length[255]',
-                'phone' => 'required|max_length[255]|integer',
-                'email' => 'required|max_length[255]|valid_email',
-                'address' => 'required|max_length[255]',
-                'sex' => 'required',
-                'role' => 'required'
+                'id' => 'integer',
+                'name' => 'max_length[255]',
+                'username' => 'max_length[255]',
+                'phone' => 'max_length[255]',
+                'email' => 'max_length[255]',
+                'address' => 'max_length[255]',
+                'sex' => 'max_length[255]',
+                'role' => 'max_length[255]'
             ];
 
-            if (!$this->validateData($formData, $rule)) {
-                $data['errors'] = $this->validator->getErrors();
-                return view("user/v_user_form", $data);
-            }
+            // if (!$this->validateData($data, $rule)) {
+            //     $data['errors'] = $this->validator->getErrors();
+            //     return view("user/v_user_form", $data);
+            // }
 
-            $user = new User($formData['id'], $formData['name'], $formData['phone'], $formData['email'], $formData['address'], $formData['sex'], $formData['role']);
+            $user = new User($formData['id'], $formData['name'], $formData['username'], $formData['phone'], $formData['email'], $formData['address'], $formData['sex'], $formData['role']);
 
             $this->userModel->updateUser($user);
             return redirect()->to("/admin/user");
