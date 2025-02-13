@@ -11,7 +11,9 @@
 <div class="d-flex flex-column min-vh-100">
     <?= $this->include('layout/header') ?>
     <div class="flex-grow-1">
-        <?= $this->renderSection('content') ?>
+        <div class="container mt-4">
+            <?= $this->renderSection('content') ?>
+        </div>
     </div>
     <?= $this->include('layout/footer') ?>
 </div>
