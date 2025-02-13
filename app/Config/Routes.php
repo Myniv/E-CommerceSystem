@@ -20,7 +20,7 @@ $routes->environment('production', static function ($routes) {
 $routes->addRedirect('/home', '/');
 $routes->get('/about-us', [Home::class, 'aboutUs']);
 
-$routes->group('api/product', function ($routes) {
+$routes->group('api/product',['filter' => 'auth:user'], function ($routes) {
     $routes->get('/', [ProductController::class, 'allProduct']);
     $routes->get('detail/(:num)', [ProductController::class, 'detailProduct/$1'], ['as' => 'product_details']);
     $routes->get('create', [ProductController::class, 'goCreateProduct']);
@@ -30,7 +30,7 @@ $routes->group('api/product', function ($routes) {
     $routes->delete('delete/(:num)', [ProductController::class, 'deleteProduct/$1']);
 });
 
-$routes->group('api/pesanan', function ($routes) {
+$routes->group('api/pesanan',['filter' => 'auth:user'], function ($routes) {
     $routes->get('/', [PesananController::class, 'allPesanan']);
     $routes->get('create', [PesananController::class, 'goCreatePesanan']);
     $routes->post('add', [PesananController::class, 'createPesanan']);
@@ -40,7 +40,7 @@ $routes->group('api/pesanan', function ($routes) {
     $routes->get('detail/(:num)', [PesananController::class, 'detailPesanan/$1']);
 });
 
-$routes->group('admin/user', function ($routes) {
+$routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->get('/', [UserController::class, 'index']);
     $routes->get('profile/(:num)', [UserController::class, 'detail']);
     $routes->get('role/(:alphanum)', [UserController::class, 'role']);
@@ -50,7 +50,7 @@ $routes->group('admin/user', function ($routes) {
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);
 });
 
-$routes->get('/admin/dashboard', [Home::class, 'dashboard'], ['as' => 'user_dashboard']);
+$routes->get('/admin/dashboard', [Home::class, 'dashboard'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
 
 $routes->get('/health-check', function () {
     return view('v_health_check');
@@ -60,3 +60,6 @@ $routes->resource('admin', [
     'controller' => 'Home', // Menggunakan controller tertentu secara explisit
     'only' => ['show'] // Hanya menggunakan method tertentu
 ]);
+
+$routes->post('login', [Home::class, 'login']);
+$routes->get("unauthorized", [Home::class, "unauthorized"]);

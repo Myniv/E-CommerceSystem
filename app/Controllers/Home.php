@@ -16,11 +16,17 @@ class Home extends BaseController
     }
     public function development(): string
     {
-        return view('welcome_message');
+        $session = session();
+        $role = $session->get("login");
+        $data["role"] = $role;
+        return view('welcome_message', $data);
     }
     public function production(): string
     {
-        return view('production_page');
+        $session = session();
+        $role = $session->get("login");
+        $data["role"] = $role;
+        return view('production_page', $data);
     }
     public function aboutUs(): string
     {
@@ -38,5 +44,21 @@ class Home extends BaseController
     public function show()
     {
         echo "Show Option Route";
+    }
+
+    public function login()
+    {
+        $session = session();
+        $role = $this->request->getPost("role");
+
+        if ($role == "admin" || $role == "user") {
+            $session->set("login", $role);
+            $data["role"] = $role;
+            return view("welcome_message", $data);
+        }
+    }
+    public function unauthorized()
+    {
+        return view("unauthorized_page");
     }
 }
