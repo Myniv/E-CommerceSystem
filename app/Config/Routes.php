@@ -11,10 +11,10 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 $routes->environment('development', static function ($routes) {
-    $routes->get('/', [Home::class, 'development'], ['as' => 'user_dashboard']);
+    $routes->get('/', [Home::class, 'development']);
 });
 $routes->environment('production', static function ($routes) {
-    $routes->get('/', [Home::class, 'production'], ['as' => 'user_dashboard']);
+    $routes->get('/', [Home::class, 'production']);
 });
 
 $routes->addRedirect('/home', '/');
@@ -43,12 +43,20 @@ $routes->group('api/pesanan', function ($routes) {
 $routes->group('admin/user', function ($routes) {
     $routes->get('/', [UserController::class, 'index']);
     $routes->get('profile/(:num)', [UserController::class, 'detail']);
-    $routes->get('role/(:alphanumeric)', [UserController::class, 'detail']);
+    $routes->get('role/(:alphanum)', [UserController::class, 'role']);
+    $routes->get('settings/(:alpha)', [UserController::class, 'settings']);
     $routes->match(['get', 'post'], 'create', [UserController::class, 'create']);
     $routes->match(['get', 'put'], 'update/(:num)', [UserController::class, 'update/$1']);
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);
 });
 
+$routes->get('/admin/dashboard', [Home::class, 'dashboard'], ['as' => 'user_dashboard']);
+
 $routes->get('/health-check', function () {
     return view('v_health_check');
 });
+
+$routes->resource('admin', [
+    'controller' => 'Home', // Menggunakan controller tertentu secara explisit
+    'only' => ['show'] // Hanya menggunakan method tertentu
+]);
