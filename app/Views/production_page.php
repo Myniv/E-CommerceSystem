@@ -2,6 +2,6 @@
 <?= $this->section('content') ?>
 
 <h1>Welcome to the E-Commerce Management System</h1>
-<p>DEVELOPMENT MODE</p>
+<p>PRODUCTION MODE</p>
 
 <?= $this->endSection() ?>
