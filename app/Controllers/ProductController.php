@@ -37,7 +37,7 @@ class ProductController extends BaseController
         $produk = new Product($id, $nama, $harga, $stok, $kategori);
 
         $this->productModel->addProduct($produk);
-        return redirect()->to("/product");
+        return redirect()->to("admin/product");
     }
 
     public function goCreateProduct()
@@ -56,7 +56,7 @@ class ProductController extends BaseController
         $produk = new Product($id, $nama, $harga, $stok, $kategori);
 
         $this->productModel->updateProduct($produk);
-        return redirect()->to("/product");
+        return redirect()->to("admin/product");
     }
 
     public function goEditProduct($id)
@@ -68,7 +68,7 @@ class ProductController extends BaseController
     public function deleteProduct($id)
     {
         $this->productModel->deleteProduct($id);
-        return redirect()->to("/product");
+        return redirect()->to("admin/product");
     }
 
 
