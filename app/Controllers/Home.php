@@ -4,9 +4,13 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
-    public function index(): string
+    public function development(): string
     {
         return view('welcome_message');
+    }
+    public function production(): string
+    {
+        return view('production_page');
     }
     public function aboutUs(): string
     {
