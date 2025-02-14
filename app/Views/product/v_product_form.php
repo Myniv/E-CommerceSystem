@@ -43,7 +43,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
-                <a href=<?= base_url('api/ProductController') ?> class="btn btn-secondary">Kembali</a>
+                <a href=<?= base_url('api/product') ?> class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>

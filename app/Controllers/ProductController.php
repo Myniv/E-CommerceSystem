@@ -15,32 +15,23 @@ class ProductController extends ResourceController
         $this->productModel = new M_Product();
     }
 
-    // GET /product - Retrieve all products
     public function index()
     {
         $data['products'] = $this->productModel->getAllProduct();
         return view("product/v_product_list", $data);
     }
 
-    // GET /product/{id} - Retrieve a single product
     public function show($id = null)
     {
         $data['products'] = $this->productModel->getProductById($id);
         return view('/product/v_product_detail', $data);
     }
-    public function detailProduct   ($id = null)
-    {
-        $data['products'] = $this->productModel->getProductById($id);
-        return view('/product/v_product_detail', $data);
-    }
 
-    // GET /product/new - Show form to create a new product
     public function new()
     {
         return view("/product/v_product_form");
     }
 
-    // POST /product - Store a new product
     public function create()
     {
         $id = $this->request->getPost("id");
@@ -55,14 +46,12 @@ class ProductController extends ResourceController
         return redirect()->to("api/product");
     }
 
-    // GET /product/{id}/edit - Show form to edit a product
     public function edit($id = null)
     {
         $data["products"] = $this->productModel->getProductById($id);
         return view("/product/v_product_form", $data);
     }
 
-    // PUT/PATCH /product/{id} - Update an existing product
     public function update($id = null)
     {
         $id = $this->request->getPost("id");
@@ -77,7 +66,6 @@ class ProductController extends ResourceController
         return redirect()->to("api/product");
     }
 
-    // DELETE /product/{id} - Delete a product
     public function delete($id = null)
     {
         $this->productModel->deleteProduct($id);

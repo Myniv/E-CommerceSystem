@@ -32,7 +32,7 @@ $routes->get('/about-us', [Home::class, 'aboutUs']);
 
 $routes->group('api', ['filter' => 'auth:user'], function ($routes) {
     $routes->resource("product", ['controller' => 'ProductController']);
-    $routes->get('detail/(:num)', [ProductController::class, 'detailProduct/$1'], ['as' => 'product_details']);
+    $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
 });
 
 $routes->group('api/pesanan', ['filter' => 'auth:user'], function ($routes) {
