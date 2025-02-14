@@ -20,10 +20,6 @@
     <p>Not Login!</p>
 <?php } ?>
 
-<?php if (isset($error)) { ?>
-    <p><?= $error ?></p>
-<?php } ?>
-
 
 
 <?= $this->endSection() ?>

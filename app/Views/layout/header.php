@@ -10,6 +10,8 @@
                 </h1>
                 <nav>
                     <a href="<?= base_url('/') ?>">Home</a>
+                    <a href="<?= base_url('/admin/show') ?>">Show</a>
+                    <a href="<?= base_url('/about-us') ?>">About Us</a>
                     <a href="<?= route_to("user_dashboard") ?>">Dashboard</a>
                     <a href="<?= base_url('/api/product') ?>">Products</a>
                     <a href="<?= base_url('/admin/user') ?>">User</a>
