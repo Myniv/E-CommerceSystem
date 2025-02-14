@@ -5,6 +5,7 @@
     <h2 class="mb-3">User List</h2>
 
     <a href="/admin/user/create" class="btn btn-success mb-3">Tambah Pengguna</a>
+    <a href="<?= base_url("api/json/user") ?>" class="btn btn-success mb-3">Get JSON Data</a>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -44,6 +45,7 @@
                             </form>
                             <a href="/admin/user/role/<?= $user->getUsername(); ?>" class="btn btn-info btn-sm">Role</a>
                             <a href="/admin/user/settings/<?= $user->getName(); ?>" class="btn btn-info btn-sm">Settings</a>
+                            <a href="/api/json/user/<?= $user->getId(); ?>" class="btn btn-info btn-sm">JSON By Id</a>
                         </td>
                     </tr>
                 <?php } ?>

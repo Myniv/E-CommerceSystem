@@ -5,6 +5,8 @@
     <h2 class="mb-3">Produk List</h2>
 
     <a href="<?= base_url("api/product/new") ?>" class="btn btn-success mb-3">Tambah Produk</a>
+    <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
+
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -38,6 +40,7 @@
                                     Hapus
                                 </button>
                             </form>
+                            <a href="/api/json/product/<?= $product->getId(); ?>" class="btn btn-info btn-sm">JSON By Id</a>
                         </td>
                     </tr>
                 <?php } ?>

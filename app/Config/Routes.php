@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\ApiController;
 use App\Controllers\Home;
 use App\Controllers\PesananController;
 use App\Controllers\ProductController;
@@ -30,9 +31,14 @@ $routes->get('/about-us', [Home::class, 'aboutUs']);
 //     $routes->delete('delete/(:num)', [ProductController::class, 'deleteProduct/$1']);
 // });
 
-$routes->group('api', ['filter' => 'auth:user'], function ($routes) {
+$routes->group('api', ['filter' => 'auth:admin'], function ($routes) {
     $routes->resource("product", ['controller' => 'ProductController']);
-    $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
+    // $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
+    $routes->get('json', [Home::class, 'index']);
+    $routes->get('json/product', [ApiController::class, 'getAllProductJSON']);
+    $routes->get('json/product/(:num)', [ApiController::class, 'getProductJSONById/$1']);
+    $routes->get('json/user', [ApiController::class, 'getAllUserJSON']);
+    $routes->get('json/user/(:num)', [ApiController::class, 'getUserJSONById/$1']);
 });
 
 $routes->group('api/pesanan', ['filter' => 'auth:user'], function ($routes) {
@@ -62,8 +68,8 @@ $routes->get('/health-check', function () {
 });
 
 $routes->resource('admin', [
-    'controller' => 'Home', // Menggunakan controller tertentu secara explisit
-    'only' => ['show'] // Hanya menggunakan method tertentu
+    'controller' => 'Home',
+    'only' => ['show']
 ]);
 
 $routes->post('login', [Home::class, 'login']);
