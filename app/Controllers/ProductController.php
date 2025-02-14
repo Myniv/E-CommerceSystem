@@ -4,8 +4,9 @@ namespace App\Controllers;
 
 use App\Entities\Product;
 use App\Models\M_Product;
+use CodeIgniter\RESTful\ResourceController;
 
-class ProductController extends BaseController
+class ProductController extends ResourceController
 {
     private $productModel;
 
@@ -14,19 +15,33 @@ class ProductController extends BaseController
         $this->productModel = new M_Product();
     }
 
-    public function allProduct()
+    // GET /product - Retrieve all products
+    public function index()
     {
         $data['products'] = $this->productModel->getAllProduct();
-        return $this->renderView("product/v_product_list", $data);
+        return view("product/v_product_list", $data);
     }
 
-    public function detailProduct($id)
+    // GET /product/{id} - Retrieve a single product
+    public function show($id = null)
+    {
+        $data['products'] = $this->productModel->getProductById($id);
+        return view('/product/v_product_detail', $data);
+    }
+    public function detailProduct   ($id = null)
     {
         $data['products'] = $this->productModel->getProductById($id);
         return view('/product/v_product_detail', $data);
     }
 
-    public function createProduct()
+    // GET /product/new - Show form to create a new product
+    public function new()
+    {
+        return view("/product/v_product_form");
+    }
+
+    // POST /product - Store a new product
+    public function create()
     {
         $id = $this->request->getPost("id");
         $nama = $this->request->getPost("nama");
@@ -40,12 +55,15 @@ class ProductController extends BaseController
         return redirect()->to("api/product");
     }
 
-    public function goCreateProduct()
+    // GET /product/{id}/edit - Show form to edit a product
+    public function edit($id = null)
     {
-        return view("/product/v_product_form");
+        $data["products"] = $this->productModel->getProductById($id);
+        return view("/product/v_product_form", $data);
     }
 
-    public function editProduct()
+    // PUT/PATCH /product/{id} - Update an existing product
+    public function update($id = null)
     {
         $id = $this->request->getPost("id");
         $nama = $this->request->getPost("nama");
@@ -59,17 +77,10 @@ class ProductController extends BaseController
         return redirect()->to("api/product");
     }
 
-    public function goEditProduct($id)
-    {
-        $data["products"] = $this->productModel->getProductById($id);
-        return view("/product/v_product_form", $data);
-    }
-
-    public function deleteProduct($id)
+    // DELETE /product/{id} - Delete a product
+    public function delete($id = null)
     {
         $this->productModel->deleteProduct($id);
         return redirect()->to("api/product");
     }
-
-
 }

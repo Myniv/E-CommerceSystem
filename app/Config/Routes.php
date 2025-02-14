@@ -20,17 +20,22 @@ $routes->environment('production', static function ($routes) {
 $routes->addRedirect('/home', '/');
 $routes->get('/about-us', [Home::class, 'aboutUs']);
 
-$routes->group('api/product',['filter' => 'auth:user'], function ($routes) {
-    $routes->get('/', [ProductController::class, 'allProduct']);
+// $routes->group('api/product',['filter' => 'auth:user'], function ($routes) {
+//     $routes->get('/', [ProductController::class, 'allProduct']);
+// $routes->get('detail/(:num)', [ProductController::class, 'detailProduct/$1'], ['as' => 'product_details']);
+//     $routes->get('create', [ProductController::class, 'goCreateProduct']);
+//     $routes->post('add', [ProductController::class, 'createProduct']);
+//     $routes->get('edit/(:num)', [ProductController::class, 'goEditProduct/$1']);
+//     $routes->post('edit', [ProductController::class, 'editProduct']);
+//     $routes->delete('delete/(:num)', [ProductController::class, 'deleteProduct/$1']);
+// });
+
+$routes->group('api', ['filter' => 'auth:user'], function ($routes) {
+    $routes->resource("product", ['controller' => 'ProductController']);
     $routes->get('detail/(:num)', [ProductController::class, 'detailProduct/$1'], ['as' => 'product_details']);
-    $routes->get('create', [ProductController::class, 'goCreateProduct']);
-    $routes->post('add', [ProductController::class, 'createProduct']);
-    $routes->get('edit/(:num)', [ProductController::class, 'goEditProduct/$1']);
-    $routes->post('edit', [ProductController::class, 'editProduct']);
-    $routes->delete('delete/(:num)', [ProductController::class, 'deleteProduct/$1']);
 });
 
-$routes->group('api/pesanan',['filter' => 'auth:user'], function ($routes) {
+$routes->group('api/pesanan', ['filter' => 'auth:user'], function ($routes) {
     $routes->get('/', [PesananController::class, 'allPesanan']);
     $routes->get('create', [PesananController::class, 'goCreatePesanan']);
     $routes->post('add', [PesananController::class, 'createPesanan']);
