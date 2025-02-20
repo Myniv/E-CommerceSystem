@@ -29,6 +29,7 @@ class ProductController extends ResourceController
 
         foreach ($products as &$product) {
             $product['harga'] = number_format($product['harga'], 0, ',', '.'); // Format: 1000000 -> 1.000.000
+            $product['image'] = base_url('search-image.svg');
         }
 
         $data = ['products' => $products];
