@@ -17,6 +17,7 @@
                             <strong>Harga:</strong> Rp <?= number_format($products->getHarga(), 0, ',', '.') ?>
                         </li>
                         <li class="list-group-item"><strong>Kategori:</strong> <?= $products->getKategori() ?></li>
+                        <li class="list-group-item"><strong>Status:</strong> <?= $products->getStatus() ?></li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">

@@ -36,6 +36,7 @@ class M_Product
                 'harga' => $product->getHarga(),
                 'stok' => $product->getStok(),
                 'kategori' => $product->getKategori(),
+                'status' => $product->getStatus(),
             ];
         }
 
@@ -63,10 +64,11 @@ class M_Product
                     'harga' => $product->getHarga(),
                     'stok' => $product->getStok(),
                     'kategori' => $product->getKategori(),
+                    'status' => $product->getStatus(),
                 ];
             }
         }
-        return null; 
+        return null;
     }
 
 

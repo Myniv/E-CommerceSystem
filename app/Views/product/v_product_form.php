@@ -45,6 +45,15 @@
                         <option value="Electronics" <?= isset($products) && $products->getKategori() == 'Electronics' ? 'selected' : ''; ?>>Electronics</option>
                     </select>
                 </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Status:</label>
+                    <select class="form-control" name="status" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Active" <?= isset($products) && $products->getStatus() == 'Active' ? 'selected' : ''; ?>>Active</option>
+                        <option value="Inactive" <?= isset($products) && $products->getStatus() == 'Inactive' ? 'selected' : ''; ?>>Inactive</option>
+                    </select>
+                </div>
 
 
                 <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>

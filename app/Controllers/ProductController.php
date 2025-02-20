@@ -57,8 +57,9 @@ class ProductController extends ResourceController
         $harga = $this->request->getPost("harga");
         $stok = $this->request->getPost("stok");
         $kategori = $this->request->getPost("kategori");
+        $status = $this->request->getPost("status");
 
-        $produk = new Product($id, $nama, $harga, $stok, $kategori);
+        $produk = new Product($id, $nama, $harga, $stok, $kategori, $status);
 
         $this->productModel->addProduct($produk);
         return redirect()->to("admin/product");
@@ -77,8 +78,10 @@ class ProductController extends ResourceController
         $harga = $this->request->getPost("harga");
         $stok = $this->request->getPost("stok");
         $kategori = $this->request->getPost("kategori");
+        $status = $this->request->getPost("status");
 
-        $produk = new Product($id, $nama, $harga, $stok, $kategori);
+
+        $produk = new Product($id, $nama, $harga, $stok, $kategori, $status);
 
         $this->productModel->updateProduct($produk);
         return redirect()->to("admin/product");

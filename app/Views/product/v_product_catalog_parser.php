@@ -10,6 +10,7 @@
                     <p class="card-text"><strong>Price:</strong> Rp {harga}</p>
                     <p class="card-text"><strong>Stock:</strong> {stok}</p>
                     <p class="card-text"><strong>Category:</strong> {kategori}</p>
+                    <p class="card-text"><strong>Status:</strong> {status}</p>
                 </div>
             </div>
         </div>

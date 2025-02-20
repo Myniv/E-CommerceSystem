@@ -8,14 +8,16 @@ class Product
     private $harga;
     private $stok;
     private $kategori;
+    private $status;
 
-    public function __construct($id, $nama, $harga, $stok, $kategori)
+    public function __construct($id, $nama, $harga, $stok, $kategori, $status)
     {
         $this->id = $id;
         $this->nama = $nama;
         $this->harga = $harga;
         $this->stok = $stok;
         $this->kategori = $kategori;
+        $this->status = $status;
     }
 
     public function getId()
@@ -61,6 +63,16 @@ class Product
     public function setKategori($kategori)
     {
         $this->kategori = $kategori;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
     public function kurangiStok($jumlah)
