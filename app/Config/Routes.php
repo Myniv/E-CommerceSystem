@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\AdminController;
 use App\Controllers\ApiController;
 use App\Controllers\Home;
 use App\Controllers\PesananController;
@@ -32,8 +33,20 @@ $routes->get('/about-us', [Home::class, 'aboutUs']);
 // });
 
 $routes->group('api', ['filter' => 'auth:admin'], function ($routes) {
-    $routes->resource("product", ['controller' => 'ProductController']);
-    // $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
+    // $routes->resource("product", ['controller' => 'ProductController']);
+    $routes->get('product', [ProductController::class, 'index']); // GET - List all products
+    $routes->get('product/new', [ProductController::class, 'new']); // GET - Show form to create a new product
+    $routes->post('product', [ProductController::class, 'create']); // POST - Store a new product
+    $routes->get('product/(:num)', [ProductController::class, 'show/$1']); // GET - Show a single product
+    $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']); // GET - Show edit form for a product
+    $routes->put('product/(:num)', [ProductController::class, 'update/$1']); // PUT - Update a product
+    // $routes->patch('product/(:num)', [ProductController::class, 'update/$1']); // PATCH - Partial update
+    $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']); // DELETE - Delete a product
+
+    $routes->get("product/list-parser", [ProductController::class, "allProductParser"]);
+
+
+    $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
     $routes->get('json', [Home::class, 'index']);
     $routes->get('json/product', [ApiController::class, 'getAllProductJSON']);
     $routes->get('json/product/(:num)', [ApiController::class, 'getProductJSONById/$1']);
@@ -61,7 +74,7 @@ $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);
 });
 
-$routes->get('/admin/dashboard', [Home::class, 'dashboard'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
+$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
 
 $routes->get('/health-check', function () {
     return view('v_health_check');

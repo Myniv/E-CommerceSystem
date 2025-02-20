@@ -32,15 +32,7 @@ class Home extends BaseController
     {
         return view('about_us');
     }
-    public function dashboard()
-    {
-        $user = count($this->userModel->getUser());
-        $product = count($this->productModel->getAllProduct());
-        $data['product'] = $product;
-        $data['user'] = $user;
-
-        return view('v_dashboard', $data);
-    }
+    
     public function show()
     {
         echo "Show Option Route";

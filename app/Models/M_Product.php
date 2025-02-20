@@ -25,6 +25,24 @@ class M_Product
         return $this->product;
     }
 
+    public function getAllProductArray()
+    {
+        $productsArray = [];
+
+        foreach ($this->product as $product) {
+            $productsArray[] = [
+                'id' => $product->getId(),
+                'nama' => $product->getNama(),
+                'harga' => $product->getHarga(),
+                'stok' => $product->getStok(),
+                'kategori' => $product->getKategori(),
+            ];
+        }
+
+        return $productsArray;
+    }
+
+
     public function getProductById($id)
     {
         foreach ($this->product as $key => $value) {
@@ -34,6 +52,23 @@ class M_Product
         }
         return null;
     }
+
+    public function getProductByIdArray($id)
+    {
+        foreach ($this->product as $product) {
+            if ($product->getId() == $id) {
+                return [
+                    'id' => $product->getId(),
+                    'nama' => $product->getNama(),
+                    'harga' => $product->getHarga(),
+                    'stok' => $product->getStok(),
+                    'kategori' => $product->getKategori(),
+                ];
+            }
+        }
+        return null; 
+    }
+
 
     public function addProduct(Product $product)
     {

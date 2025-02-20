@@ -21,6 +21,23 @@ class ProductController extends ResourceController
         return view("product/v_product_list", $data);
     }
 
+    public function allProductParser()
+    {
+        $parser = \Config\Services::parser();
+
+        $products = $this->productModel->getAllProductArray();
+
+        foreach ($products as &$product) {
+            $product['harga'] = number_format($product['harga'], 0, ',', '.'); // Format: 1000000 -> 1.000.000
+        }
+
+        $data = ['products' => $products];
+        $data['content'] = $parser->setData($data)
+            ->render('product/v_product_list_parser', );
+
+        return view("components/v_parser_layout", $data);
+    }
+
     public function show($id = null)
     {
         $data['products'] = $this->productModel->getProductById($id);
