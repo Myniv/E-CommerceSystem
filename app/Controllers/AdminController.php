@@ -50,6 +50,6 @@ class AdminController extends BaseController
         );
 
 
-        return view("components/v_parser_layout", $data);
+        return view("components/v_parser_layout_admin", $data);
     }
 }

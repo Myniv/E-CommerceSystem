@@ -1,10 +1,10 @@
-<?= $this->extend('layout/master') ?>
-<?= $this->section('content') ?>
+<?= $this->extend('layout/admin') ?>
+<?= $this->section('admin_content') ?>
 
 <div class="container mt-4">
     <h2 class="mb-3">Produk List</h2>
 
-    <a href="<?= base_url("api/product/new") ?>" class="btn btn-success mb-3">Tambah Produk</a>
+    <a href="<?= base_url("admin/product/new") ?>" class="btn btn-success mb-3">Tambah Produk</a>
     <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
 
 
@@ -32,8 +32,8 @@
                             <!-- <a href="/product/detail/<?= $product->getId(); ?>" class="btn btn-info btn-sm">Detail</a> -->
                             <a href="<?= route_to("product_details", $product->getId()) ?>"
                                 class="btn btn-info btn-sm">Detail</a>
-                            <a href="/api/product/<?= $product->getId(); ?>/edit" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="/api/product/<?= $product->getId(); ?>" method="post" class="d-inline">
+                            <a href="/admin/product/<?= $product->getId(); ?>/edit" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/admin/product/<?= $product->getId(); ?>" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">

@@ -1,5 +1,5 @@
-<?= $this->extend('layout/master') ?>
-<?= $this->section('content') ?>
+<?= $this->extend('layout/admin') ?>
+<?= $this->section('admin_content') ?>
 
 <div class="container mt-4">
     <h2 class="mb-3">User List</h2>

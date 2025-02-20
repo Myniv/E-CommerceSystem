@@ -22,30 +22,8 @@ $routes->environment('production', static function ($routes) {
 $routes->addRedirect('/home', '/');
 $routes->get('/about-us', [Home::class, 'aboutUs']);
 
-// $routes->group('api/product',['filter' => 'auth:user'], function ($routes) {
-//     $routes->get('/', [ProductController::class, 'allProduct']);
-// $routes->get('detail/(:num)', [ProductController::class, 'detailProduct/$1'], ['as' => 'product_details']);
-//     $routes->get('create', [ProductController::class, 'goCreateProduct']);
-//     $routes->post('add', [ProductController::class, 'createProduct']);
-//     $routes->get('edit/(:num)', [ProductController::class, 'goEditProduct/$1']);
-//     $routes->post('edit', [ProductController::class, 'editProduct']);
-//     $routes->delete('delete/(:num)', [ProductController::class, 'deleteProduct/$1']);
-// });
 
 $routes->group('api', ['filter' => 'auth:admin'], function ($routes) {
-    // $routes->resource("product", ['controller' => 'ProductController']);
-    $routes->get('product', [ProductController::class, 'index']); // GET - List all products
-    $routes->get('product/new', [ProductController::class, 'new']); // GET - Show form to create a new product
-    $routes->post('product', [ProductController::class, 'create']); // POST - Store a new product
-    $routes->get('product/(:num)', [ProductController::class, 'show/$1']); // GET - Show a single product
-    $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']); // GET - Show edit form for a product
-    $routes->put('product/(:num)', [ProductController::class, 'update/$1']); // PUT - Update a product
-    // $routes->patch('product/(:num)', [ProductController::class, 'update/$1']); // PATCH - Partial update
-    $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']); // DELETE - Delete a product
-
-    $routes->get("product/list-parser", [ProductController::class, "allProductParser"]);
-
-
     $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
     $routes->get('json', [Home::class, 'index']);
     $routes->get('json/product', [ApiController::class, 'getAllProductJSON']);
@@ -62,6 +40,20 @@ $routes->group('api/pesanan', ['filter' => 'auth:user'], function ($routes) {
     $routes->get('edit/(:num)', [PesananController::class, 'goEditPesanan/$1']);
     $routes->delete('delete/(:num)', [PesananController::class, 'deletePesanan/$1']);
     $routes->get('detail/(:num)', [PesananController::class, 'detailPesanan/$1']);
+});
+
+$routes->group('admin', ['filter' => 'auth:admin'], function ($routes) {
+    // $routes->resource("product", ['controller' => 'ProductController']);
+    $routes->get('product', [ProductController::class, 'index']); // GET - List all products
+    $routes->get('product/new', [ProductController::class, 'new']); // GET - Show form to create a new product
+    $routes->post('product', [ProductController::class, 'create']); // POST - Store a new product
+    $routes->get('product/(:num)', [ProductController::class, 'show/$1']); // GET - Show a single product
+    $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']); // GET - Show edit form for a product
+    $routes->put('product/(:num)', [ProductController::class, 'update/$1']); // PUT - Update a product
+    // $routes->patch('product/(:num)', [ProductController::class, 'update/$1']); // PATCH - Partial update
+    $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']); // DELETE - Delete a product
+
+    $routes->get("product/list-parser", [ProductController::class, "allProductParser"]);
 });
 
 $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {

@@ -32,10 +32,10 @@ class ProductController extends ResourceController
         }
 
         $data = ['products' => $products];
-        $data['content'] = $parser->setData($data)
+        $data['admin_content'] = $parser->setData($data)
             ->render('product/v_product_list_parser', );
 
-        return view("components/v_parser_layout", $data);
+        return view("components/v_parser_layout_admin", $data);
     }
 
     public function show($id = null)
@@ -60,7 +60,7 @@ class ProductController extends ResourceController
         $produk = new Product($id, $nama, $harga, $stok, $kategori);
 
         $this->productModel->addProduct($produk);
-        return redirect()->to("api/product");
+        return redirect()->to("admin/product");
     }
 
     public function edit($id = null)
@@ -80,12 +80,12 @@ class ProductController extends ResourceController
         $produk = new Product($id, $nama, $harga, $stok, $kategori);
 
         $this->productModel->updateProduct($produk);
-        return redirect()->to("api/product");
+        return redirect()->to("admin/product");
     }
 
     public function delete($id = null)
     {
         $this->productModel->deleteProduct($id);
-        return redirect()->to("api/product");
+        return redirect()->to("admin/product");
     }
 }

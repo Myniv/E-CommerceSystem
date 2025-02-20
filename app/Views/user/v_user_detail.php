@@ -1,5 +1,5 @@
-<?= $this->extend('layout/master') ?>
-<?= $this->section('content') ?>
+<?= $this->extend('layout/admin') ?>
+<?= $this->section('admin_content') ?>
 
 <div class="container mt-4">
     <div class="row justify-content-center">

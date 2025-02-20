@@ -1,5 +1,5 @@
-<?= $this->extend('layout/master') ?>
-<?= $this->section('content') ?>
+<?= $this->extend('layout/admin') ?>
+<?= $this->section('admin_content') ?>
 
 <div class="container mt-4">
     <div class="card shadow-sm">
@@ -7,7 +7,7 @@
             <h2 class="mb-3"><?= isset($products) ? 'Edit Produk' : 'Tambah Produk'; ?></h2>
 
             <form method="post"
-                action="<?= isset($products) ? base_url('api/product/' . $products->getId()) : base_url('api/product'); ?>">
+                action="<?= isset($products) ? base_url('admin/product/' . $products->getId()) : base_url('admin/product'); ?>">
                 <?php if (isset($products)) { ?>
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
@@ -43,7 +43,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
-                <a href=<?= base_url('api/product') ?> class="btn btn-secondary">Kembali</a>
+                <a href=<?= base_url('admin/product') ?> class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>
