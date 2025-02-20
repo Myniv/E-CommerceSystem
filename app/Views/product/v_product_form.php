@@ -38,9 +38,14 @@
 
                 <div class="mb-3">
                     <label class="form-label">Kategori:</label>
-                    <input type="text" class="form-control" name="kategori"
-                        value="<?= isset($products) ? $products->getKategori() : ''; ?>" required>
+                    <select class="form-control" name="kategori" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Food" <?= isset($products) && $products->getKategori() == 'Food' ? 'selected' : ''; ?>>Food</option>
+                        <option value="Clothes" <?= isset($products) && $products->getKategori() == 'Clothes' ? 'selected' : ''; ?>>Clothes</option>
+                        <option value="Electronics" <?= isset($products) && $products->getKategori() == 'Electronics' ? 'selected' : ''; ?>>Electronics</option>
+                    </select>
                 </div>
+
 
                 <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
                 <a href=<?= base_url('admin/product') ?> class="btn btn-secondary">Kembali</a>
