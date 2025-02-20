@@ -32,7 +32,9 @@ class UserController extends BaseController
     {
         $data = $this->userModel->getUserByIdArray($id);
         $data['profile_picture'] = base_url("iconOrang.png");
-        $data["activity_history"] = (new DateTime())->format("Y-m-d H:i:s");
+        $dateTime = (new DateTime())->format("Y-m-d H:i:s");
+        $data["activity_history"] = view_cell('ActivityHistoryCell', ['dateTime' => $dateTime]);
+        // $data["activity_history"] = $dateTime;
         $data["account_status"] = "Active";
 
         $data['content'] = $this->parser->setData($data)

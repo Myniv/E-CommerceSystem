@@ -16,7 +16,7 @@
                             <p><strong>Username:</strong> {username}</p>
                             <p><strong>Phone:</strong> {phone}</p>
                             <p><strong>Address:</strong> {address}</p>
-                            <p>{activity_history}</p>
+                            <p>{!activity_history!}</p>
                         </div>
                         <div class="col-6">
                             <p><strong>Email:</strong> {email}</p>
