@@ -32,7 +32,7 @@ $routes->group('api', ['filter' => 'auth:admin'], function ($routes) {
     $routes->get('json/user/(:num)', [ApiController::class, 'getUserJSONById/$1']);
 });
 
-$routes->group('api/pesanan', ['filter' => 'auth:user'], function ($routes) {
+$routes->group('pesanan', ['filter' => 'auth:user'], function ($routes) {
     $routes->get('/', [PesananController::class, 'allPesanan']);
     $routes->get('create', [PesananController::class, 'goCreatePesanan']);
     $routes->post('add', [PesananController::class, 'createPesanan']);
@@ -52,9 +52,8 @@ $routes->group('admin', ['filter' => 'auth:admin'], function ($routes) {
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']); // PUT - Update a product
     // $routes->patch('product/(:num)', [ProductController::class, 'update/$1']); // PATCH - Partial update
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']); // DELETE - Delete a product
-
-    $routes->get("product/list-parser", [ProductController::class, "allProductParser"]);
 });
+$routes->get("product/catalog", [ProductController::class, "allProductParser"]);
 
 $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->get('/', [UserController::class, 'index']);

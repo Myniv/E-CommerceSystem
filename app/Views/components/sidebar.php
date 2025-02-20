@@ -59,7 +59,8 @@
         <hr class="text-light">
         <nav>
             <a class="text-white" href="<?= base_url('/admin/user') ?>">User</a>
-            <a class="text-white" href="<?= base_url('/admin/dashboard') ?>">Dashboard</a>
+            <!-- <a class="text-white" href="<?= base_url('/admin/dashboard') ?>">Dashboard</a> -->
+            <a href="<?= route_to("user_dashboard") ?>">Dashboard</a>
             <a class="text-white" href="<?= base_url('/admin/product') ?>">Product</a>
         </nav>
     </div>

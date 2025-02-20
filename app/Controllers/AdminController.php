@@ -44,6 +44,8 @@ class AdminController extends BaseController
             'pesanan' => $pesanan
         ];
 
+        $data['title'] = "Dashboard";
+
         $data['content'] = $parser->setData($data)
             ->render("admin/v_dashboard_parser", 
             // ['cache' => 3600, 'cache_name' => 'student_profile']

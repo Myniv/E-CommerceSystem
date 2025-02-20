@@ -32,10 +32,10 @@ class ProductController extends ResourceController
         }
 
         $data = ['products' => $products];
-        $data['admin_content'] = $parser->setData($data)
-            ->render('product/v_product_list_parser', );
+        $data['content'] = $parser->setData($data)
+            ->render('product/v_product_catalog_parser', );
 
-        return view("components/v_parser_layout_admin", $data);
+        return view("components/v_parser_layout_master", $data);
     }
 
     public function show($id = null)
