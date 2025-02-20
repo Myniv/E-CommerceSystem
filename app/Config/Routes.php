@@ -67,6 +67,7 @@ $routes->group('api/pesanan', ['filter' => 'auth:user'], function ($routes) {
 $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->get('/', [UserController::class, 'index']);
     $routes->get('profile/(:num)', [UserController::class, 'detail']);
+    $routes->get('profile-parser/(:num)', [UserController::class, 'detailParser']);
     $routes->get('role/(:alphanum)', [UserController::class, 'role']);
     $routes->get('settings/(:alpha)', [UserController::class, 'settings']);
     $routes->match(['get', 'post'], 'create', [UserController::class, 'create']);
@@ -74,16 +75,17 @@ $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);
 });
 
-$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
+$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:admin']);
+$routes->get('/admin/dashboard-parser', [AdminController::class, 'dashboardParser'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
 
 $routes->get('/health-check', function () {
     return view('v_health_check');
 });
 
-$routes->resource('admin', [
-    'controller' => 'Home',
-    'only' => ['show']
-]);
+// $routes->resource('admin', [
+//     'controller' => 'Home',
+//     'only' => ['show']
+// ]);
 
 $routes->post('login', [Home::class, 'login']);
 $routes->get("unauthorized", [Home::class, "unauthorized"]);

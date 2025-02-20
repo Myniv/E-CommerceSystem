@@ -33,6 +33,24 @@ class M_User
         }
         return null;
     }
+    public function getUserByIdArray($id)
+    {
+        foreach ($this->user as $key => $value) {
+            if ($value->getId() == $id) {
+                return [
+                    'id' => $value->getId(),
+                    'name' => $value->getName(),
+                    'username' => $value->getUsername(),
+                    'phone' => $value->getPhone(),
+                    'email' => $value->getEmail(),
+                    'address' => $value->getAddress(),
+                    'sex' => $value->getSex(),
+                    'role' => $value->getRole()
+                ];
+            }
+        }
+        return null;
+    }
 
     public function getUserByUsername($username)
     {

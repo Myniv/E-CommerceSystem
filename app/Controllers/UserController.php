@@ -4,13 +4,17 @@ namespace App\Controllers;
 
 use App\Entities\User;
 use App\Models\M_User;
+use DateTime;
 
 class UserController extends BaseController
 {
     private $userModel;
+    private $parser;
     public function __construct()
     {
         $this->userModel = new M_User();
+        $this->parser = \Config\Services::parser();
+
     }
 
     public function index()
@@ -24,6 +28,23 @@ class UserController extends BaseController
         $data['user'] = $this->userModel->getUserById($id);
         return view('user/v_user_detail', $data);
     }
+    public function detailParser($id)
+    {
+        $data = $this->userModel->getUserByIdArray($id);
+        $data['profile_picture'] = base_url("iconOrang.png");
+        $data["activity_history"] = (new DateTime())->format("Y-m-d H:i:s");
+        $data["account_status"] = "Active";
+
+        $data['content'] = $this->parser->setData($data)
+            ->render(
+                "user/v_user_detail_parser",
+                // ['cache' => 3600, 'cache_name' => 'user_profile']
+            );
+
+
+        return view("components/v_parser_layout", $data);
+    }
+
     public function role($username)
     {
         $data['user'] = $this->userModel->getUserByUsername($username);

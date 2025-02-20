@@ -29,6 +29,27 @@ class AdminController extends BaseController
         $data['user'] = $user;
         $data['pesanan'] = $pesanan;
 
-        return view('v_dashboard', $data);
+        return view('admin/v_dashboard', $data);
+    }
+    public function dashboardParser()
+    {
+        $parser = \Config\Services::parser();
+
+        $user = count($this->userModel->getUser());
+        $product = count($this->productModel->getAllProduct());
+        $pesanan = count($this->pesananModel->getAllPesanan());
+        $data = [
+            'product' => $product,
+            'user' => $user,
+            'pesanan' => $pesanan
+        ];
+
+        $data['content'] = $parser->setData($data)
+            ->render("admin/v_dashboard_parser", 
+            // ['cache' => 3600, 'cache_name' => 'student_profile']
+        );
+
+
+        return view("components/v_parser_layout", $data);
     }
 }
