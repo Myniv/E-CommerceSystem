@@ -44,7 +44,7 @@ class UserController extends BaseController
             );
 
 
-        return view("components/v_parser_layout", $data);
+        return view("components/v_parser_layout_admin", $data);
     }
 
     public function role($username)
