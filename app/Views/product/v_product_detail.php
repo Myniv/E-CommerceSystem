@@ -16,7 +16,11 @@
                         <li class="list-group-item">
                             <strong>Harga:</strong> Rp <?= number_format($products->getHarga(), 0, ',', '.') ?>
                         </li>
-                        <li class="list-group-item"><strong>Kategori:</strong> <?= $products->getKategori() ?></li>
+                        <li class="list-group-item"><strong>Kategori:</strong>
+                            <?php foreach ($products->getKategori() as $category): ?>
+                                <?= $category ?>,
+                            <?php endforeach ?>
+                        </li>
                         <li class="list-group-item"><strong>Status:</strong> <?= $products->getStatus() ?></li>
                     </ul>
                 </div>

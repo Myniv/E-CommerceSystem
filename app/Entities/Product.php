@@ -7,10 +7,10 @@ class Product
     private $nama;
     private $harga;
     private $stok;
-    private $kategori;
+    private $kategori = [];
     private $status;
 
-    public function __construct($id, $nama, $harga, $stok, $kategori, $status)
+    public function __construct($id, $nama, $harga, $stok, array $kategori, $status)
     {
         $this->id = $id;
         $this->nama = $nama;
@@ -58,7 +58,8 @@ class Product
 
     public function getKategori()
     {
-        return $this->kategori;
+        // return $this->kategori;
+        return is_array($this->kategori) ? $this->kategori : explode(",", $this->kategori);
     }
     public function setKategori($kategori)
     {

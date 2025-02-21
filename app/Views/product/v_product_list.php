@@ -28,7 +28,11 @@
                         <td><?= $product->getNama(); ?></td>
                         <td>Rp <?= $product->getHarga() ?></td>
                         <td><?= $product->getStok(); ?></td>
-                        <td><?= $product->getKategori(); ?></td>
+                        <td>
+                            <?php foreach ($product->getKategori() as $value): ?>
+                                <p><?= $value; ?></p>
+                            <?php endforeach; ?>
+                        </td>
                         <td><?= $product->getStatus(); ?></td>
                         <td>
                             <!-- <a href="/product/detail/<?= $product->getId(); ?>" class="btn btn-info btn-sm">Detail</a> -->

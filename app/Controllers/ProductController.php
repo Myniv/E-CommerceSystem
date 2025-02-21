@@ -32,7 +32,15 @@ class ProductController extends ResourceController
         foreach ($products as $key => &$product) {
             $product['harga'] = number_format($product['harga'], 0, ',', '.'); // Format: 1000000 -> 1.000.000
             $product['image'] = base_url('search-image.svg');
-            
+
+            $kategoriList = [];
+            if (is_array($product['kategori'])) {
+                foreach ($product['kategori'] as $kategori) {
+                    $kategoriList[] = ['nama_kategori' => $kategori];
+                }
+            }
+            $product['kategori_list'] = $kategoriList;
+
             if ($product['stok'] > 10) {
                 $product['stok_message'] = view_cell('ColorTextCell', ['text' => "Available"]);
             } else if ($product["stok"] < 10 && $product["stok"] > 0) {
@@ -46,7 +54,6 @@ class ProductController extends ResourceController
             } else {
                 $product['badge_message'] = view_cell('ColorTextCell', ['text' => "SALE"]);
             }
-            // $product['status'] = view_cell('ColorTextCell', ['text' => $product['status']]);
         }
 
         $data = ['products' => $products];
@@ -69,14 +76,17 @@ class ProductController extends ResourceController
 
     public function create()
     {
+
         $id = $this->request->getPost("id");
         $nama = $this->request->getPost("nama");
         $harga = $this->request->getPost("harga");
         $stok = $this->request->getPost("stok");
-        $kategori = $this->request->getPost("kategori");
+        $kategori = $this->request->getPost('kategori');
         $status = $this->request->getPost("status");
 
-        $produk = new Product($id, $nama, $harga, $stok, $kategori, $status);
+        $kategoriArray = !empty($kategori) ? explode(",", $kategori) : [];
+
+        $produk = new Product($id, $nama, $harga, $stok, $kategoriArray, $status);
 
         $this->productModel->addProduct($produk);
         return redirect()->to("admin/product");
@@ -84,7 +94,13 @@ class ProductController extends ResourceController
 
     public function edit($id = null)
     {
-        $data["products"] = $this->productModel->getProductById($id);
+        $product = $this->productModel->getProductById($id);
+
+        if (!$product) {
+            return redirect()->to("admin/product")->with("error", "Produk tidak ditemukan");
+        }
+
+        $data["products"] = $product;
         return view("/product/v_product_form", $data);
     }
 
@@ -94,15 +110,18 @@ class ProductController extends ResourceController
         $nama = $this->request->getPost("nama");
         $harga = $this->request->getPost("harga");
         $stok = $this->request->getPost("stok");
-        $kategori = $this->request->getPost("kategori");
+        $kategori = $this->request->getPost("kategori"); // Expecting an array from form
         $status = $this->request->getPost("status");
 
+        // Convert array to string before saving
+        $kategoriArray = !empty($kategori) ? explode(",", $kategori) : [];
 
-        $produk = new Product($id, $nama, $harga, $stok, $kategori, $status);
+        $produk = new Product($id, $nama, $harga, $stok, $kategoriArray, $status);
 
         $this->productModel->updateProduct($produk);
-        return redirect()->to("admin/product");
+        return redirect()->to("admin/product")->with("success", "Produk berhasil diperbarui");
     }
+
 
     public function delete($id = null)
     {
