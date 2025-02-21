@@ -20,6 +20,13 @@ class UserController extends BaseController
     public function index()
     {
         $data['users'] = $this->userModel->getUser();
+
+        if (!cache()->get("user-list")) {
+            cache()->save("user-list", $data['users'], 3600);
+        } else {
+            $this->statistics = cache()->get("loggedin");
+        }
+        
         return view('user/v_user_list', $data);
     }
 

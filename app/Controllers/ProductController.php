@@ -57,6 +57,13 @@ class ProductController extends ResourceController
         }
 
         $data = ['products' => $products];
+
+        if (!cache()->get("product-catalog")) {
+            cache()->save("product-catalog", $data['products'], 3600);
+        } else {
+            $this->statistics = cache()->get("product-catalog");
+        }
+
         $data['content'] = $parser->setData($data)
             ->render('product/v_product_catalog_parser', );
 
@@ -88,6 +95,8 @@ class ProductController extends ResourceController
 
         $produk = new Product($id, $nama, $harga, $stok, $kategoriArray, $status);
 
+        cache()->delete("product-catalog");
+
         $this->productModel->addProduct($produk);
         return redirect()->to("admin/product");
     }
@@ -118,6 +127,8 @@ class ProductController extends ResourceController
 
         $produk = new Product($id, $nama, $harga, $stok, $kategoriArray, $status);
 
+        cache()->delete("product-catalog");
+
         $this->productModel->updateProduct($produk);
         return redirect()->to("admin/product")->with("success", "Produk berhasil diperbarui");
     }
@@ -126,6 +137,7 @@ class ProductController extends ResourceController
     public function delete($id = null)
     {
         $this->productModel->deleteProduct($id);
+        cache()->delete("product-catalog");
         return redirect()->to("admin/product");
     }
 }

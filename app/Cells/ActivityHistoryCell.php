@@ -14,6 +14,12 @@ class ActivityHistoryCell extends Cell
     {
         $this->date = date('Y-m-d', strtotime($this->dateTime));
         $this->time = date("H:i:s", strtotime($this->dateTime));
+
+        if (!cache()->get("loggedin")) {
+            cache()->save("loggedin", $this->dateTime, 300);
+        } else {
+            $this->dateTime = cache()->get("loggedin");
+        }
     }
     public function getDateTimeProperty()
     {

@@ -13,7 +13,14 @@ class ProductStatisticsCell extends Cell
     public function mount()
     {
         $this->statistics = ($this->productPrice * $this->productStock) / 100;
+
+        if (!cache()->get("product-statistics")) {
+            cache()->save("product-statistics", $this->statistics, 3600);
+        } else {
+            $this->statistics = cache()->get("loggedin");
+        }
     }
+
 
     public function getProductStockProperty()
     {
