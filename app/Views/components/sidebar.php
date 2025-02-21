@@ -45,12 +45,10 @@
 
 <body>
 
-    <!-- Burger Button -->
     <button class="menu-btn btn text-white" onclick="toggleSidebar()">
         ☰
     </button>
 
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <button class="menu-btn btn text-white" onclick="toggleSidebar()">
             ☰

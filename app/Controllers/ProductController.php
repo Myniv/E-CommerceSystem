@@ -32,7 +32,12 @@ class ProductController extends ResourceController
         //stripos is case-insensitive (able to have same value as upper and lowercase) string search function on php
         if (!empty($inputSearch)) {
             $products = array_filter($products, function ($product) use ($inputSearch) {
-                return stripos($product['nama'], $inputSearch) !== false;
+                return stripos($product['nama'], $inputSearch) !== false ||
+                    stripos($product['id'], $inputSearch) !== false ||
+                    stripos($product['harga'], $inputSearch) !== false ||
+                    stripos($product['stok'], $inputSearch) !== false ||
+                    stripos(implode(", ", $product['kategori']), $inputSearch) !== false ||
+                    stripos($product['status'], $inputSearch) !== false;
             });
         }
 
@@ -41,7 +46,7 @@ class ProductController extends ResourceController
             $products = array_filter($products, function ($product) use ($categoryFilter) {
                 foreach ($product['kategori'] as $value) {
                     if (stripos($value, $categoryFilter) !== false) {
-                        return true; 
+                        return true;
                     }
                 }
                 return false;
