@@ -1,5 +1,25 @@
 <div class="container mt-4">
     <h2 class="mb-3">Product Catalog</h2>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search product...">
+            </div>
+            <div class="col-md-4">
+                <select name="kategori" class="form-select">
+                    <option value="All" >All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Clothes">Clothes</option>
+                    <option value="Electronics">Electronics</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
         {products}
         <div class="col-md-4 mb-4">

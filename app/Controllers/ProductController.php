@@ -27,6 +27,27 @@ class ProductController extends ResourceController
 
         $products = $this->productModel->getAllProductArray();
 
+        $inputSearch = $this->request->getGet("search");
+
+        //stripos is case-insensitive (able to have same value as upper and lowercase) string search function on php
+        if (!empty($inputSearch)) {
+            $products = array_filter($products, function ($product) use ($inputSearch) {
+                return stripos($product['nama'], $inputSearch) !== false;
+            });
+        }
+
+        $categoryFilter = $this->request->getGet("kategori");
+        if (!empty($categoryFilter) && $categoryFilter !== 'All') {
+            $products = array_filter($products, function ($product) use ($categoryFilter) {
+                foreach ($product['kategori'] as $value) {
+                    if (stripos($value, $categoryFilter) !== false) {
+                        return true; 
+                    }
+                }
+                return false;
+            });
+        }
+
         $latestKeys = array_slice(array_keys($products), -3, 3, true);
 
         foreach ($products as $key => &$product) {
