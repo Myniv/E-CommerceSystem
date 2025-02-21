@@ -24,65 +24,86 @@ class ProductController extends ResourceController
     public function allProductParser()
     {
         $parser = \Config\Services::parser();
-
         $products = $this->productModel->getAllProductArray();
 
-        $inputSearch = $this->request->getGet("search");
+        //get filter,search and pagination
+        $search = $this->request->getGet("search");
+        $categoryFilter = $this->request->getGet("kategori");
+        $perPage = 6;
+        $currentPage = (int) ($this->request->getGet("page") ?? 1);
 
-        //stripos is case-insensitive (able to have same value as upper and lowercase) string search function on php
-        if (!empty($inputSearch)) {
-            $products = array_filter($products, function ($product) use ($inputSearch) {
-                return stripos($product['nama'], $inputSearch) !== false ||
-                    stripos($product['id'], $inputSearch) !== false ||
-                    stripos($product['harga'], $inputSearch) !== false ||
-                    stripos($product['stok'], $inputSearch) !== false ||
-                    stripos(implode(", ", $product['kategori']), $inputSearch) !== false ||
-                    stripos($product['status'], $inputSearch) !== false;
+        //impelemnt search
+        if (!empty($search)) {
+            $products = array_filter($products, function ($product) use ($search) {
+                return stripos($product['nama'], $search) !== false ||
+                    stripos($product['id'], $search) !== false ||
+                    stripos($product['harga'], $search) !== false ||
+                    stripos($product['stok'], $search) !== false ||
+                    stripos(implode(", ", $product['kategori']), $search) !== false ||
+                    stripos($product['status'], $search) !== false;
             });
         }
 
-        $categoryFilter = $this->request->getGet("kategori");
+        //impelemnt category filter
         if (!empty($categoryFilter) && $categoryFilter !== 'All') {
             $products = array_filter($products, function ($product) use ($categoryFilter) {
-                foreach ($product['kategori'] as $value) {
-                    if (stripos($value, $categoryFilter) !== false) {
-                        return true;
-                    }
-                }
-                return false;
+                return in_array($categoryFilter, $product['kategori']);
             });
         }
 
+        //pagination
+        $totalProducts = count($products);
+        $totalPages = ceil($totalProducts / $perPage);
+        $offset = ($currentPage - 1) * $perPage;
+        $paginatedProducts = array_slice($products, $offset, $perPage);
+
+        //for get the latest 3 product in array
         $latestKeys = array_slice(array_keys($products), -3, 3, true);
 
-        foreach ($products as $key => &$product) {
-            $product['harga'] = number_format($product['harga'], 0, ',', '.'); // Format: 1000000 -> 1.000.000
+        //implement the data
+        foreach ($paginatedProducts as $key => &$product) {
+            $product['harga'] = number_format($product['harga'], 0, ',', '.');
             $product['image'] = base_url('search-image.svg');
 
             $kategoriList = [];
-            if (is_array($product['kategori'])) {
-                foreach ($product['kategori'] as $kategori) {
-                    $kategoriList[] = ['nama_kategori' => $kategori];
-                }
+            foreach ($product['kategori'] as $kategori) {
+                $kategoriList[] = ['nama_kategori' => $kategori];
             }
             $product['kategori_list'] = $kategoriList;
 
             if ($product['stok'] > 10) {
                 $product['stok_message'] = view_cell('ColorTextCell', ['text' => "Available"]);
-            } else if ($product["stok"] < 10 && $product["stok"] > 0) {
+            } elseif ($product["stok"] < 10 && $product["stok"] > 0) {
                 $product["stok_message"] = view_cell('ColorTextCell', ['text' => "Limited"]);
-            } else if ($product["stok"] == 0) {
+            } else {
                 $product["stok_message"] = view_cell('ColorTextCell', ['text' => "SOLD OUT"]);
             }
 
-            if (in_array($key, $latestKeys)) {
-                $product['badge_message'] = view_cell('ColorTextCell', ['text' => "NEW"]);
-            } else {
-                $product['badge_message'] = view_cell('ColorTextCell', ['text' => "SALE"]);
-            }
+            $product['badge_message'] = in_array($key, $latestKeys) ?
+                view_cell('ColorTextCell', ['text' => "NEW"]) :
+                view_cell('ColorTextCell', ['text' => "SALE"]);
         }
 
-        $data = ['products' => $products];
+        // make paging
+        $pages = [];
+        for ($i = 1; $i <= $totalPages; $i++) {
+            $pages[] = [
+                'page_number' => $i,
+                'active' => ($i == $currentPage) ? 'active' : '',
+            ];
+        }
+
+        $data = [
+            'products' => $paginatedProducts,
+            'search' => $search,
+            'categoryFilter' => $categoryFilter,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+            'prevPage' => ($currentPage > 1) ? $currentPage - 1 : null,
+            'nextPage' => ($currentPage < $totalPages) ? $currentPage + 1 : null,
+            'pages' => $pages,
+            'image' => base_url('search-image.svg'),
+        ];
 
         if (!cache()->get("product-catalog")) {
             cache()->save("product-catalog", $data['products'], 3600);
@@ -90,11 +111,11 @@ class ProductController extends ResourceController
             $this->statistics = cache()->get("product-catalog");
         }
 
-        $data['content'] = $parser->setData($data)
-            ->render('product/v_product_catalog_parser', );
+        $data['content'] = $parser->setData($data)->render('product/v_product_catalog_parser');
 
         return view("components/v_parser_layout_master", $data);
     }
+
 
     public function show($id = null)
     {

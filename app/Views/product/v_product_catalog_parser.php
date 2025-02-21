@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-4">
                 <select name="kategori" class="form-select">
-                    <option value="All" >All Categories</option>
+                    <option value="All">All Categories</option>
                     <option value="Food">Food</option>
                     <option value="Clothes">Clothes</option>
                     <option value="Electronics">Electronics</option>
@@ -62,4 +62,23 @@
         </div>
         {/products}
     </div>
+
+    <nav>
+        <ul class="pagination justify-content-center mt-4">
+            <li class="page-item">
+                <a class="page-link" href="?page={prevPage}&search={search}&category={categoryFilter}">Previous</a>
+            </li>
+
+            {pages}
+            <li class="page-item {active}">
+                <a class="page-link"
+                    href="?page={page_number}&search={search}&category={categoryFilter}">{page_number}</a>
+            </li>
+            {/pages}
+
+            <li class="page-item">
+                <a class="page-link" href="?page={nextPage}&search={search}&category={categoryFilter}">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>
