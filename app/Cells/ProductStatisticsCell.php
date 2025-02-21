@@ -17,7 +17,7 @@ class ProductStatisticsCell extends Cell
         if (!cache()->get("product-statistics")) {
             cache()->save("product-statistics", $this->statistics, 3600);
         } else {
-            $this->statistics = cache()->get("loggedin");
+            $this->statistics = cache()->get("product-statistics");
         }
     }
 
