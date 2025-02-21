@@ -27,9 +27,26 @@ class ProductController extends ResourceController
 
         $products = $this->productModel->getAllProductArray();
 
-        foreach ($products as &$product) {
+        $latestKeys = array_slice(array_keys($products), -3, 3, true);
+
+        foreach ($products as $key => &$product) {
             $product['harga'] = number_format($product['harga'], 0, ',', '.'); // Format: 1000000 -> 1.000.000
             $product['image'] = base_url('search-image.svg');
+            // $product['stok_message'] = "";
+            if ($product['stok'] > 10) {
+                $product['stok_message'] = view_cell('ColorTextCell', ['text' => "Available"]);
+            } else if ($product["stok"] < 10) {
+                $product["stok_message"] = view_cell('ColorTextCell', ['text' => "Limited"]);
+                ;
+            }
+            if (in_array($key, $latestKeys)) {
+                $product['badge_message'] = view_cell('ColorTextCell', ['text' => "NEW"]);
+                ;
+            } else {
+                $product['badge_message'] = view_cell('ColorTextCell', ['text' => "SALE"]);
+                ;
+            }
+            // $product['status'] = view_cell('ColorTextCell', ['text' => $product['status']]);
         }
 
         $data = ['products' => $products];

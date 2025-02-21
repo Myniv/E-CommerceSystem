@@ -41,7 +41,8 @@ class AdminController extends BaseController
         $data = [
             'product' => $product,
             'user' => $user,
-            'pesanan' => $pesanan
+            'pesanan' => $pesanan,
+            'statistics'=> view_cell('ProductStatisticsCell', ['productStock'=> 60, 'productPrice'=> 35000]),
         ];
 
         $data['title'] = "Dashboard";

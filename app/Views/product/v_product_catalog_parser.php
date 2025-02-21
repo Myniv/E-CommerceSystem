@@ -7,10 +7,26 @@
                 <img src="{image}" class="card-img-top" alt="{nama}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{nama}</h5>
-                    <p class="card-text"><strong>Price:</strong> Rp {harga}</p>
-                    <p class="card-text"><strong>Stock:</strong> {stok}</p>
-                    <p class="card-text"><strong>Category:</strong> {kategori}</p>
-                    <p class="card-text"><strong>Status:</strong> {status}</p>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="card-text"><strong>Price:</strong> Rp {harga}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text"><strong>Stock:</strong> {stok}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text"><strong>Category:</strong> {kategori}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text"><strong>Status:</strong> {!status!}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text"><strong>{!stok_message!}</strong></p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text"><strong>{!badge_message!}</strong></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

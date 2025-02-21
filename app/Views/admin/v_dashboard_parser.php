@@ -47,7 +47,7 @@
                     Growth Percentage
                 </h5>
                 <h3 class="card-text">
-                    30%
+                    {!statistics!}
                 </h3>
             </div>
         </div>
