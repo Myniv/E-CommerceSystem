@@ -12,43 +12,43 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Nama</th>
                     <th>Username</th>
-                    <th>Telepon</th>
                     <th>Email</th>
-                    <th>Alamat</th>
-                    <th>Jenis Kelamin</th>
+                    <!-- <th>Password</th> -->
+                    <th>Name</th>
                     <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user) { ?>
+                <?php foreach ($users as $user): ?>
                     <tr>
-                        <td><?= $user->getId(); ?></td>
-                        <td><?= $user->getName(); ?></td>
-                        <td><?= $user->getUsername(); ?></td>
-                        <td><?= $user->getPhone(); ?></td>
-                        <td><?= $user->getEmail(); ?></td>
-                        <td><?= $user->getAddress(); ?></td>
-                        <td><?= $user->getSex(); ?></td>
-                        <td><?= $user->getRole(); ?></td>
+                        <td><?= $user->id ?></td>
+                        <td><?= $user->username ?></td>
+                        <td><?= $user->email ?></td>
+                        <!-- <td><?= $user->password ?></td> -->
+                        <td><?= $user->full_name ?></td>
+                        <td><?= $user->role ?></td>
+                        <td><?= $user->status ?></td>
+                        <td><?= $user->last_login ?></td>
                         <td>
-                            <a href="/admin/user/profile-parser/<?= $user->getId(); ?>" class="btn btn-info btn-sm">Detail</a>
-                            <a href="/admin/user/update/<?= $user->getId(); ?>" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="/admin/user/delete/<?= $user->getId(); ?>" method="post" class="d-inline">
+                            <a href="/admin/user/profile-parser/<?= $user->id ?>" class="btn btn-info btn-sm">Detail</a>
+                            <a href="/admin/user/update/<?= $user->id ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/admin/user/delete/<?= $user->id ?>" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?');">
-                                    Hapus
+                                    onclick="return confirm('Are you sure want to delete this user?');">
+                                    Delete
                                 </button>
                             </form>
-                            <a href="/admin/user/role/<?= $user->getUsername(); ?>" class="btn btn-info btn-sm">Role</a>
-                            <a href="/admin/user/settings/<?= $user->getName(); ?>" class="btn btn-info btn-sm">Settings</a>
-                            <a href="/api/json/user/<?= $user->getId(); ?>" class="btn btn-info btn-sm">JSON By Id</a>
+                            <!-- <a href="/admin/user/role/<?= $user->username ?>" class="btn btn-info btn-sm">Role</a>
+                            <a href="/admin/user/settings/<?= $user->full_name ?>" class="btn btn-info btn-sm">Settings</a> -->
+                            <a href="/api/json/user/<?= $user->id ?>" class="btn btn-info btn-sm">JSON By Id</a>
                         </td>
                     </tr>
-                <?php } ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>

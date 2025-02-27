@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\Product;
 use App\Models\M_Product;
+use App\Models\ProductModel;
 use CodeIgniter\RESTful\ResourceController;
 
 class ProductController extends ResourceController
@@ -12,7 +13,7 @@ class ProductController extends ResourceController
 
     public function __construct()
     {
-        $this->productModel = new M_Product();
+        $this->productModel = new ProductModel();
     }
 
     public function index()

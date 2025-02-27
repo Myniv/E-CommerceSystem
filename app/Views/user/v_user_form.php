@@ -1,97 +1,72 @@
-<?= $this->extend('layout/admin') ?>
-<?= $this->section('admin_content') ?>
+<?= $this->extend('layout/master') ?>
+<?= $this->section('content') ?>
 
-<div class="container mt-4">
-    <div class="card shadow-sm">
+<div class="container mt-4 mb-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-3">
+                <?= isset($user) ? 'Edit User' : 'Add User'; ?>
+            </h4>
+        </div>
         <div class="card-body">
-            <h2 class="mb-3"><?= isset($user) ? 'Edit Pengguna' : 'Tambah Pengguna'; ?></h2>
-
-            <form method="post"
-                action="<?= isset($user) ? base_url('/admin/user/update/' . $user->getId()) : base_url('/admin/user/create') ?>">
-                <?php if (isset($user)) { ?>
-                    <?= csrf_field() ?>
+            <form
+                action="<?= isset($user) ? base_url('admin/user/update/' . $user->id) : base_url('admin/user/create') ?>"
+                method="post">
+                <?= csrf_field() ?>
+                <?php if (isset($user)): ?>
                     <input type="hidden" name="_method" value="PUT">
-                <?php } ?>
+                <?php endif; ?>
 
                 <div class="mb-3">
-                    <label class="form-label">ID:</label>
-                    <input type="number" class="form-control" name="id"
-                        value="<?= isset($user) ? $user->getId() : ''; ?>">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username"
+                        class="form-control <?= session('errors.username') ? 'is-invalid' : '' ?>"
+                        value="<?= old('username', isset($user) ? $user->username : '') ?>">
+                    <div class="invalid-feedback"><?= session('errors.username') ?? '' ?></div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Nama:</label>
-                    <input type="text" class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>"
-                        name="name" value="<?= isset($user) ? $user->getName() : ''; ?>" required>
-                    <?php if (isset($errors['name'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['name']) ?> </div>
-                    <?php endif; ?>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email"
+                        class="form-control <?= session('errors.email') ? 'is-invalid' : '' ?>"
+                        value="<?= old('email', isset($user) ? $user->email : '') ?>">
+                    <div class="invalid-feedback"><?= session('errors.email') ?? '' ?></div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Username:</label>
-                    <input type="text" class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?>"
-                        name="username" value="<?= isset($user) ? $user->getUsername() : ''; ?>" required>
-                    <?php if (isset($errors['username'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['username']) ?> </div>
-                    <?php endif; ?>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password"
+                        class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>" <?= isset($user) ? 'disabled' : '' ?>>
+                    <div class="invalid-feedback"><?= session('errors.password') ?? '' ?></div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Telepon:</label>
-                    <input type="number" class="form-control <?= isset($errors['phone']) ? 'is-invalid' : '' ?>"
-                        name="phone" value="<?= isset($user) ? $user->getPhone() : ''; ?>" required>
-                    <?php if (isset($errors['phone'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['phone']) ?> </div>
-                    <?php endif; ?>
+                    <label for="full_name" class="form-label">Full Name</label>
+                    <input type="text" name="full_name"
+                        class="form-control <?= session('errors.full_name') ? 'is-invalid' : '' ?>"
+                        value="<?= old('full_name', isset($user) ? $user->full_name : '') ?>">
+                    <div class="invalid-feedback"><?= session('errors.full_name') ?? '' ?></div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Email:</label>
-                    <input type="email" class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>"
-                        name="email" value="<?= isset($user) ? $user->getEmail() : ''; ?>" required>
-                    <?php if (isset($errors['email'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['email']) ?> </div>
-                    <?php endif; ?>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Alamat:</label>
-                    <textarea class="form-control <?= isset($errors['address']) ? 'is-invalid' : '' ?>" name="address"
-                        required><?= isset($user) ? $user->getAddress() : ''; ?></textarea>
-                    <?php if (isset($errors['address'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['address']) ?> </div>
-                    <?php endif; ?>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Jenis Kelamin:</label>
-                    <select class="form-select <?= isset($errors['sex']) ? 'is-invalid' : '' ?>" name="sex" required>
-                        <option value="male" <?= isset($user) && $user->getSex() == 'Male' ? 'selected' : ''; ?>>Laki-laki
-                        </option>
-                        <option value="female" <?= isset($user) && $user->getSex() == 'Female' ? 'selected' : ''; ?>>
-                            Perempuan</option>
+                    <label for="role" class="form-label">Role</label>
+                    <select name="role" class="form-select <?= session('errors.role') ? 'is-invalid' : '' ?>">
+                        <option value="Admin" <?= old('role', isset($user) ? $user->role : '') == 'Admin' ? 'selected' : '' ?>>Admin</option>
+                        <option value="User" <?= old('role', isset($user) ? $user->role : '') == 'User' ? 'selected' : '' ?>>User</option>
                     </select>
-                    <?php if (isset($errors['sex'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['sex']) ?> </div>
-                    <?php endif; ?>
+                    <div class="invalid-feedback"><?= session('errors.role') ?? '' ?></div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Role:</label>
-                    <select class="form-select <?= isset($errors['role']) ? 'is-invalid' : '' ?>" name="role" required>
-                        <option value="admin" <?= isset($user) && $user->getRole() == 'Admin' ? 'selected' : ''; ?>>Admin
-                        </option>
-                        <option value="user" <?= isset($user) && $user->getRole() == 'User' ? 'selected' : ''; ?>>User
-                        </option>
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" class="form-select <?= session('errors.status') ? 'is-invalid' : '' ?>">
+                        <option value="Active" <?= old('status', isset($user) ? $user->status : '') == 'Active' ? 'selected' : '' ?>>Active</option>
+                        <option value="Inactive" <?= old('status', isset($user) ? $user->status : '') == 'Inactive' ? 'selected' : '' ?>>Inactive</option>
                     </select>
-                    <?php if (isset($errors['role'])): ?>
-                        <div class="invalid-feedback"> <?= esc($errors['role']) ?> </div>
-                    <?php endif; ?>
+                    <div class="invalid-feedback"><?= session('errors.status') ?? '' ?></div>
                 </div>
 
-                <button type="submit" class="btn btn-primary"><?= isset($user) ? 'Update' : 'Simpan'; ?></button>
-                <a href="/admin/user" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-success">Save User</button>
             </form>
         </div>
     </div>
