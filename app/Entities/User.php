@@ -1,99 +1,55 @@
 <?php
 namespace App\Entities;
 
-class User
+use CodeIgniter\Entity\Entity;
+
+class User extends Entity
 {
-    private $id;
-    private $name;
-    private $username;
-    private $phone;
-    private $email;
-    private $address;
-    private $sex;
-    private $role;
+    protected $attributes = [
+        'id' => null,
+        'username' => null,
+        'email' => null,
+        'password' => null,
+        'full_name' => null,
+        'role' => null,
+        'status' => null,
+        'last_login' => null,
+        'created_at' => null,
+        'updated_at' => null,
+        'deleted_at' => null,
+    ];
 
-    public function __construct($id, $name, $username, $phone, $email, $address, $sex, $role)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->username = $username;
-        $this->phone = $phone;
-        $this->email = $email;
-        $this->address = $address;
-        $this->sex = $sex;
-        $this->role = $role;
-    }
+    protected $casts = [
+        'id' => 'integer',
+        'username' => 'string',
+        'email' => 'string',
+        'password' => 'string',
+        'full_name' => 'string',
+        'role' => 'string',
+        'status' => 'string',
+        'last_login' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 
-    public function getId()
+    public function setPassword(string $password)
     {
-        return $this->id;
-    }
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-    public function setName($name)
-    {
-        $this->name = $name;
+        return $this->attributes['password'] = password_hash($password, PASSWORD_DEFAULT);
     }
 
-    public function getUsername()
+    public function isAdmin()
     {
-        return $this->username;
-    }
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    }
-
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
+        if ($this->attributes['role'] == "admin" || $this->attributes['role'] == "Admin") {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public function getEmail()
+    public function getFormattedLastLogin()
     {
-        return $this->email;
-    }
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    public function getAddress()
-    {
-        return $this->address;
-    }
-    public function setAddress($address)
-    {
-        $this->address = $address;
-    }
-
-    public function getSex()
-    {
-        return $this->sex;
-    }
-    public function setSex($sex)
-    {
-        $this->sex = $sex;
-    }
-    
-    public function getRole()
-    {
-        return $this->role;
-    }
-    public function setRole($role)
-    {
-        $this->role = $role;
+        return date("Y-m-d H:i:s", strtotime($this->attributes['last_login']));
     }
 
 }

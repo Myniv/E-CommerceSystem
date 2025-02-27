@@ -26,13 +26,15 @@ class CreateProductsTable extends Migration
                 'null' => true,
             ],
             'price' => [
-                'type' => 'INT',
+                'type' => 'NUMERIC',
                 'constraint' => 100,
+                'unsigned' => true,
                 'null' => true,
             ],
             'stock' => [
                 'type' => 'INT',
                 'constraint' => 100,
+                'unsigned' => true,
                 'null' => true,
             ],
             'category_id' => [
