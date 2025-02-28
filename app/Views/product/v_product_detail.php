@@ -10,18 +10,16 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>ID:</strong> <?= $products->getId() ?></li>
-                        <li class="list-group-item"><strong>Nama:</strong> <?= $products->getNama() ?></li>
-                        <li class="list-group-item"><strong>Stok:</strong> <?= $products->getStok() ?></li>
+                        <li class="list-group-item"><strong>ID:</strong> <?= $products->id ?></li>
+                        <li class="list-group-item"><strong>Nama:</strong> <?= $products->name ?></li>
+                        <li class="list-group-item"><strong>Stok:</strong> <?= $products->stock ?></li>
                         <li class="list-group-item">
-                            <strong>Harga:</strong> Rp <?= number_format($products->getHarga(), 0, ',', '.') ?>
+                            <strong>Price:</strong> <?= $products->getFormattedPrice() ?>
                         </li>
-                        <li class="list-group-item"><strong>Kategori:</strong>
-                            <?php foreach ($products->getKategori() as $category): ?>
-                                <?= $category ?>,
-                            <?php endforeach ?>
+                        <li class="list-group-item">
+                            <strong>Category:</strong> <?= $products->category_name ?>
                         </li>
-                        <li class="list-group-item"><strong>Status:</strong> <?= $products->getStatus() ?></li>
+                        <li class="list-group-item"><strong>Status:</strong> <?= $products->status ?></li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">

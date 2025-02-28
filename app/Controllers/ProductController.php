@@ -125,7 +125,12 @@ class ProductController extends BaseController
 
     public function show($id = null)
     {
-        $data['products'] = $this->productModel->getProductById($id);
+        $data['products'] = $this->productModel
+            ->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id')
+            ->find($id);
+
+        // print_r($data['products']);
         return view('/product/v_product_detail', $data);
     }
 

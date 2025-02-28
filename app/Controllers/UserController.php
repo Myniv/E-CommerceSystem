@@ -81,7 +81,7 @@ class UserController extends BaseController
             $data = [
                 'username' => $this->request->getPost("username"),
                 'email' => $this->request->getPost("email"),
-                'password' => $this->userEntities->setPassword($this->request->getPost("password")),
+                'password' => $this->request->getPost("password"),
                 'full_name' => $this->request->getPost("full_name"),
                 'role' => $this->request->getPost("role"),
                 'status' => $this->request->getPost("status"),
@@ -91,6 +91,8 @@ class UserController extends BaseController
             if (!$this->userModel->validate($data)) {
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
+
+            $data['password'] = $this->userEntities->setPassword($data['password']);
 
             $this->userModel->save($data);
 

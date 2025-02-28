@@ -1,9 +1,9 @@
-<?= $this->extend('layout/master') ?>
+<?= $this->extend('layout/admin') ?>
 <?= $this->section('admin_content') ?>
 
 <div class="container mt-4 mb-4">
     <div class="card">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-dark text-white">
             <h4 class="mb-3">
                 <?= isset($user) ? 'Edit User' : 'Add User'; ?>
             </h4>
@@ -36,7 +36,8 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" name="password"
-                        class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>" <?= isset($user) ? 'disabled' : '' ?>>
+                        class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>" <?= isset($user) ? 'disabled' : '' ?>
+                        value="<?= old('password', isset($user) ? $user->password : '') ?>">
                     <div class="invalid-feedback"><?= session('errors.password') ?? '' ?></div>
                 </div>
 
