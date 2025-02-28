@@ -99,7 +99,7 @@ class ProductModel extends Model
     protected $afterDelete = [];
 
 
-    public function findActiveProducts()
+    public function getActiveProducts()
     {
         return $this->where('status', "Active")->findAll();
     }
@@ -108,15 +108,19 @@ class ProductModel extends Model
     {
         return $this->where("stock <=", "10")->findAll();
     }
+    public function getOnSaleProducts()
+    {
+        return $this->where("is_sale =", "True")->findAll();
+    }
 
     public function getProductsByCategory($category_id)
     {
         return $this->where("category_id", $category_id)->findAll();
     }
 
-    public function countTotalProducts()
+    public function getTotalProducts()
     {
-        return count($this->findAll());
+        return $this->countAllResults();
     }
 
 }

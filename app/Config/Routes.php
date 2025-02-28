@@ -44,10 +44,10 @@ $routes->group('pesanan', ['filter' => 'auth:user'], function ($routes) {
 
 $routes->group('admin', ['filter' => 'auth:admin'], function ($routes) {
     // $routes->resource("product", ['controller' => 'ProductController']);
-    $routes->get('product', [ProductController::class, 'index']); 
+    $routes->get('product', [ProductController::class, 'index']);
     $routes->get('product/new', [ProductController::class, 'new']);
     $routes->post('product', [ProductController::class, 'create']);
-    $routes->get('product/(:num)', [ProductController::class, 'show/$1']); 
+    $routes->get('product/(:num)', [ProductController::class, 'show/$1']);
     $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']);
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);
@@ -65,8 +65,8 @@ $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);
 });
 
-$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:admin']);
-$routes->get('/admin/dashboard-parser', [AdminController::class, 'dashboardParser'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
+$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
+$routes->get('/admin/dashboard-parser', [AdminController::class, 'dashboardParser'], ['filter' => 'auth:admin']);
 
 $routes->get('/health-check', function () {
     return view('v_health_check');
