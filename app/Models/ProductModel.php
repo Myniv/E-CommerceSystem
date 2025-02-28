@@ -30,7 +30,7 @@ class ProductModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -40,9 +40,9 @@ class ProductModel extends Model
     protected $validationRules = [
         'name' => 'required|min_length[3]|max_length[255]',
         'description' => 'required|min_length[3]|max_length[255]',
-        'price' => 'required|numeric|greater_than[0]',
-        'stock' => 'required|integer|grater_than_equal_to[0]',
-        'category_id' => 'required|integer',
+        'price' => 'required|decimal|greater_than[0]',
+        'stock' => 'required|integer|greater_than_equal_to[0]',
+        'category_id' => 'required',
         'status' => 'required|in_list[Active,Inactive]',
         'is_new' => 'required|in_list[True,False]',
         'is_sale' => 'required|in_list[True,False]'
@@ -60,8 +60,11 @@ class ProductModel extends Model
         ],
         'price' => [
             'required' => 'The price field is required.',
-            'numeric' => 'The price must be a number.',
+            'decimal' => 'The price must be a number.',
             'greater_than' => 'The price must be greater than 0.'
+        ],
+        "category_id" => [
+            'required' => 'The category_id field is required.',
         ],
         'stock' => [
             'required' => 'The stock field is required',

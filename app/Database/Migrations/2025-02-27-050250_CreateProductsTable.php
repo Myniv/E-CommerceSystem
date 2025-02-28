@@ -26,8 +26,8 @@ class CreateProductsTable extends Migration
                 'null' => true,
             ],
             'price' => [
-                'type' => 'NUMERIC',
-                'constraint' => 100,
+                'type' => 'DECIMAL',
+                'constraint' => 10,2,
                 'unsigned' => true,
                 'null' => true,
             ],

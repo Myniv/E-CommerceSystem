@@ -3,29 +3,34 @@
 namespace App\Controllers;
 
 use App\Entities\Product;
+use App\Models\CategoryModel;
 use App\Models\M_Product;
 use App\Models\ProductModel;
 use CodeIgniter\RESTful\ResourceController;
 
-class ProductController extends ResourceController
+class ProductController extends BaseController
 {
     private $productModel;
+    private $categoryModel;
 
     public function __construct()
     {
         $this->productModel = new ProductModel();
+        $this->categoryModel = new CategoryModel();
     }
 
     public function index()
     {
-        $data['products'] = $this->productModel->getAllProduct();
+        $data['products'] = $this->productModel->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id', )
+            ->findAll();
         return view("product/v_product_list", $data);
     }
 
     public function allProductParser()
     {
         $parser = \Config\Services::parser();
-        $products = $this->productModel->getAllProductArray();
+        $products = $this->productModel->findAll();
 
         //get filter,search and pagination
         $search = $this->request->getGet("search");
@@ -126,65 +131,77 @@ class ProductController extends ResourceController
 
     public function new()
     {
-        return view("/product/v_product_form");
+        $data['activeornot'] = ['Active', 'Inactive'];
+        $data['trueorfalse'] = ['True', 'False'];
+        $data['categories'] = $this->categoryModel->select('id, name')->findAll();
+        return view("/product/v_product_form", $data);
     }
 
     public function create()
     {
+        $formData = [
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+            'price' => $this->request->getPost('price'),
+            'stock' => $this->request->getPost('stock'),
+            // 'category_id' => explode(",", $this->request->getPost('category_id')),
+            'category_id' => $this->request->getPost('category_id'),
+            'status' => $this->request->getPost('status'),
+            'is_new' => $this->request->getPost('is_new'),
+            'is_sale' => $this->request->getPost('is_sale'),
+        ];
 
-        $id = $this->request->getPost("id");
-        $nama = $this->request->getPost("nama");
-        $harga = $this->request->getPost("harga");
-        $stok = $this->request->getPost("stok");
-        $kategori = $this->request->getPost('kategori');
-        $status = $this->request->getPost("status");
-
-        $kategoriArray = !empty($kategori) ? explode(",", $kategori) : [];
-
-        $produk = new Product($id, $nama, $harga, $stok, $kategoriArray, $status);
+        if (!$this->productModel->validate($formData)) {
+            return redirect()->back()->withInput()->with('errors', $this->productModel->errors());
+        }
 
         cache()->delete("product-catalog");
 
-        $this->productModel->addProduct($produk);
+        $this->productModel->save($formData);
         return redirect()->to("admin/product");
     }
 
     public function edit($id = null)
     {
-        $product = $this->productModel->getProductById($id);
+        $product = $this->productModel->find($id);
 
-        if (!$product) {
-            return redirect()->to("admin/product")->with("error", "Produk tidak ditemukan");
-        }
-
+        $data['activeornot'] = ['Active', 'Inactive'];
+        $data['trueorfalse'] = ['True', 'False'];
+        $data['categories'] = $this->categoryModel->select('id, name')->findAll();
         $data["products"] = $product;
         return view("/product/v_product_form", $data);
     }
 
     public function update($id = null)
     {
-        $id = $this->request->getPost("id");
-        $nama = $this->request->getPost("nama");
-        $harga = $this->request->getPost("harga");
-        $stok = $this->request->getPost("stok");
-        $kategori = $this->request->getPost("kategori"); // Expecting an array from form
-        $status = $this->request->getPost("status");
+        $formData = [
+            'id' => $id,
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+            'price' => $this->request->getPost('price'),
+            'stock' => $this->request->getPost('stock'),
+            // 'category_id' => explode(",", $this->request->getPost('category_id')),
+            'category_id' => $this->request->getPost('category_id'),
+            'status' => $this->request->getPost('status'),
+            'is_new' => $this->request->getPost('is_new'),
+            'is_sale' => $this->request->getPost('is_sale'),
+        ];
 
-        // Convert array to string before saving
-        $kategoriArray = !empty($kategori) ? explode(",", $kategori) : [];
 
-        $produk = new Product($id, $nama, $harga, $stok, $kategoriArray, $status);
+        if (!$this->productModel->validate($formData)) {
+            return redirect()->back()->withInput()->with('errors', $this->productModel->errors());
+        }
 
         cache()->delete("product-catalog");
 
-        $this->productModel->updateProduct($produk);
-        return redirect()->to("admin/product")->with("success", "Produk berhasil diperbarui");
+        $this->productModel->save($formData);
+        return redirect()->to("admin/product");
     }
 
 
     public function delete($id = null)
     {
-        $this->productModel->deleteProduct($id);
+        $this->productModel->delete($id);
         cache()->delete("product-catalog");
         return redirect()->to("admin/product");
     }

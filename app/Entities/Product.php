@@ -24,7 +24,7 @@ class Product extends Entity
         "id" => "integer",
         "name" => "string",
         "description" => "string",
-        "price" => "numeric",
+        "price" => "float",
         "stock" => "integer",
         "category_id" => "integer",
         "status" => "string",
@@ -37,7 +37,7 @@ class Product extends Entity
 
     public function getFormattedPrice()
     {
-        return number_to_currency($this->attributes["price"], 'IDR', 'id', '2');
+        return "Rp " . number_format($this->attributes["price"], 2, ',', '.');
     }
 
     public function isInStock()

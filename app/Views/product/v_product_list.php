@@ -13,40 +13,42 @@
             <thead class="table-dark">
                 <tr>
                     <th>Id</th>
-                    <th>Nama</th>
-                    <th>Harga</th>
-                    <th>Stok</th>
-                    <th>Kategori</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Category</th>
                     <th>Status</th>
+                    <th>Is New</th>
+                    <th>Is Sale</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($products as $product) { ?>
                     <tr>
-                        <td><?= $product->getId(); ?></td>
-                        <td><?= $product->getNama(); ?></td>
-                        <td>Rp <?= $product->getHarga() ?></td>
-                        <td><?= $product->getStok(); ?></td>
+                        <td><?= $product->id ?></td>
+                        <td><?= $product->name ?></td>
+                        <td><?= $product->description ?></td>
+                        <td><?= $product->getFormattedPrice() ?></td>
+                        <td><?= $product->stock ?></td>
+                        <td><?= $product->category_name; ?></td>
+                        <td><?= $product->status; ?></td>
+                        <td><?= $product->is_new; ?></td>
+                        <td><?= $product->is_sale; ?></td>
                         <td>
-                            <?php foreach ($product->getKategori() as $value): ?>
-                                <p><?= $value; ?></p>
-                            <?php endforeach; ?>
-                        </td>
-                        <td><?= $product->getStatus(); ?></td>
-                        <td>
-                            <!-- <a href="/product/detail/<?= $product->getId(); ?>" class="btn btn-info btn-sm">Detail</a> -->
-                            <a href="<?= route_to("product_details", $product->getId()) ?>"
+                            <!-- <a href="/product/detail/<?= $product->id; ?>" class="btn btn-info btn-sm">Detail</a> -->
+                            <a href="<?= route_to("product_details", $product->id) ?>"
                                 class="btn btn-info btn-sm">Detail</a>
-                            <a href="/admin/product/<?= $product->getId(); ?>/edit" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="/admin/product/<?= $product->getId(); ?>" method="post" class="d-inline">
+                            <a href="/admin/product/<?= $product->id; ?>/edit" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/admin/product/<?= $product->id; ?>" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
                                     Hapus
                                 </button>
                             </form>
-                            <a href="/api/json/product/<?= $product->getId(); ?>" class="btn btn-info btn-sm">JSON By Id</a>
+                            <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
                         </td>
                     </tr>
                 <?php } ?>
