@@ -1,7 +1,7 @@
 <?= $this->extend('layout/admin') ?>
 <?= $this->section('admin_content') ?>
 
-<div class="container mt-4">
+<div class="container mb-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg">
@@ -9,6 +9,10 @@
                     <h4>Detail Produk</h4>
                 </div>
                 <div class="card-body">
+                    <img src="<?= isset($products->image_path) ? base_url($products->image_path) : base_url("products/search-image.svg") ?>"
+                        class="card-img-top" alt="<?= isset($products->name) ? $products->name : "Product" ?>"
+                        style="height: 200px; object-fit: cover;">
+
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>ID:</strong> <?= $products->id ?></li>
                         <li class="list-group-item"><strong>Nama:</strong> <?= $products->name ?></li>

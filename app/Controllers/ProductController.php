@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Entities\Product;
 use App\Models\CategoryModel;
 use App\Models\M_Product;
+use App\Models\ProductImageModel;
 use App\Models\ProductModel;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -13,10 +14,13 @@ class ProductController extends BaseController
     private $productModel;
     private $categoryModel;
 
+    private $productImageModel;
+
     public function __construct()
     {
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
+        $this->productImageModel = new ProductImageModel();
     }
 
     public function index()
@@ -126,9 +130,11 @@ class ProductController extends BaseController
     public function show($id = null)
     {
         $data['products'] = $this->productModel
-            ->select('products.*, categories.name as category_name')
-            ->join('categories', 'categories.id = products.category_id')
+            ->select('products.*, categories.name as category_name, product_images.image_path as image_path')
+            ->join('categories', 'categories.id = products.category_id','left')
+            ->join('product_images', 'product_images.product_id = products.id', 'left')
             ->find($id);
+        // $data['image_path'] = $this->productImageModel->select('image_path')->where('product_id =', $id)->find($id);
 
         // print_r($data['products']);
         return view('/product/v_product_detail', $data);
