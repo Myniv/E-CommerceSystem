@@ -92,7 +92,7 @@ class UserController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
 
-            $data['password'] = $this->userEntities->setPassword($data['password']);
+            // $data['password'] = $this->userEntities->setPassword($data['password']);
 
             $this->userModel->save($data);
 

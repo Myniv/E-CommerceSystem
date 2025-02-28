@@ -129,10 +129,7 @@ class ProductController extends BaseController
 
     public function show($id = null)
     {
-        $data['products'] = $this->productModel
-            ->select('products.*, categories.name as category_name, product_images.image_path as image_path')
-            ->join('categories', 'categories.id = products.category_id','left')
-            ->join('product_images', 'product_images.product_id = products.id', 'left')
+        $data['products'] = $this->productModel->getProductWithCategoriesAndImagePrimary()
             ->find($id);
         // $data['image_path'] = $this->productImageModel->select('image_path')->where('product_id =', $id)->find($id);
 
@@ -216,4 +213,6 @@ class ProductController extends BaseController
         cache()->delete("product-catalog");
         return redirect()->to("admin/product");
     }
+
+
 }

@@ -105,9 +105,7 @@ class UserModel extends Model
 
     public function getNewUsersThisMonth()
     {
-        //Y = full year, m = month, 01 = start of month (tanggal 01), 00:00:00 = jam 00
         $startDate = date('Y-m-01 00:00:00');
-        //Y = full year, m = month, t = last day of the month, 23:59:59 = jam 00
         $endDate = date('Y-m-t 23:59:59');
         return $this->where('created_at >=', $startDate)
             ->where('created_at <=', $endDate)

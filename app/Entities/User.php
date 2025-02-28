@@ -33,9 +33,9 @@ class User extends Entity
         'deleted_at' => 'datetime',
     ];
 
-    public function setPassword(string $password)
+    public function setPassword()
     {
-        return $this->attributes['password'] = password_hash($password, PASSWORD_DEFAULT);
+        return $this->attributes['password'] = password_hash($this->attributes['password'], PASSWORD_DEFAULT);
     }
 
     public function isAdmin()
