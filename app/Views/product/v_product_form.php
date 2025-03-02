@@ -50,6 +50,7 @@
                     <label for="category_id" class="form-label">Categories:</label>
                     <select class="form-select <?= session('errors.category_id') ? 'is-invalid' : '' ?>"
                         name="category_id">
+                        <option value="" <?= old('category_id', isset($products) ? $products->category_id : '') ? 'disabled' : '' ?>>Select Categories</option>
                         <?php foreach ($categories as $item): ?>
                             <option value="<?= $item->id ?>" <?= old('category_id', isset($products) ? $products->category_id : '') == $item->name ? 'selected' : ''; ?>>
                                 <?= $item->name ?>
@@ -62,6 +63,7 @@
                 <div class="mb-3">
                     <label for="status" class="form-label">Status:</label>
                     <select class="form-select <?= session('errors.status') ? 'is-invalid' : '' ?>" name="status">
+                        <option value="" <?= old('status', isset($products) ? $products->status : '') ? 'disabled' : '' ?>>Select Status</option>
                         <?php foreach ($activeornot as $item): ?>
                             <option value="<?= $item ?>" <?= old('status', isset($products) ? $products->status : '') == $item ? 'selected' : ''; ?>>
                                 <?= $item ?>
@@ -74,6 +76,7 @@
                 <div class="mb-3">
                     <label for="is_new" class="form-label">Is New:</label>
                     <select class="form-select <?= session('errors.is_new') ? 'is-invalid' : '' ?>" name="is_new">
+                        <option value="" <?= old('is_new', isset($products) ? $products->is_new : '') ? 'disabled' : '' ?>>Select Is New</option>
                         <?php foreach ($trueorfalse as $item): ?>
                             <option value="<?= $item ?>" <?= old('is_new', isset($products) ? $products->is_new : '') == $item ? 'selected' : ''; ?>>
                                 <?= $item ?>
@@ -86,6 +89,7 @@
                 <div class="mb-3">
                     <label for="is_sale" class="form-label">Is Sale:</label>
                     <select class="form-select <?= session('errors.is_sale') ? 'is-invalid' : '' ?>" name="is_sale">
+                        <option value="" <?= old('is_sale', isset($products) ? $products->is_sale : '') ? 'disabled' : '' ?>>Select Is New</option>
                         <?php foreach ($trueorfalse as $item): ?>
                             <option value="<?= $item ?>" <?= old('is_sale', isset($products) ? $products->is_sale : '') == $item ? 'selected' : ''; ?>>
                                 <?= $item ?>

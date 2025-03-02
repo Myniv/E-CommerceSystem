@@ -36,8 +36,8 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" name="password"
-                        class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>" <?= isset($user) ? 'disabled' : '' ?>
-                        value="<?= old('password', isset($user) ? $user->password : '') ?>">
+                        class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>"
+                        value="<?= old('password', isset($user) ? $user->password : '') ?>" <?= old('password', isset($user) ? $user->password : '') ? 'disabled' : '' ?>>
                     <div class="invalid-feedback"><?= session('errors.password') ?? '' ?></div>
                 </div>
 
@@ -52,6 +52,8 @@
                 <div class="mb-3">
                     <label for="role" class="form-label">Role</label>
                     <select name="role" class="form-select <?= session('errors.role') ? 'is-invalid' : '' ?>">
+                        <option value="" <?= old('role', isset($user) ? $user->role : '') ? 'disabled' : '' ?>>Select
+                            Role</option>
                         <option value="Admin" <?= old('role', isset($user) ? $user->role : '') == 'Admin' ? 'selected' : '' ?>>Admin</option>
                         <option value="User" <?= old('role', isset($user) ? $user->role : '') == 'User' ? 'selected' : '' ?>>User</option>
                     </select>
@@ -61,6 +63,8 @@
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select name="status" class="form-select <?= session('errors.status') ? 'is-invalid' : '' ?>">
+                        <option value="" <?= old('status', isset($user) ? $user->status : '') ? 'disabled' : '' ?>>Select
+                            Status</option>
                         <option value="Active" <?= old('status', isset($user) ? $user->status : '') == 'Active' ? 'selected' : '' ?>>Active</option>
                         <option value="Inactive" <?= old('status', isset($user) ? $user->status : '') == 'Inactive' ? 'selected' : '' ?>>Inactive</option>
                     </select>
