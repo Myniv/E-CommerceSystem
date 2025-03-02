@@ -7,11 +7,11 @@
                 <input type="text" name="search" class="form-control" placeholder="Search product...">
             </div>
             <div class="col-md-4">
-                <select name="kategori" class="form-select">
-                    <option value="All">All Categories</option>
-                    <option value="Food">Food</option>
-                    <option value="Clothes">Clothes</option>
-                    <option value="Electronics">Electronics</option>
+                <select name="category" class="form-select">
+                    <option value="All">All</option>
+                    {categories}
+                    <option value="{id}">{name}</option>
+                    {/categories}
                 </select>
             </div>
             <div class="col-md-4">
@@ -24,25 +24,23 @@
         {products}
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
-                <img src="{image}" class="card-img-top" alt="{nama}" style="height: 200px; object-fit: cover;">
+                <img src="{image_path}" class="card-img-top" alt="{name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">{nama}</h5>
+                    <h5 class="card-title">{name}</h5>
 
                     <!-- Row for Price & Stock -->
                     <div class="row">
                         <div class="col-6">
-                            <p class="card-text"><strong>Price:</strong> Rp {harga}</p>
-                            <p class="card-text"><strong>Stock:</strong> {stok}</p>
+                            <p class="card-text"><strong>Price:</strong> {price}</p>
+                            <p class="card-text"><strong>Stock:</strong> {stock}</p>
                             <p class="card-text"><strong>{!stok_message!}</strong></p>
                             <p class="card-text"><strong>{!badge_message!}</strong></p>
                         </div>
                         <div class="col-6">
                             <p class="card-text"><strong>Status:</strong> {!status!}</p>
-                            <p class="card-text"><strong>Category:</strong></p>
+                            <p class="card-text"><strong>Category:</strong> {category_name}</p>
                             <ul class="list-unstyled m-0 p-0">
-                                {kategori_list}
-                                <li>{nama_kategori}</li>
-                                {/kategori_list}
+
                             </ul>
                         </div>
                     </div>
@@ -63,22 +61,4 @@
         {/products}
     </div>
 
-    <nav>
-        <ul class="pagination justify-content-center mt-4">
-            <li class="page-item">
-                <a class="page-link" href="?page={prevPage}&search={search}&category={categoryFilter}">Previous</a>
-            </li>
-
-            {pages}
-            <li class="page-item {active}">
-                <a class="page-link"
-                    href="?page={page_number}&search={search}&category={categoryFilter}">{page_number}</a>
-            </li>
-            {/pages}
-
-            <li class="page-item">
-                <a class="page-link" href="?page={nextPage}&search={search}&category={categoryFilter}">Next</a>
-            </li>
-        </ul>
-    </nav>
 </div>
