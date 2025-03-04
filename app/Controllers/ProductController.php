@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Entities\Product;
+use App\Libraries\DataParams;
 use App\Models\CategoryModel;
 use App\Models\M_Product;
 use App\Models\ProductImageModel;
@@ -25,9 +26,31 @@ class ProductController extends BaseController
 
     public function index()
     {
+        $params = new DataParams([
+            "search" => $this->request->getGet("search"),
+            "filters" => [
+                "category_id" => $this->request->getGet("category"),
+                "status" => $this->request->getGet("status"),
+            ],
+            "sort" => $this->request->getGet("sort"),
+            "order" => $this->request->getGet("order"),
+            "perPage" => $this->request->getGet("perPage"),
+        ]);
+
+        $result = $this->productModel->getFilteredProducts($params);
         // $data['products'] = $this->productModel->getProductWithCategories()->findAll();
-        $data['products'] = $this->productModel->getProductWithCategories()->paginate(1, 'products');
-        $data['pager'] = $this->productModel->pager;
+        // $data['products'] = $this->productModel->getProductWithCategories()->paginate(1, 'products');
+        // $data['pager'] = $this->productModel->pager;
+
+        $data = [
+            'products' => $result['products'],
+            'pager' => $result['pager'],
+            'total' => $result['total'],
+            'params' => $params,
+            'categories' => $this->categoryModel->findAll(),
+            'statuss' => $this->productModel->getAllStatus(),
+            'baseUrl' => base_url('admin/product'),
+        ];
         return view("product/v_product_list", $data);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Libraries\DataParams;
 use CodeIgniter\Model;
 
 class ProductModel extends Model
@@ -128,6 +129,61 @@ class ProductModel extends Model
         return $this->select('products.*, categories.name as category_name, product_images.image_path as image_path')
             ->join('categories', 'categories.id = products.category_id', 'left')
             ->join('product_images', "product_images.product_id = products.id AND product_images.is_primary = 'true'", 'left');
+    }
+
+    public function getProductWithCategories()
+    {
+        return $this->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id', );
+    }
+
+    public function getFilteredProducts(DataParams $params)
+    {
+        $this->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id');
+
+        if (!empty($params->search)) {
+            $this->groupStart()
+                ->like('products.name', $params->search, 'both', null, true)
+                ->orLike('products.description', $params->search, 'both', null, true)
+                ->orLike('products.status', $params->search, 'both', null, true)
+                ->groupEnd();
+        }
+
+        $filterableFields = ['category_id', 'status'];
+        foreach ($params->filters as $field => $value) {
+            if (in_array($field, $filterableFields) && $value !== '' && $value !== null) {
+                $this->where("products.$field", $value);
+            }
+        }
+
+        $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'status', 'category_id', 'category_name', 'created_at'];
+        $sort = in_array($params->sort, $allowedSortColumns) ? $params->sort : 'id';
+        $order = ($params->order === 'desc') ? 'desc' : 'asc';
+
+        $this->orderBy($sort, $order);
+        $result = [
+            'products' => $this->paginate($params->perPage, 'products', $params->perPage),
+            'pager' => $this->pager,
+            'total' => $this->countAllResults(false),
+        ];
+
+        return $result;
+    }
+
+    public function getAllStatus()
+    {
+        $statuses = $this->select('status')->distinct()->findAll();
+        return array_column($statuses, 'status');
+    }
+
+    public function getAllCategories()
+    {
+        $categories = $this->select('products.category_id, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id')
+            ->distinct()->findAll();
+
+        return array_column($categories, 'categories');
     }
 
 }
