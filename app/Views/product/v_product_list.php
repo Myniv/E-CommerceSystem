@@ -4,12 +4,12 @@
 <div class="container mt-4">
     <h2 class="mb-3">Produk List</h2>
 
-    <a href="<?= base_url("admin/product/new") ?>" class="btn btn-success mb-3">Tambah Produk</a>
+    <a href="<?= base_url("admin/product/new") ?>" class="btn btn-success mb-3">Add Products</a>
     <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
         <div class="row mb-4">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="input-group mr-2">
                     <input type="text" class="form-control" name="search" value="<?= $params->search ?>"
                         placeholder="Search...">
@@ -48,15 +48,15 @@
 
             <div class="col-md-2">
                 <div class="input-group ml-2">
-                    <select name="perPage" class="form-control" onchange="this.form.submit()">
+                    <select name="perPage" class="form-select" onchange="this.form.submit()">
                         <option value="10" <?= ($params->perPage == 10) ? 'selected' : '' ?>>
-                            10 per halaman
+                            10 per Page
                         </option>
                         <option value="25" <?= ($params->perPage == 25) ? 'selected' : '' ?>>
-                            25 per halaman
+                            25 per Page
                         </option>
                         <option value="50" <?= ($params->perPage == 50) ? 'selected' : '' ?>>
-                            50 per halaman
+                            50 per Page
                         </option>
                     </select>
                 </div>
@@ -77,54 +77,60 @@
             <thead class="table-dark">
                 <tr>
                     <th>
-                        <a href="<?= $params->getSortUrl('id', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('id', $baseUrl) ?>">
                             ID <?= $params->isSortedBy('id') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
-                    <th><a href="<?= $params->getSortUrl('name', $baseUrl) ?>">
+                    <th>
+                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('name', $baseUrl) ?>">
                             Name <?= $params->isSortedBy('name') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('description', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('description', $baseUrl) ?>">
                             Description <?= $params->isSortedBy('description') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('price', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('price', $baseUrl) ?>">
                             Price <?= $params->isSortedBy('price') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('stock', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('stock', $baseUrl) ?>">
                             Stock <?= $params->isSortedBy('stock') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('category_name', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('category_name', $baseUrl) ?>">
                             Category <?= $params->isSortedBy('category_name') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('status', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('status', $baseUrl) ?>">
                             Status <?= $params->isSortedBy('status') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('is_new', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('is_new', $baseUrl) ?>">
                             Is New <?= $params->isSortedBy('is_new') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
                     <th>
-                        <a href="<?= $params->getSortUrl('is_sale', $baseUrl) ?>">
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('is_sale', $baseUrl) ?>">
                             Is Sale <?= $params->isSortedBy('is_sale') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '' ?>
                         </a>
@@ -145,15 +151,14 @@
                         <td><?= $product->is_new; ?></td>
                         <td><?= $product->is_sale; ?></td>
                         <td>
-                            <!-- <a href="/product/detail/<?= $product->id; ?>" class="btn btn-info btn-sm">Detail</a> -->
                             <a href="<?= route_to("product_details", $product->id) ?>"
                                 class="btn btn-info btn-sm">Detail</a>
                             <a href="/admin/product/<?= $product->id; ?>/edit" class="btn btn-warning btn-sm">Edit</a>
                             <form action="/admin/product/<?= $product->id; ?>" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
-                                    Hapus
+                                    onclick="return confirm('Are you sure want to delete this product?');">
+                                    Delete
                                 </button>
                             </form>
                             <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
@@ -164,7 +169,7 @@
         </table>
         <?= $pager->links('products', 'custom_pager') ?>
         <div class="text-center mt-2">
-            <small>Menampilkan <?= count($products) ?> dari <?= $total ?> total data (Halaman
+            <small>Show <?= count($products) ?> of <?= $total ?> total data (Page
                 <?= $params->page_products ?>)</small>
         </div>
 

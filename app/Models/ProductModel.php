@@ -146,8 +146,16 @@ class ProductModel extends Model
             $this->groupStart()
                 ->like('products.name', $params->search, 'both', null, true)
                 ->orLike('products.description', $params->search, 'both', null, true)
-                ->orLike('products.status', $params->search, 'both', null, true)
-                ->groupEnd();
+                ->orLike('products.status', $params->search, 'both', null, true);
+
+
+
+            if (is_numeric($params->search)) {
+                $this->orWhere('products.id', $params->search)
+                    ->orWhere('products.price', $params->search)
+                    ->orWhere('products.stock', $params->search);
+            }
+            $this->groupEnd();
         }
 
         $filterableFields = ['category_id', 'status'];
