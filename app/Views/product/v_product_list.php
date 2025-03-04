@@ -54,6 +54,10 @@
                 <?php } ?>
             </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+            <?= $pager->links('products', 'custom_pager') ?>
+        </div>
     </div>
 </div>
+
 <?= $this->endSection() ?>

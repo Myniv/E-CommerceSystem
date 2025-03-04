@@ -25,9 +25,9 @@ class ProductController extends BaseController
 
     public function index()
     {
-        $data['products'] = $this->productModel->select('products.*, categories.name as category_name')
-            ->join('categories', 'categories.id = products.category_id', )
-            ->findAll();
+        // $data['products'] = $this->productModel->getProductWithCategories()->findAll();
+        $data['products'] = $this->productModel->getProductWithCategories()->paginate(1, 'products');
+        $data['pager'] = $this->productModel->pager;
         return view("product/v_product_list", $data);
     }
 
@@ -69,7 +69,7 @@ class ProductController extends BaseController
             $productArray = $product->toArray();
 
             $productArray['price'] = $product->getFormattedPrice();
-            $productArray['image_path'] = base_url($product->image_path ? $product->image_path :'search-image.svg');
+            $productArray['image_path'] = base_url($product->image_path ? $product->image_path : 'search-image.svg');
 
             if ($product->stock > 10) {
                 $productArray['stok_message'] = view_cell('ColorTextCell', ['text' => "Available"]);

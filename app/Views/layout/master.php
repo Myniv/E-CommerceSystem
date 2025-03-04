@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <title><?= $this->renderSection('title')?? 'E-Commerce' ?></title>
+    <title><?= $this->renderSection('title') ?? 'E-Commerce' ?></title>
+    <script src="<?= base_url('js/pristine/dist/pristine.js') ?>" type="text/javascript"></script>
+
 
     <style>
         .sidebar {
@@ -69,4 +71,7 @@
         </div>
     </div>
     <?= $this->include('components/footer') ?>
+    <script>
+        <?= $this->renderSection('script') ?>
+    </script>
 </div>
