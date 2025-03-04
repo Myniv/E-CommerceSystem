@@ -159,11 +159,15 @@ class ProductModel extends Model
         }
 
         //TODO FILTER BY PRICE
-        $filterableFields = ['category_id', 'status'];
-        foreach ($params->filters as $field => $value) {
-            if (in_array($field, $filterableFields) && $value !== '' && $value !== null) {
-                $this->where("products.$field", $value);
-            }
+        // $filterableFields = ['category_id', 'status'];
+        // foreach ($params->filters as $field => $value) {
+        //     if (in_array($field, $filterableFields) && $value !== '' && $value !== null) {
+        //         $this->where("products.$field", $value);
+        //     }
+        // }
+        
+        if (!empty($params->category_id)) {
+            $this->where('products.category_id', $params->category_id);
         }
 
         $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'status', 'category_id', 'category_name', 'created_at'];

@@ -5,7 +5,8 @@ namespace App\Libraries;
 class DataParams
 {
     public $search = '';
-    public $filters = [];
+    // public $filters = [];
+    public $category_id = '';
     public $sort = 'id';
     public $order = 'asc';
     public $page_products = 1;
@@ -13,7 +14,8 @@ class DataParams
     public function __construct(array $params = [])
     {
         $this->search = $params['search'] ?? '';
-        $this->filters = $params['filters'] ?? [];
+        // $this->filters = $params['filters'] ?? [];
+        $this->category_id = $params['category_id'] ?? '';
         $this->sort = $params['sort'] ?? 'id';
         $this->order = $params['order'] ?? 'asc';
         $this->page_products = (int) ($params['page'] ?? 1);
@@ -24,7 +26,8 @@ class DataParams
     {
         return [
             'search' => $this->search,
-            'filters' => $this->filters,
+            // 'filters' => $this->filters,
+            'category_id' => $this->category_id,
             'sort' => $this->sort,
             'order' => $this->order,
             'page_products' => $this->page_products,
@@ -42,6 +45,7 @@ class DataParams
         $queryString = http_build_query(array_filter($params));
         return $baseUrl . '?' . $queryString;
     }
+
 
     public function getResetUrl($baseUrl)
     {

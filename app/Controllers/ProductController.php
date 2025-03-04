@@ -28,19 +28,17 @@ class ProductController extends BaseController
     {
         $params = new DataParams([
             "search" => $this->request->getGet("search"),
-            "filters" => [
-                "category_id" => $this->request->getGet("category"),
-                "status" => $this->request->getGet("status"),
-            ],
+            // "filters" => [
+            //     "category_id" => $this->request->getGet("category"),
+            //     "status" => $this->request->getGet("status"),
+            // ],
+            "category_id" => $this->request->getGet("category_id"),
             "sort" => $this->request->getGet("sort"),
             "order" => $this->request->getGet("order"),
             "perPage" => $this->request->getGet("perPage"),
         ]);
 
         $result = $this->productModel->getFilteredProducts($params);
-        // $data['products'] = $this->productModel->getProductWithCategories()->findAll();
-        // $data['products'] = $this->productModel->getProductWithCategories()->paginate(1, 'products');
-        // $data['pager'] = $this->productModel->pager;
 
         $data = [
             'products' => $result['products'],

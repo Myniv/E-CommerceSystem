@@ -21,10 +21,10 @@
 
             <div class="col-md-2">
                 <div class="input-group ml-2">
-                    <select name="category" class="form-select" onchange="this.form.submit()">
+                    <select name="category_id" class="form-select" onchange="this.form.submit()">
                         <option value="">All Category</option>
                         <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category->id ?>" <?= ($params->filters['category_id'] == $category->id) ? 'selected' : '' ?>>
+                            <option value="<?= $category->id ?>" <?= ($params->category_id == $category->id) ? 'selected' : '' ?>>
                                 <?= ucfirst($category->name) ?>
                             </option>
                         <?php endforeach ?>
@@ -32,19 +32,6 @@
                 </div>
             </div>
 
-
-            <div class="col-md-2">
-                <div class="input-group ml-2">
-                    <select name="status" class="form-select" onchange="this.form.submit()">
-                        <option value="">All Status</option>
-                        <?php foreach ($statuss as $status): ?>
-                            <option value="<?= $status ?>" <?= ($params->filters['status'] == $status) ? 'selected' : '' ?>>
-                                <?= ucfirst($status) ?>
-                            </option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-            </div>
 
             <div class="col-md-2">
                 <div class="input-group ml-2">
@@ -67,6 +54,9 @@
                     Reset
                 </a>
             </div>
+
+            <input type="hidden" name="sort" value="<?= $params->sort; ?>">
+            <input type="hidden" name="order" value="<?= $params->order; ?>">
 
         </div>
     </form>
