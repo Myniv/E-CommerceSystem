@@ -158,6 +158,7 @@ class ProductModel extends Model
             $this->groupEnd();
         }
 
+        //TODO FILTER BY PRICE
         $filterableFields = ['category_id', 'status'];
         foreach ($params->filters as $field => $value) {
             if (in_array($field, $filterableFields) && $value !== '' && $value !== null) {

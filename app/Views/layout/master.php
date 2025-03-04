@@ -71,7 +71,5 @@
         </div>
     </div>
     <?= $this->include('components/footer') ?>
-    <script>
-        <?= $this->renderSection('script') ?>
-    </script>
+    <?= $this->renderSection('scripts') ?>
 </div>
