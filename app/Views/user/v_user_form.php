@@ -1,7 +1,9 @@
 <?= $this->extend('layout/admin') ?>
 <?= $this->section('admin_content') ?>
 
+
 <div class="container mt-4 mb-4">
+    <?= view_cell('BackCell') ?>
     <div class="card">
         <div class="card-header bg-dark text-white">
             <h4 class="mb-3">
@@ -67,8 +69,8 @@
                 <div class="mb-3">
                     <label for="role" class="form-label">Role</label>
                     <select name="role" class="form-select <?= session('errors.role') ? 'is-invalid' : '' ?>"
-                    data-pristine-required data-pristine-required-message="The role field is required.">
-                    >
+                        data-pristine-required data-pristine-required-message="The role field is required.">
+                        >
                         <option value="" <?= old('role', isset($user) ? $user->role : '') ? 'disabled' : '' ?>
                             data-pristine-required data-pristine-required-message="The role field is required.">Select
                             Role</option>

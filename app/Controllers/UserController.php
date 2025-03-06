@@ -61,6 +61,8 @@ class UserController extends BaseController
         $dateTime = (new DateTime())->format("Y-m-d H:i:s");
         $data["activity_history"] = view_cell('ActivityHistoryCell', ['dateTime' => $dateTime]);
         $data["account_status"] = "Active";
+        $data["backButton"] = view_cell('BackCell');
+
 
         $data['content'] = $this->parser->setData($data)
             ->render(

@@ -130,7 +130,7 @@
                         <td><?= $user->full_name ?></td>
                         <td><?= $user->role ?></td>
                         <td><?= $user->status ?></td>
-                        <td><?= $user->getLastLogin() ?></td>
+                        <td><?= $user->timesAgo() ?></td>
                         <td>
                             <a href="/admin/user/profile-parser/<?= $user->id ?>" class="btn btn-info btn-sm">Detail</a>
                             <a href="/admin/user/update/<?= $user->id ?>" class="btn btn-warning btn-sm">Edit</a>

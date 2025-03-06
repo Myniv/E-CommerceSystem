@@ -2,6 +2,7 @@
 <?= $this->section('admin_content') ?>
 
 <div class="container mt-4 mb-4">
+    <?= view_cell('BackCell') ?>
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white">
             <h4 class="mb-3">
@@ -121,7 +122,6 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary"><?= isset($products) ? 'Update' : 'Simpan'; ?></button>
-                <a href="<?= base_url('admin/product') ?>" class="btn btn-secondary">Back</a>
             </form>
         </div>
     </div>

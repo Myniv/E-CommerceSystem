@@ -4,6 +4,7 @@
 <div class="container mb-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
+            <?= view_cell('BackCell') ?>
             <div class="card shadow-lg">
                 <div class="card-header bg-black text-white text-center">
                     <h4>Detail Produk</h4>
@@ -25,9 +26,6 @@
                         </li>
                         <li class="list-group-item"><strong>Status:</strong> <?= $products->status ?></li>
                     </ul>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="/admin/product" class="btn btn-secondary">Kembali</a>
                 </div>
             </div>
         </div>

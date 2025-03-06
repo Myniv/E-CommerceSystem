@@ -52,7 +52,7 @@ class User extends Entity
         return date("Y-m-d H:i:s", strtotime($this->attributes['last_login']));
     }
 
-    public function getLastLogin()
+    public function timesAgo()
     {
 
         $timestamp = strtotime($this->attributes['last_login']);
