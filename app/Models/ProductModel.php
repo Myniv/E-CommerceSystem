@@ -151,9 +151,9 @@ class ProductModel extends Model
 
 
             if (is_numeric($params->search)) {
-                $this->orWhere('products.id', $params->search)
-                    ->orWhere('products.price', $params->search)
-                    ->orWhere('products.stock', $params->search);
+                $this->orWhere('CAST (products.id AS TEXT) LIKE', "%$params->search%")
+                    ->orWhere('CAST (products.price AS TEXT) LIKE', "%$params->search%")
+                    ->orWhere('CAST (products.stock AS TEXT) LIKE', "%$params->search%");
             }
             $this->groupEnd();
         }
