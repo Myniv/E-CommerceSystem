@@ -88,11 +88,11 @@
                         <div class="col-6">
                             <p class="card-text"><strong>Status:</strong> {!status!}</p>
                             <p class="card-text mb-0"><strong>Category:</strong> {category_name}</p>
-                            <div class="row">
-                                <div class="col">
+                            <div class="row align-items-lef text-left">
+                                <div class="col-md-4">
                                     <p class="card-text"><strong>{!is_sale_message!}</strong></p>
                                 </div>
-                                <div class="col">
+                                <div class="col-md-4">
                                     <p class="card-text"><strong>{!is_new_message!}</strong></p>
                                 </div>
                             </div>
