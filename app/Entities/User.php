@@ -52,4 +52,35 @@ class User extends Entity
         return date("Y-m-d H:i:s", strtotime($this->attributes['last_login']));
     }
 
+    public function getLastLogin()
+    {
+
+        $timestamp = strtotime($this->attributes['last_login']);
+        $timeDiff = time() - $timestamp;
+
+        $units = [
+            31536000 => 'year',
+            2592000 => 'month',
+            604800 => 'week',
+            86400 => 'day',
+            3600 => 'hour',
+            60 => 'minute',
+            1 => 'second'
+        ];
+
+        if ($this->attributes['last_login'] == null) {
+            return 'Never';
+        }
+
+        foreach ($units as $seconds => $unit) {
+            $interval = floor($timeDiff / $seconds);
+            if ($interval >= 1) {
+                return $interval . ' ' . $unit . 's ago';
+            }
+        }
+
+        return 'Just now';
+
+    }
+
 }

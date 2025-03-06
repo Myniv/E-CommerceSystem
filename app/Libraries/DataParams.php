@@ -10,6 +10,10 @@ class DataParams
     public $price_range = '';
     public $category_id = '';
 
+    //User Filter
+    public $role = '';
+    public $status = '';
+
 
     public $sort = 'id';
     public $order = 'asc';
@@ -22,6 +26,8 @@ class DataParams
         $this->category_id = $params['category_id'] ?? '';
         $this->price_range = $params['price_range'] ?? '';
 
+        $this->role = $params['role'] ?? '';
+        $this->status = $params['status'] ?? '';
 
         $this->sort = $params['sort'] ?? 'id';
         $this->order = $params['order'] ?? 'asc';
@@ -36,6 +42,9 @@ class DataParams
 
             'category_id' => $this->category_id,
             'price_range' => $this->price_range,
+
+            'role' => $this->role,
+            'status' => $this->status,
 
             'sort' => $this->sort,
             'order' => $this->order,

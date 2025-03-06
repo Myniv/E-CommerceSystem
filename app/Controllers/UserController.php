@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Entities\User;
+use App\Libraries\DataParams;
 use App\Models\M_User;
 use App\Models\UserModel;
 use DateTime;
@@ -21,13 +22,27 @@ class UserController extends BaseController
 
     public function index()
     {
-        $data['users'] = $this->userModel->findAll();
+        $params = new DataParams([
+            "search" => $this->request->getGet("search"),
 
-        // if (!cache()->get("user-list")) {
-        //     cache()->save("user-list", $data['users'], 3600);
-        // } else {
-        //     $this->statistics = cache()->get("loggedin");
-        // }
+            "status" => $this->request->getGet("status"),
+            "role" => $this->request->getGet("role"),
+
+            "sort" => $this->request->getGet("sort"),
+            "order" => $this->request->getGet("order"),
+            "perPage" => $this->request->getGet("perPage"),
+            "page" => $this->request->getGet("page_products"),
+        ]);
+
+        $result = $this->userModel->getFilteredUser($params);
+
+        $data = [
+            'users' => $result['users'],
+            'pager' => $result['pager'],
+            'total' => $result['total'],
+            'params' => $params,
+            'baseUrl' => base_url('admin/user'),
+        ];
 
         return view('user/v_user_list', $data);
     }

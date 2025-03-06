@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\User;
+use App\Libraries\DataParams;
 use CodeIgniter\Model;
 
 class UserModel extends Model
@@ -117,6 +118,43 @@ class UserModel extends Model
         return $this->where('id', $id)
             ->set('last_login', date('Y-m-d H:i:s'))
             ->update();
+    }
+
+    public function getFilteredUser(DataParams $params)
+    {
+        if (!empty($params->search)) {
+            $this->groupStart()
+                ->like('username', $params->search, 'both', null, true)
+                ->orLike('email', $params->search, 'both', null, true)
+                ->orLike('full_name', $params->search, 'both', null, true)
+                ->orLike('role', $params->search, 'both', null, true)
+                ->orLike('status', $params->search, 'both', null, true);
+
+            if (is_numeric($params->search)) {
+                $this->orWhere('CAST (id AS TEXT) LIKE', "%$params->search%");
+            }
+            $this->groupEnd();
+        }
+
+        if (!empty($params->role)) {
+            $this->where('role', $params->role);
+        }
+
+        if (!empty($params->status)) {
+            $this->where('status', $params->status);
+        }
+
+        $allowedSortColumns = ['id', 'username', 'email', 'full_name', 'role', 'status', 'last_login',];
+        $sort = in_array($params->sort, $allowedSortColumns) ? $params->sort : 'id';
+        $order = ($params->order === 'desc') ? 'desc' : 'asc';
+
+        $this->orderBy($sort, $order);
+        $result = [
+            'users' => $this->paginate($params->perPage, 'users', $params->page),
+            'pager' => $this->pager,
+            'total' => $this->countAllResults(false),
+        ];
+        return $result;
     }
 
 
