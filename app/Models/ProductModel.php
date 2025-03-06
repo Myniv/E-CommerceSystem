@@ -137,11 +137,18 @@ class ProductModel extends Model
             ->join('categories', 'categories.id = products.category_id', );
     }
 
-    public function getFilteredProducts(DataParams $params)
+    public function getFilteredProducts(DataParams $params, $catalogue = null)
     {
-        $this->select('products.*, categories.name as category_name, product_images.image_path as image_path')
-            ->join('categories', 'categories.id = products.category_id', 'left')
-            ->join('product_images', "product_images.product_id = products.id AND product_images.is_primary = 'true'", 'left');
+        if (isset($catalogue)) {
+            $this->select('products.*, categories.name as category_name, product_images.image_path as image_path')
+                ->join('categories', 'categories.id = products.category_id', 'left')
+                ->join('product_images', "product_images.product_id = products.id AND product_images.is_primary = 'true'", 'left')
+                ->where('products.status', "Active");
+        } else {
+            $this->select('products.*, categories.name as category_name, product_images.image_path as image_path')
+                ->join('categories', 'categories.id = products.category_id', 'left')
+                ->join('product_images', "product_images.product_id = products.id AND product_images.is_primary = 'true'", 'left');
+        }
 
         if (!empty($params->search)) {
             $this->groupStart()

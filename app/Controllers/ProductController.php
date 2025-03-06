@@ -69,7 +69,7 @@ class ProductController extends BaseController
             "page" => $this->request->getGet("page_products"),
         ]);
 
-        $result = $this->productModel->getFilteredProducts($params);
+        $result = $this->productModel->getFilteredProducts($params, true);
 
         // print_r($result['products']);
         foreach ($result['products'] as &$product) {
@@ -98,6 +98,9 @@ class ProductController extends BaseController
             } else {
                 $product->is_sale_message = "";
             }
+
+            $product->priceFormat = $product->getFormattedPrice();
+            $product->created_atFormat = $product->created_at->humanize();
         }
 
         $categories = $this->categoryModel->findAll();
@@ -127,19 +130,19 @@ class ProductController extends BaseController
                     'name' => 'Price',
                     'href' => $params->getSortUrl('price', base_url('product/catalog')),
                     'is_sorted' => $params->isSortedBy('price') ? ($params->getSortDirection() == 'asc' ?
-                        '↑' : '↓') : ''
+                        '↑' : '↓') : '↕'
                 ],
                 [
                     'name' => 'Name',
                     'href' => $params->getSortUrl('name', base_url('product/catalog')),
                     'is_sorted' => $params->isSortedBy('name') ? ($params->getSortDirection() == 'asc' ?
-                        '↑' : '↓') : ''
+                        '↑' : '↓') : '↕'
                 ],
                 [
                     'name' => 'Date',
                     'href' => $params->getSortUrl('created_at', base_url('product/catalog')),
                     'is_sorted' => $params->isSortedBy('created_at') ? ($params->getSortDirection() == 'asc' ?
-                        '↑' : '↓') : ''
+                        '↑' : '↓') : '↕'
                 ],
             ],
             'priceRangeOptions' => [
