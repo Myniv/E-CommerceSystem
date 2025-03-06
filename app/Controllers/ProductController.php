@@ -31,7 +31,7 @@ class ProductController extends BaseController
 
             "category_id" => $this->request->getGet("category_id"),
             "price_range" => $this->request->getGet("price_range"),
-            
+
             "sort" => $this->request->getGet("sort"),
             "order" => $this->request->getGet("order"),
             "perPage" => $this->request->getGet("perPage"),
@@ -55,63 +55,98 @@ class ProductController extends BaseController
     public function allProductParser()
     {
         $parser = \Config\Services::parser();
-        $products = $this->productModel->getProductWithCategoriesAndImagePrimary()->findAll();
-        // print_r($products);
-        $categoris = $this->categoryModel->select("id, name")->findAll();
-        $categoryArray = [];
-        foreach ($categoris as $category) {
-            $categoryArray[] = $category->toArray();
-        }
 
-        $search = $this->request->getGet("search");
-        $categoryFilter = $this->request->getGet("category");
+        $categoryId = $this->request->getGet("category_id");
+        $params = new DataParams([
+            "search" => $this->request->getGet("search"),
 
-        // Implement search
-        if (!empty($search)) {
-            $products = array_filter($products, function ($product) use ($search) {
-                return stripos($product->name, $search) !== false ||
-                    stripos($product->id, $search) !== false ||
-                    stripos($product->description, $search) !== false ||
-                    stripos($product->price, $search) !== false ||
-                    stripos($product->stock, $search) !== false ||
-                    stripos($product->status, $search) !== false ||
-                    stripos($product->category_name, $search) !== false;
-            });
-        }
+            "category_id" => $categoryId,
+            "price_range" => $this->request->getGet("price_range"),
 
-        if (!empty($categoryFilter) && $categoryFilter !== 'All') {
-            $products = array_filter($products, function ($product) use ($categoryFilter) {
-                return $product->category_id == $categoryFilter;
-            });
-        }
+            "sort" => $this->request->getGet("sort"),
+            "order" => $this->request->getGet("order"),
+            "perPage" => $this->request->getGet("perPage"),
+            "page" => $this->request->getGet("page_products"),
+        ]);
 
-        $productsArray = [];
-        foreach ($products as $product) {
-            $productArray = $product->toArray();
+        $result = $this->productModel->getFilteredProducts($params);
 
-            $productArray['price'] = $product->getFormattedPrice();
-            $productArray['image_path'] = base_url($product->image_path ? $product->image_path : 'search-image.svg');
-
-            if ($product->stock > 10) {
-                $productArray['stok_message'] = view_cell('ColorTextCell', ['text' => "Available"]);
-            } elseif ($product->stock < 10 && $product->stock > 0) {
-                $productArray["stok_message"] = view_cell('ColorTextCell', ['text' => "Limited"]);
+        // print_r($result['products']);
+        foreach ($result['products'] as &$product) {
+            if ($product->image_path != null) {
+                $product->image_path = base_url($product->image_path);
             } else {
-                $productArray["stok_message"] = view_cell('ColorTextCell', ['text' => "SOLD OUT"]);
+                $product->image_path = base_url('products/search-image.svg');
             }
 
-            $productsArray[] = $productArray;
+            if ($product->stock > 10) {
+                $product->stok_message = view_cell('ColorTextCell', ['text' => "Available"]);
+            } elseif ($product->stock < 10 && $product->stock > 0) {
+                $product->stok_message = view_cell('ColorTextCell', ['text' => "Limited"]);
+            } else {
+                $product->stok_message = view_cell('ColorTextCell', ['text' => "SOLD OUT"]);
+            }
+
+            if (strtolower($product->is_new) == 'true') {
+                $product->is_new_message = view_cell('ColorTextCell', ['text' => "NEW", 'item' => 'is_new']);
+            } else {
+                $product->is_new_message = "";
+            }
+
+            if (strtolower($product->is_sale) == 'true') {
+                $product->is_sale_message = view_cell('ColorTextCell', ['text' => "SALE", 'item' => 'is_sale']);
+            } else {
+                $product->is_sale_message = "";
+            }
+        }
+        unset($product);
+
+        $categories = $this->categoryModel->findAll();
+        foreach ($categories as &$category) {
+            $category->selected = ($category->id == $categoryId) ? 'selected' : '';
         }
 
         $data = [
-            'products' => $productsArray,
-            'search' => $search,
-            'categoryFilter' => $categoryFilter,
-            'categories' => $categoryArray,
+            'products' => $result['products'],
+            'pager' => $result['pager']->links('products', 'custom_pager'),
+            'total' => $result['total'],
+            'search' => $params->search,
+            'reset' => $params->getResetUrl(base_url('product/catalog')),
+            'order' => $params->order,
+            'sort' => $params->sort,
+            'page' => $params->page,
+            'categories' => $categories,
+            'statuss' => $this->productModel->getAllStatus(),
+            'baseUrl' => base_url('product/catalog'),
+            'perPageOptions' => [
+                ['value' => 5, 'selected' => ($params->perPage == 5) ? 'selected' : ''],
+                ['value' => 10, 'selected' => ($params->perPage == 10) ? 'selected' : ''],
+                ['value' => 25, 'selected' => ($params->perPage == 25) ? 'selected' : ''],
+            ],
+            'sorting' => [
+                [
+                    'name' => 'Price',
+                    'href' => $params->getSortUrl('price', base_url('product/catalog')),
+                    'is_sorted' => $params->isSortedBy('price') ? ($params->getSortDirection() == 'asc' ?
+                        '↑' : '↓') : ''
+                ],
+                [
+                    'name' => 'Name',
+                    'href' => $params->getSortUrl('name', base_url('product/catalog')),
+                    'is_sorted' => $params->isSortedBy('name') ? ($params->getSortDirection() == 'asc' ?
+                        '↑' : '↓') : ''
+                ],
+                [
+                    'name' => 'Date',
+                    'href' => $params->getSortUrl('created_at', base_url('product/catalog')),
+                    'is_sorted' => $params->isSortedBy('created_at') ? ($params->getSortDirection() == 'asc' ?
+                        '↑' : '↓') : ''
+                ],
+            ]
         ];
 
         if (!cache()->get("product-catalog")) {
-            cache()->save("product-catalog", $data['products'], 3600);
+            // cache()->save("product-catalog", $data['products'], 3600);
         }
 
         $data['content'] = $parser->setData($data)->render('product/v_product_catalog_parser');

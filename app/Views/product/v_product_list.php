@@ -166,7 +166,7 @@
                         <td><?= $product->status; ?></td>
                         <td><?= $product->is_new; ?></td>
                         <td><?= $product->is_sale; ?></td>
-                        <td><?= $product->getCreatedAt(); ?></td>
+                        <td><?= $product->created_at->humanize(); ?></td>
                         <td>
                             <a href="<?= route_to("product_details", $product->id) ?>"
                                 class="btn btn-info btn-sm">Detail</a>

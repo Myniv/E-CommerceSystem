@@ -40,33 +40,6 @@ class Product extends Entity
         return "Rp " . number_format($this->attributes["price"], 2, ',', '.');
     }
 
-    public function getCreatedAt()
-    {
-
-        $timestamp = strtotime($this->attributes['created_at']);
-        $timeDiff = time() - $timestamp;
-
-        $units = [
-            31536000 => 'year',
-            2592000 => 'month',
-            604800 => 'week',
-            86400 => 'day',
-            3600 => 'hour',
-            60 => 'minute',
-            1 => 'second'
-        ];
-
-        foreach ($units as $seconds => $unit) {
-            $interval = floor($timeDiff / $seconds);
-            if ($interval >= 1) {
-                return $interval . ' ' . $unit . 's ago';
-            }
-        }
-
-        return 'Just now';
-
-    }
-
     public function isInStock()
     {
         if ($this->attributes['stock'] > 0) {

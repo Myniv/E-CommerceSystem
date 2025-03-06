@@ -6,8 +6,9 @@ use CodeIgniter\View\Cells\Cell;
 
 class ColorTextCell extends Cell
 {
+    protected $item;
     protected $text;
-    private $color;
+    protected $color;
 
     public function mount()
     {
@@ -19,6 +20,12 @@ class ColorTextCell extends Cell
             $this->color = 'success'; // Default color for other statuses
         } else {
             $this->color = 'danger';
+        }
+
+        if (strtolower($this->text) === 'new' && strtolower($this->item) === 'is_new') {
+            $this->color = 'success';
+        } elseif (strtolower($this->text) === 'sale' && strtolower($this->item) === 'is_sale') {
+            $this->color = 'danger'; // Default color for other statuses
         }
     }
 

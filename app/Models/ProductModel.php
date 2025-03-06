@@ -139,16 +139,15 @@ class ProductModel extends Model
 
     public function getFilteredProducts(DataParams $params)
     {
-        $this->select('products.*, categories.name as category_name')
-            ->join('categories', 'categories.id = products.category_id');
+        $this->select('products.*, categories.name as category_name, product_images.image_path as image_path')
+            ->join('categories', 'categories.id = products.category_id', 'left')
+            ->join('product_images', "product_images.product_id = products.id AND product_images.is_primary = 'true'", 'left');
 
         if (!empty($params->search)) {
             $this->groupStart()
                 ->like('products.name', $params->search, 'both', null, true)
                 ->orLike('products.description', $params->search, 'both', null, true)
                 ->orLike('products.status', $params->search, 'both', null, true);
-
-
 
             if (is_numeric($params->search)) {
                 $this->orWhere('CAST (products.id AS TEXT) LIKE', "%$params->search%")
@@ -176,7 +175,7 @@ class ProductModel extends Model
             $params->price_range = $originalPriceRange;
         }
 
-        $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'status', 'category_id', 'category_name', 'created_at'];
+        $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'status', 'category_id', 'category_name', 'image_path', 'created_at'];
         $sort = in_array($params->sort, $allowedSortColumns) ? $params->sort : 'id';
         $order = ($params->order === 'desc') ? 'desc' : 'asc';
 
