@@ -99,7 +99,6 @@ class ProductController extends BaseController
                 $product->is_sale_message = "";
             }
         }
-        unset($product);
 
         $categories = $this->categoryModel->findAll();
         foreach ($categories as &$category) {
@@ -142,6 +141,13 @@ class ProductController extends BaseController
                     'is_sorted' => $params->isSortedBy('created_at') ? ($params->getSortDirection() == 'asc' ?
                         '↑' : '↓') : ''
                 ],
+            ],
+            'priceRangeOptions' => [
+                ['value' => '0-50000', 'label' => 'Rp 0 - Rp 50.000', 'selected' => ($params->price_range == "0-50000") ? 'selected' : ''],
+                ['value' => '50000-100000', 'label' => 'Rp 50.000 - Rp 100.000', 'selected' => ($params->price_range == "50000-100000") ? 'selected' : ''],
+                ['value' => '100000-500000', 'label' => 'Rp 100.000 - Rp 500.000', 'selected' => ($params->price_range == "100000-500000") ? 'selected' : ''],
+                ['value' => '500000-1000000', 'label' => 'Rp 500.000 - Rp 1.000.000', 'selected' => ($params->price_range == "500000-1000000") ? 'selected' : ''],
+                ['value' => '1000000', 'label' => 'Rp 1.000.000+', 'selected' => ($params->price_range == "1000000") ? 'selected' : '']
             ]
         ];
 

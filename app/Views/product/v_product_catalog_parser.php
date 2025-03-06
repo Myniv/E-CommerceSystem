@@ -28,16 +28,9 @@
                 <div class="input-group ml-2">
                     <select name="price_range" class="form-select" onchange="this.form.submit()">
                         <option value="">All Price</option>
-                        <option value="0-50000" <?= ($params->price_range == "0-50000") ? 'selected' : '' ?>>Rp 0 - Rp
-                            50.000</option>
-                        <option value="50000-100000" <?= ($params->price_range == "50000-100000") ? 'selected' : '' ?>>Rp
-                            50.000 - Rp 100.000</option>
-                        <option value="100000-500000" <?= ($params->price_range == "100000-500000") ? 'selected' : '' ?>>Rp
-                            100.000 - Rp 500.000</option>
-                        <option value="500000-1000000" <?= ($params->price_range == "500000-1000000") ? 'selected' : '' ?>>
-                            Rp 500.000 - Rp 1.000.000</option>
-                        <option value="1000000" <?= ($params->price_range == "1000000") ? 'selected' : '' ?>>Rp
-                            1.000.000+</option>
+                        {priceRangeOptions}
+                        <option value="{value}" {selected}>{label}</option>
+                        {/priceRangeOptions}
                     </select>
                 </div>
             </div>
@@ -46,7 +39,7 @@
                 <div class="input-group">
                     <select name="perPage" class="form-select" onchange="this.form.submit()">
                         {perPageOptions}
-                        <option value="{value}" {selected}>
+                        <option value="{value}" {!selected!}>
                             {value} per Page
                         </option>
                         {/perPageOptions}
