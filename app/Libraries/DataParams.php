@@ -5,20 +5,27 @@ namespace App\Libraries;
 class DataParams
 {
     public $search = '';
-    // public $filters = [];
+
+    //Product Filter
+    public $price_range = '';
     public $category_id = '';
+
+
     public $sort = 'id';
     public $order = 'asc';
-    public $page_products = 1;
+    public $page = 1;
     public $perPage = 10;
     public function __construct(array $params = [])
     {
         $this->search = $params['search'] ?? '';
-        // $this->filters = $params['filters'] ?? [];
+
         $this->category_id = $params['category_id'] ?? '';
+        $this->price_range = $params['price_range'] ?? '';
+
+
         $this->sort = $params['sort'] ?? 'id';
         $this->order = $params['order'] ?? 'asc';
-        $this->page_products = (int) ($params['page'] ?? 1);
+        $this->page = (int) ($params['page'] ?? 1);
         $this->perPage = (int) ($params['perPage'] ?? 10);
     }
 
@@ -26,11 +33,13 @@ class DataParams
     {
         return [
             'search' => $this->search,
-            // 'filters' => $this->filters,
+
             'category_id' => $this->category_id,
+            'price_range' => $this->price_range,
+
             'sort' => $this->sort,
             'order' => $this->order,
-            'page_products' => $this->page_products,
+            'page_products' => $this->page,
             'perPage' => $this->perPage,
         ];
     }

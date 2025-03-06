@@ -35,15 +35,34 @@
 
             <div class="col-md-2">
                 <div class="input-group ml-2">
+                    <select name="price_range" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Price</option>
+                        <option value="0-50000" <?= ($params->price_range == "0-50000") ? 'selected' : '' ?>>Rp 0 - Rp
+                            50.000</option>
+                        <option value="50000-100000" <?= ($params->price_range == "50000-100000") ? 'selected' : '' ?>>Rp
+                            50.000 - Rp 100.000</option>
+                        <option value="100000-500000" <?= ($params->price_range == "100000-500000") ? 'selected' : '' ?>>Rp
+                            100.000 - Rp 500.000</option>
+                        <option value="500000-1000000" <?= ($params->price_range == "500000-1000000") ? 'selected' : '' ?>>
+                            Rp 500.000 - Rp 1.000.000</option>
+                        <option value="1000000" <?= ($params->price_range == "1000000") ? 'selected' : '' ?>>Rp
+                            1.000.000+</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-md-2">
+                <div class="input-group ml-2">
                     <select name="perPage" class="form-select" onchange="this.form.submit()">
+                        <option value="5" <?= ($params->perPage == 5) ? 'selected' : '' ?>>
+                            5 per Page
+                        </option>
                         <option value="10" <?= ($params->perPage == 10) ? 'selected' : '' ?>>
                             10 per Page
                         </option>
                         <option value="25" <?= ($params->perPage == 25) ? 'selected' : '' ?>>
                             25 per Page
-                        </option>
-                        <option value="50" <?= ($params->perPage == 50) ? 'selected' : '' ?>>
-                            50 per Page
                         </option>
                     </select>
                 </div>
@@ -125,6 +144,13 @@
                                 '↑' : '↓') : '' ?>
                         </a>
                     </th>
+                    <th>
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('created_at', $baseUrl) ?>">
+                            Created At <?= $params->isSortedBy('created_at') ? ($params->getSortDirection() == 'asc' ?
+                                '↑' : '↓') : '' ?>
+                        </a>
+                    </th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -140,6 +166,7 @@
                         <td><?= $product->status; ?></td>
                         <td><?= $product->is_new; ?></td>
                         <td><?= $product->is_sale; ?></td>
+                        <td><?= $product->getCreatedAt(); ?></td>
                         <td>
                             <a href="<?= route_to("product_details", $product->id) ?>"
                                 class="btn btn-info btn-sm">Detail</a>
@@ -160,7 +187,7 @@
         <?= $pager->links('products', 'custom_pager') ?>
         <div class="text-center mt-2">
             <small>Show <?= count($products) ?> of <?= $total ?> total data (Page
-                <?= $params->page_products ?>)</small>
+                <?= $params->page ?>)</small>
         </div>
 
     </div>

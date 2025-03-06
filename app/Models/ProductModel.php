@@ -158,16 +158,22 @@ class ProductModel extends Model
             $this->groupEnd();
         }
 
-        //TODO FILTER BY PRICE
-        // $filterableFields = ['category_id', 'status'];
-        // foreach ($params->filters as $field => $value) {
-        //     if (in_array($field, $filterableFields) && $value !== '' && $value !== null) {
-        //         $this->where("products.$field", $value);
-        //     }
-        // }
-        
         if (!empty($params->category_id)) {
             $this->where('products.category_id', $params->category_id);
+        }
+
+        if (!empty($params->price_range)) {
+            $originalPriceRange = $params->price_range;
+
+            if ($params->price_range == '1000000') {
+                $this->where('products.price >=', $params->price_range);
+            } else {
+                $params->price_range = explode('-', $params->price_range);
+                $this->where('products.price >=', $params->price_range[0]);
+                $this->where('products.price <=', $params->price_range[1]);
+            }
+
+            $params->price_range = $originalPriceRange;
         }
 
         $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'status', 'category_id', 'category_name', 'created_at'];
@@ -176,7 +182,7 @@ class ProductModel extends Model
 
         $this->orderBy($sort, $order);
         $result = [
-            'products' => $this->paginate($params->perPage, 'products', $params->perPage),
+            'products' => $this->paginate($params->perPage, 'products', $params->page),
             'pager' => $this->pager,
             'total' => $this->countAllResults(false),
         ];
@@ -198,5 +204,31 @@ class ProductModel extends Model
 
         return array_column($categories, 'categories');
     }
+
+    function formatDate($datetime)
+    {
+        $timestamp = strtotime($datetime);
+        $timeDiff = time() - $timestamp;
+
+        $units = [
+            31536000 => 'year',
+            2592000 => 'month',
+            604800 => 'week',
+            86400 => 'day',
+            3600 => 'hour',
+            60 => 'minute',
+            1 => 'second'
+        ];
+
+        foreach ($units as $seconds => $unit) {
+            $interval = floor($timeDiff / $seconds);
+            if ($interval >= 1) {
+                return $interval . ' ' . $unit . ($interval > 1 ? 's' : '') . ' ago';
+            }
+        }
+
+        return 'Just now';
+    }
+
 
 }
