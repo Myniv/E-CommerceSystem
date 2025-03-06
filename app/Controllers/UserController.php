@@ -31,7 +31,7 @@ class UserController extends BaseController
             "sort" => $this->request->getGet("sort"),
             "order" => $this->request->getGet("order"),
             "perPage" => $this->request->getGet("perPage"),
-            "page" => $this->request->getGet("page_products"),
+            "page" => $this->request->getGet("page_users"),
         ]);
 
         $result = $this->userModel->getFilteredUser($params);
