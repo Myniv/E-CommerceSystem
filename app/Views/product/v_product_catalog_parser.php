@@ -83,5 +83,7 @@
         </div>
         {/products}
     </div>
-    {!pager!}
+    <div class="d-flex justify-content-center">
+        {!pager!}
+    </div>
 </div>

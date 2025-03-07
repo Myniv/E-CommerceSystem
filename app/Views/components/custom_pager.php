@@ -2,18 +2,18 @@
 
 <nav aria-label="Page navigation">
     <ul class="pagination">
-        <?php if ($pager->hasPreviousPage()): ?>
-            <li class="page-item">
-                <a class="page-link" href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>">
-                    <span aria-hidden="true"><?= lang('Pager.first') ?></span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="<?= $pager->getPreviousPage() ?>" aria-label="<?= lang('Pager.previous') ?>">
-                    <span aria-hidden="true"><?= lang('Pager.previous') ?></span>
-                </a>
-            </li>
-        <?php endif ?>
+        <li class="page-item <?= $pager->hasPreviousPage() ? '' : 'disabled' ?>">
+            <a class="page-link" href="<?= $pager->getFirst() ?>" aria-label="<<">
+                <span aria-hidden="true">
+                    << </span>
+            </a>
+        </li>
+        <li class="page-item <?= $pager->hasPreviousPage() ? '' : 'disabled' ?>">
+            <a class="page-link" href="<?= $pager->getPreviousPage() ?>" aria-label="<">
+                <span aria-hidden="true">
+                    < </span>
+            </a>
+        </li>
 
         <?php foreach ($pager->links() as $link): ?>
             <li class="page-item <?= $link['active'] ? 'active' : '' ?>">
@@ -23,17 +23,15 @@
             </li>
         <?php endforeach ?>
 
-        <?php if ($pager->hasNextPage()): ?>
-            <li class="page-item">
-                <a class="page-link" href="<?= $pager->getNextPage() ?>" aria-label="<?= lang('Pager.next') ?>">
-                    <span aria-hidden="true"><?= lang('Pager.next') ?></span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="<?= $pager->getLast() ?>" aria-label="<?= lang('Pager.last') ?>">
-                    <span aria-hidden="true"><?= lang('Pager.last') ?></span>
-                </a>
-            </li>
-        <?php endif ?>
+        <li class="page-item <?= $pager->hasNextPage() ? '' : 'disabled' ?>">
+            <a class="page-link" href="<?= $pager->getNextPage() ?>" aria-label=">">
+                <span aria-hidden="true">></span>
+            </a>
+        </li>
+        <li class="page-item <?= $pager->hasNextPage() ? '' : 'disabled' ?>">
+            <a class="page-link" href="<?= $pager->getLast() ?>" aria-label=">>">
+                <span aria-hidden="true">>></span>
+            </a>
+        </li>
     </ul>
 </nav>
