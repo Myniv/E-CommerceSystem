@@ -88,67 +88,67 @@
                     <th>
                         <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('id', $baseUrl) ?>">
                             ID <?= $params->isSortedBy('id') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('name', $baseUrl) ?>">
                             Name <?= $params->isSortedBy('name') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
                             href="<?= $params->getSortUrl('description', $baseUrl) ?>">
                             Description <?= $params->isSortedBy('description') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('price', $baseUrl) ?>">
                             Price <?= $params->isSortedBy('price') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('stock', $baseUrl) ?>">
                             Stock <?= $params->isSortedBy('stock') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
                             href="<?= $params->getSortUrl('category_name', $baseUrl) ?>">
                             Category <?= $params->isSortedBy('category_name') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
                             href="<?= $params->getSortUrl('status', $baseUrl) ?>">
                             Status <?= $params->isSortedBy('status') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
                             href="<?= $params->getSortUrl('is_new', $baseUrl) ?>">
                             Is New <?= $params->isSortedBy('is_new') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
                             href="<?= $params->getSortUrl('is_sale', $baseUrl) ?>">
                             Is Sale <?= $params->isSortedBy('is_sale') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
                             href="<?= $params->getSortUrl('created_at', $baseUrl) ?>">
                             Created At <?= $params->isSortedBy('created_at') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '' ?>
+                                '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>Action</th>
