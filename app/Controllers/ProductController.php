@@ -121,6 +121,7 @@ class ProductController extends BaseController
             'statuss' => $this->productModel->getAllStatus(),
             'baseUrl' => base_url('product/catalog'),
             'perPageOptions' => [
+                ['value' => 2, 'selected' => ($params->perPage == 2) ? 'selected' : ''],
                 ['value' => 5, 'selected' => ($params->perPage == 5) ? 'selected' : ''],
                 ['value' => 10, 'selected' => ($params->perPage == 10) ? 'selected' : ''],
                 ['value' => 25, 'selected' => ($params->perPage == 25) ? 'selected' : ''],

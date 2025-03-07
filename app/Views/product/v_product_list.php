@@ -55,6 +55,9 @@
             <div class="col-md-2">
                 <div class="input-group ml-2">
                     <select name="perPage" class="form-select" onchange="this.form.submit()">
+                        <option value="2" <?= ($params->perPage == 2) ? 'selected' : '' ?>>
+                            2 per Page
+                        </option>
                         <option value="5" <?= ($params->perPage == 5) ? 'selected' : '' ?>>
                             5 per Page
                         </option>
