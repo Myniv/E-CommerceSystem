@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <h2 class="mb-3">User List</h2>
 
-    <a href="/admin/user/create" class="btn btn-success mb-3">Tambah Pengguna</a>
+    <a href="/admin/user/create" class="btn btn-success mb-3">Add User</a>
     <a href="<?= base_url("api/json/user") ?>" class="btn btn-success mb-3">Get JSON Data</a>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">

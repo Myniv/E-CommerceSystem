@@ -128,12 +128,9 @@ class UserModel extends Model
                 ->orLike('email', $params->search, 'both', null, true)
                 ->orLike('full_name', $params->search, 'both', null, true)
                 ->orLike('role', $params->search, 'both', null, true)
-                ->orLike('status', $params->search, 'both', null, true);
-
-            if (is_numeric($params->search)) {
-                $this->orWhere('CAST (id AS TEXT) LIKE', "%$params->search%");
-            }
-            $this->groupEnd();
+                ->orLike('status', $params->search, 'both', null, true)
+                ->orWhere('CAST (id AS TEXT) LIKE', "%$params->search%")
+                ->groupEnd();
         }
 
         if (!empty($params->role)) {

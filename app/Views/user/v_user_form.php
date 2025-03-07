@@ -36,7 +36,7 @@
                     <input type="email" name="email"
                         class="form-control <?= session('errors.email') ? 'is-invalid' : '' ?>"
                         value="<?= old('email', isset($user) ? $user->email : '') ?>" data-pristine-required
-                        data-pristine-required-message="The email field is required." data-pristine-type="email"
+                        data-pristine-required-message="The email field is required." 
                         data-pristine-type-message="Please enter a valid email address." data-pristine-maxlength="255"
                         data-pristine-maxlength-message="Email cannot exceed 255 characters.">
                     <div class="text-danger"><?= session('errors.email') ?? '' ?></div>

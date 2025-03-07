@@ -155,14 +155,11 @@ class ProductModel extends Model
                 ->like('products.name', $params->search, 'both', null, true)
                 ->orLike('products.description', $params->search, 'both', null, true)
                 ->orLike('categories.name', $params->search, 'both', null, true)
-                ->orLike('products.status', $params->search, 'both', null, true);
-
-            if (is_numeric($params->search)) {
-                $this->orWhere('CAST (products.id AS TEXT) LIKE', "%$params->search%")
-                    ->orWhere('CAST (products.price AS TEXT) LIKE', "%$params->search%")
-                    ->orWhere('CAST (products.stock AS TEXT) LIKE', "%$params->search%");
-            }
-            $this->groupEnd();
+                ->orLike('products.status', $params->search, 'both', null, true)
+                ->orWhere('CAST (products.id AS TEXT) LIKE', "%$params->search%")
+                ->orWhere('CAST (products.price AS TEXT) LIKE', "%$params->search%")
+                ->orWhere('CAST (products.stock AS TEXT) LIKE', "%$params->search%")
+                ->groupEnd();
         }
 
         if (!empty($params->category_id)) {
@@ -183,7 +180,7 @@ class ProductModel extends Model
             $params->price_range = $originalPriceRange;
         }
 
-        $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'status', 'category_id', 'category_name', 'image_path', 'created_at'];
+        $allowedSortColumns = ['id', 'name', 'description', 'price', 'stock', 'is_new', 'is_sale', 'status', 'category_id', 'category_name', 'image_path', 'created_at'];
         $sort = in_array($params->sort, $allowedSortColumns) ? $params->sort : 'id';
         $order = ($params->order === 'desc') ? 'desc' : 'asc';
 
