@@ -52,7 +52,7 @@ class ProductController extends BaseController
         return view("product/v_product_list", $data);
     }
 
-    public function allProductParser()
+    public function productCatalog()
     {
         $parser = \Config\Services::parser();
 
@@ -146,11 +146,11 @@ class ProductController extends BaseController
                 ],
             ],
             'priceRangeOptions' => [
-                ['value' => '0-50000', 'label' => 'Rp 0 - Rp 50.000', 'selected' => ($params->price_range == "0-50000") ? 'selected' : ''],
-                ['value' => '50000-100000', 'label' => 'Rp 50.000 - Rp 100.000', 'selected' => ($params->price_range == "50000-100000") ? 'selected' : ''],
-                ['value' => '100000-500000', 'label' => 'Rp 100.000 - Rp 500.000', 'selected' => ($params->price_range == "100000-500000") ? 'selected' : ''],
-                ['value' => '500000-1000000', 'label' => 'Rp 500.000 - Rp 1.000.000', 'selected' => ($params->price_range == "500000-1000000") ? 'selected' : ''],
-                ['value' => '1000000', 'label' => 'Rp 1.000.000+', 'selected' => ($params->price_range == "1000000") ? 'selected' : '']
+                ['value' => '0-50000', 'label' => 'Rp 0 - Rp 49.999', 'selected' => ($params->price_range == "0-50000") ? 'selected' : ''],
+                ['value' => '50000-100000', 'label' => 'Rp 50.000 - Rp 99.999', 'selected' => ($params->price_range == "50000-100000") ? 'selected' : ''],
+                ['value' => '100000-500000', 'label' => 'Rp 100.000 - Rp 49.999', 'selected' => ($params->price_range == "100000-500000") ? 'selected' : ''],
+                ['value' => '500000-1000000', 'label' => 'Rp 500.000 - Rp 999.999', 'selected' => ($params->price_range == "500000-1000000") ? 'selected' : ''],
+                ['value' => '1000000', 'label' => '> Rp 1.000.000', 'selected' => ($params->price_range == "1000000") ? 'selected' : '']
             ]
         ];
 

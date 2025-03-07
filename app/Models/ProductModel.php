@@ -154,6 +154,7 @@ class ProductModel extends Model
             $this->groupStart()
                 ->like('products.name', $params->search, 'both', null, true)
                 ->orLike('products.description', $params->search, 'both', null, true)
+                ->orLike('categories.name', $params->search, 'both', null, true)
                 ->orLike('products.status', $params->search, 'both', null, true);
 
             if (is_numeric($params->search)) {
@@ -175,8 +176,8 @@ class ProductModel extends Model
                 $this->where('products.price >=', $params->price_range);
             } else {
                 $params->price_range = explode('-', $params->price_range);
-                $this->where('products.price >=', $params->price_range[0]);
-                $this->where('products.price <=', $params->price_range[1]);
+                $this->where('products.price >=', $params->price_range[0])
+                    ->where('products.price <', $params->price_range[1]);
             }
 
             $params->price_range = $originalPriceRange;

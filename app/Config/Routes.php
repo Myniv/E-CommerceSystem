@@ -52,7 +52,7 @@ $routes->group('admin', ['filter' => 'auth:admin'], function ($routes) {
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);
 });
-$routes->get("product/catalog", [ProductController::class, "allProductParser"]);
+$routes->get("product/catalog", [ProductController::class, 'productCatalog']);
 
 $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->get('/', [UserController::class, 'index']);
