@@ -6,6 +6,7 @@ use App\Controllers\Home;
 use App\Controllers\PesananController;
 use App\Controllers\ProductController;
 use App\Controllers\UserController;
+use App\Controllers\UsersController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -23,7 +24,7 @@ $routes->addRedirect('/home', '/');
 $routes->get('/about-us', [Home::class, 'aboutUs']);
 
 
-$routes->group('api', ['filter' => 'auth:admin'], function ($routes) {
+$routes->group('api', ['filter' => 'auth:Administrator'], function ($routes) {
     $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
     $routes->get('json', [Home::class, 'index']);
     $routes->get('json/product', [ApiController::class, 'getAllProductJSON']);
@@ -42,7 +43,7 @@ $routes->group('pesanan', ['filter' => 'auth:user'], function ($routes) {
     $routes->get('detail/(:num)', [PesananController::class, 'detailPesanan/$1']);
 });
 
-$routes->group('admin', ['filter' => 'auth:admin'], function ($routes) {
+$routes->group('admin', ['filter' => 'auth:Administrator'], function ($routes) {
     // $routes->resource("product", ['controller' => 'ProductController']);
     $routes->get('product', [ProductController::class, 'index']);
     $routes->get('product/new', [ProductController::class, 'new']);
@@ -54,7 +55,7 @@ $routes->group('admin', ['filter' => 'auth:admin'], function ($routes) {
 });
 $routes->get("product/catalog", [ProductController::class, 'productCatalog']);
 
-$routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
+$routes->group('admin/user', ['filter' => 'auth:Administrator'], function ($routes) {
     $routes->get('/', [UserController::class, 'index']);
     $routes->get('profile/(:num)', [UserController::class, 'detail']);
     $routes->get('profile-parser/(:num)', [UserController::class, 'detailParser']);
@@ -65,8 +66,8 @@ $routes->group('admin/user', ['filter' => 'auth:admin'], function ($routes) {
     $routes->delete('delete/(:num)', [UserController::class, 'delete']);
 });
 
-$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:admin', 'as' => 'user_dashboard']);
-$routes->get('/admin/dashboard-parser', [AdminController::class, 'dashboardParser'], ['filter' => 'auth:admin']);
+$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'auth:Administrator', 'as' => 'user_dashboard']);
+$routes->get('/admin/dashboard-parser', [AdminController::class, 'dashboardParser'], ['filter' => 'auth:Administrator']);
 
 $routes->get('/health-check', function () {
     return view('v_health_check');
@@ -85,3 +86,16 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');
 });
+
+$routes->group(
+    'admin/users',
+    ['filter' => 'role:Administrator'],
+    function ($routes) {
+        $routes->get('/', [UsersController::class, 'index']);
+        $routes->get('create', [UsersController::class, 'create']);
+        $routes->post('store', [UsersController::class, 'store']);
+        $routes->get('edit/(:num)', [UsersController::class, 'edit/$1']);
+        $routes->put('update/(:num)', [UsersController::class, 'update/$1']);
+        $routes->delete('delete/(:num)', [UsersController::class, 'delete/$1']);
+    }
+);
