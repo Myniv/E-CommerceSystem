@@ -12,7 +12,7 @@ class UserEcommerceModel extends Model
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     // protected $returnType = 'array';
-    protected $returnType = \App\Entities\UserEcommerce::class;
+    protected $returnType = UserEcommerce::class;
     protected $useSoftDeletes = true;
     protected $protectFields = true;
     protected $allowedFields = [
@@ -40,31 +40,31 @@ class UserEcommerceModel extends Model
 
     // Validation
     protected $validationRules = [
-        'username' => 'required|is_unique[users.username,id,{id}]|min_length[3]|max_length[255]',
-        'email' => 'required|is_unique[users.email,id,{id}]|valid_email|max_length[255]',
+        'username' => 'required|min_length[3]|max_length[255]',
+        'email' => 'required|valid_email|max_length[255]',
         'password' => 'required|min_length[8]|max_length[255]',
         'full_name' => 'required|min_length[3]|max_length[255]',
-        'role' => 'required|in_list[User,Admin]',
-        'status' => 'required|in_list[Active,Inactive]',
+        'role' => 'required|in_list[Administrator,Customer,Product Manager]',
+        // 'status' => 'required|in_list[Active,Inactive]',
     ];
     protected $validationMessages = [
         'username' => [
             'required' => 'The username field is required.',
-            'is_unique' => 'This username is already taken.',
+            // 'is_unique' => 'This username is already taken.',
             'min_length' => 'The username must be at least 3 characters long.',
             'max_length' => 'The username must not exceed 255 characters.'
         ],
         'email' => [
             'required' => 'The email field is required.',
-            'is_unique' => 'This email is already registered.',
+            // 'is_unique' => 'This email is already registered.',
             'valid_email' => 'Please enter a valid email address.',
             'max_length' => 'The email must not exceed 255 characters.'
         ],
-        'password' => [
-            'required' => 'The password field is required.',
-            'min_length' => 'The password must be at least 8 characters long.',
-            'max_length' => 'The password must not exceed 255 characters.'
-        ],
+        // 'password' => [
+        //     'required' => 'The password field is required.',
+        //     'min_length' => 'The password must be at least 8 characters long.',
+        //     'max_length' => 'The password must not exceed 255 characters.'
+        // ],
         'full_name' => [
             'required' => 'The full name field is required.',
             'min_length' => 'The full name must be at least 3 characters long.',
@@ -72,12 +72,12 @@ class UserEcommerceModel extends Model
         ],
         'role' => [
             'required' => 'The role field is required.',
-            'in_list' => 'The role must be either "User" or "Admin".'
+            'in_list' => 'The role must be either Administrator, Customer, or Product Manager.'
         ],
-        'status' => [
-            'required' => 'The status field is required.',
-            'in_list' => 'The status must be either "Active" or "Inactive".'
-        ],
+        // 'status' => [
+        //     'required' => 'The status field is required.',
+        //     'in_list' => 'The status must be either "Active" or "Inactive".'
+        // ],
     ];
     protected $skipValidation = false;
     protected $cleanValidationRules = true;
@@ -154,6 +154,11 @@ class UserEcommerceModel extends Model
         return $result;
     }
 
-
+    public function getUserLogin($username)
+    {
+        return $this->select('users_ecommerce.*')
+            ->where('users_ecommerce.username', $username)
+            ->first();
+    }
 
 }

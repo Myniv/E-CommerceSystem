@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\UserEcommerceModel;
 use Myth\Auth\Controllers\AuthController as MythController;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\GroupModel;
@@ -11,6 +12,7 @@ class AuthController extends MythController
     protected $auth;
     protected $config;
     protected $userModel;
+    protected $userEcommerceModel;
     protected $groupModel;
 
     public function __construct()
@@ -19,6 +21,7 @@ class AuthController extends MythController
 
         $this->userModel = new UserModel();
         $this->groupModel = new GroupModel();
+        $this->userEcommerceModel = new UserEcommerceModel();
 
         $this->auth = service('authentication');
     }
@@ -40,6 +43,8 @@ class AuthController extends MythController
 
         $email = $this->request->getPost('email');
         $user = $this->userModel->where('email', $email)->first();
+        $userArray = $this->userModel->asArray()->where('email', $email)->first();
+
 
         if ($user) {
             // $studentGroup = $this->groupModel->where('name', 'admin')->first();
@@ -47,6 +52,26 @@ class AuthController extends MythController
             $studentGroup = $this->groupModel->where('name', 'Customer')->first();
             if ($studentGroup) {
                 $this->groupModel->addUserToGroup($user->id, $studentGroup->id);
+            }
+
+            $registUserEcommerce = [
+                'username' => $user->username,
+                'email' => $email,
+                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'full_name' => $this->request->getPost('full_name'),
+                'role' => 'Customer',
+                // 'status' => $user->active,
+                'last_login' => null,
+            ];
+
+            if ($user->active == 1 || $user->active == true) {
+                $registUserEcommerce['status'] = "Active";
+            } else {
+                $registUserEcommerce['status'] = "Inactive";
+            }
+
+            if (!$this->userEcommerceModel->save($registUserEcommerce)) {
+                dd($this->userEcommerceModel->errors());
             }
         }
 
@@ -60,6 +85,21 @@ class AuthController extends MythController
             return redirect()->to('/login');
         }
 
+        //Update user ecommerce last login and status
+        $user = $this->userModel->find($userId);
+        $userEcommerce = $this->userEcommerceModel->getUserLogin($user->username);
+        $data['id'] = $userEcommerce->id;
+        if ($user->active == 1 || $user->active == true) {
+            $data['status'] = "Active";
+        } else {
+            $data['status'] = "Inactive";
+        }
+        $data['last_login'] = date('Y-m-d H:i:s');
+        if (!$this->userEcommerceModel->save($data)) {
+            dd($this->userEcommerceModel->errors());
+        }
+
+        //redirect to dashboard based on role
         $userGroups = $this->groupModel->getGroupsForUser($userId);
         foreach ($userGroups as $group) {
             if ($group['name'] === 'Administrator') {

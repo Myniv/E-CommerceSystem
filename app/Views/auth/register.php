@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/main') ?>
+<?= $this->extend('layout/master'); ?>
 <?= $this->section('content') ?>
 <div class="container">
     <div class="row justify-content-center">
@@ -17,6 +17,11 @@
                     <form action="<?= route_to('register') ?>" method="post">
                         <?= csrf_field() ?>
 
+                        <div class="form-group mb-3">
+                            <label for="full_name" class="form-label">Full name</label>
+                            <input type="text" class="form-control" name="full_name" placeholder="Full Name"
+                                value="<?= old('full_name') ?>">
+                        </div>
                         <div class="form-group mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control <?= session('errors.username') ?

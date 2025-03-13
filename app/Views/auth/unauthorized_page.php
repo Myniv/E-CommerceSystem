@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/main') ?>
+<?= $this->extend('layout/master'); ?>
 <?= $this->section('content') ?>
 
 <h1>Unauthorized!!</h1>

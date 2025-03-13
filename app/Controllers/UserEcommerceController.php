@@ -10,13 +10,13 @@ use DateTime;
 
 class UserEcommerceController extends BaseController
 {
-    private $userModel;
-    private $userEntities;
+    private $userEcommerceModel;
+    private $userEcommerceEntities;
     private $parser;
     public function __construct()
     {
-        $this->userModel = new UserEcommerceModel();
-        $this->userEntities = new UserEcommerce();
+        $this->userEcommerceModel = new UserEcommerceModel();
+        $this->userEcommerceEntities = new UserEcommerce();
         $this->parser = \Config\Services::parser();
     }
 
@@ -34,7 +34,7 @@ class UserEcommerceController extends BaseController
             "page" => $this->request->getGet("page_users"),
         ]);
 
-        $result = $this->userModel->getFilteredUser($params);
+        $result = $this->userEcommerceModel->getFilteredUser($params);
 
         $data = [
             'users' => $result['users'],
@@ -49,13 +49,13 @@ class UserEcommerceController extends BaseController
 
     public function detail($id)
     {
-        $data['user'] = $this->userModel->getUserById($id);
+        $data['user'] = $this->userEcommerceModel->getUserById($id);
         return view('user/v_user_detail', $data);
     }
     public function detailParser($id)
     {
-        $data = $this->userModel->find($id)->toArray();
-        $this->userModel->updateLastLogin($id);
+        $data = $this->userEcommerceModel->find($id)->toArray();
+        $this->userEcommerceModel->updateLastLogin($id);
 
         $data['profile_picture'] = base_url("iconOrang.png");
         $dateTime = (new DateTime())->format("Y-m-d H:i:s");
@@ -76,13 +76,13 @@ class UserEcommerceController extends BaseController
 
     public function role($username)
     {
-        $data['user'] = $this->userModel->getUserByUsername($username);
+        $data['user'] = $this->userEcommerceModel->getUserByUsername($username);
         return view('user/v_user_role', $data);
     }
 
     public function settings($name)
     {
-        $data['user'] = $this->userModel->getUserByName($name);
+        $data['user'] = $this->userEcommerceModel->getUserByName($name);
         return view('user/v_user_settings', $data);
     }
 
@@ -105,13 +105,13 @@ class UserEcommerceController extends BaseController
                 'last_login' => null,
             ];
 
-            if (!$this->userModel->validate($data)) {
-                return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
+            if (!$this->userEcommerceModel->validate($data)) {
+                return redirect()->back()->withInput()->with('errors', $this->userEcommerceModel->errors());
             }
 
             // $data['password'] = $this->userEntities->setPassword($data['password']);
 
-            $this->userModel->save($data);
+            $this->userEcommerceModel->save($data);
 
             return redirect()->to("admin/user");
         }
@@ -121,7 +121,7 @@ class UserEcommerceController extends BaseController
     {
         $type = $this->request->getMethod();
         if ($type == "GET") {
-            $data['user'] = $this->userModel->find($id);
+            $data['user'] = $this->userEcommerceModel->find($id);
             return view('user/v_user_form', $data);
         }
 
@@ -138,14 +138,14 @@ class UserEcommerceController extends BaseController
                 'status' => $this->request->getPost("status"),
             ];
 
-            $this->userModel->setValidationRule("username", "required|is_unique[users.username,id,{$id}]|min_length[3]|max_length[255]");
-            $this->userModel->setValidationRule("email", "required|is_unique[users.email,id,{$id}]|valid_email|max_length[255]");
+            $this->userEcommerceModel->setValidationRule("username", "required|is_unique[users.username,id,{$id}]|min_length[3]|max_length[255]");
+            $this->userEcommerceModel->setValidationRule("email", "required|is_unique[users.email,id,{$id}]|valid_email|max_length[255]");
 
-            if (!$this->userModel->validate($formData)) {
-                return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
+            if (!$this->userEcommerceModel->validate($formData)) {
+                return redirect()->back()->withInput()->with('errors', $this->userEcommerceModel->errors());
             }
 
-            $this->userModel->save($formData);
+            $this->userEcommerceModel->save($formData);
 
             return redirect()->to("/admin/user");
         }
@@ -153,7 +153,7 @@ class UserEcommerceController extends BaseController
 
     public function delete($id)
     {
-        $this->userModel->delete($id);
+        $this->userEcommerceModel->delete($id);
         return redirect()->to("/admin/user");
     }
 }
