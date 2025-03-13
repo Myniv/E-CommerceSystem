@@ -2,21 +2,21 @@
 
 namespace App\Controllers;
 
-use App\Entities\User;
+use App\Entities\UserEcommerce;
 use App\Libraries\DataParams;
 use App\Models\M_User;
-use App\Models\UserModel;
+use App\Models\UserEcommerceModel;
 use DateTime;
 
-class UserController extends BaseController
+class UserEcommerceController extends BaseController
 {
     private $userModel;
     private $userEntities;
     private $parser;
     public function __construct()
     {
-        $this->userModel = new UserModel();
-        $this->userEntities = new User();
+        $this->userModel = new UserEcommerceModel();
+        $this->userEntities = new UserEcommerce();
         $this->parser = \Config\Services::parser();
     }
 

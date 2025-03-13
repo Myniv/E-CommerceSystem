@@ -7,7 +7,7 @@ use App\Models\M_Pesanan;
 use App\Models\M_Product;
 use App\Models\M_User;
 use App\Models\ProductModel;
-use App\Models\UserModel;
+use App\Models\UserEcommerceModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class AdminController extends BaseController
@@ -17,7 +17,7 @@ class AdminController extends BaseController
     private $pesananModel;
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->userModel = new UserEcommerceModel();
         $this->productModel = new ProductModel();
         $this->pesananModel = new M_Pesanan();
     }

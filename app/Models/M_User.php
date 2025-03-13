@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Entities\User;
+use App\Entities\UserEcommerce;
 
 class M_User
 {
@@ -81,13 +81,13 @@ class M_User
         return null;
     }
 
-    public function addUser(User $user)
+    public function addUser(UserEcommerce $user)
     {
         $this->user[] = $user;
         $this->saveData();
     }
 
-    public function updateUser(User $user)
+    public function updateUser(UserEcommerce $user)
     {
         foreach ($this->user as $key => $value) {
             if ($value->getId() == $user->getId()) {

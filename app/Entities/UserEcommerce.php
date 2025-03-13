@@ -3,7 +3,7 @@ namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
 
-class User extends Entity
+class UserEcommerce extends Entity
 {
     protected $attributes = [
         'id' => null,

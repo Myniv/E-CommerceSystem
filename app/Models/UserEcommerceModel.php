@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Entities\User;
+use App\Entities\UserEcommerce;
 use App\Libraries\DataParams;
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class UserEcommerceModel extends Model
 {
-    protected $table = 'users';
+    protected $table = 'users_ecommerce';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     // protected $returnType = 'array';
-    protected $returnType = \App\Entities\User::class;
+    protected $returnType = \App\Entities\UserEcommerce::class;
     protected $useSoftDeletes = true;
     protected $protectFields = true;
     protected $allowedFields = [
