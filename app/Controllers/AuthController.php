@@ -34,6 +34,7 @@ class AuthController extends MythController
     public function attemptLogin()
     {
         $result = parent::attemptLogin();
+        $this->updateUserEcommerceStatusLastLogin();
         return $this->redirectBasedOnRole();
     }
 
@@ -85,21 +86,6 @@ class AuthController extends MythController
             return redirect()->to('/login');
         }
 
-        //Update user ecommerce last login and status
-        $user = $this->userModel->find($userId);
-        $userEcommerce = $this->userEcommerceModel->getUserLogin($user->username);
-        $data['id'] = $userEcommerce->id;
-        if ($user->active == 1 || $user->active == true) {
-            $data['status'] = "Active";
-        } else {
-            $data['status'] = "Inactive";
-        }
-        $data['last_login'] = date('Y-m-d H:i:s');
-        if (!$this->userEcommerceModel->save($data)) {
-            dd($this->userEcommerceModel->errors());
-        }
-
-        //redirect to dashboard based on role
         $userGroups = $this->groupModel->getGroupsForUser($userId);
         foreach ($userGroups as $group) {
             if ($group['name'] === 'Administrator') {
@@ -117,5 +103,26 @@ class AuthController extends MythController
     public function unauthorized()
     {
         return view("auth/unauthorized_page");
+    }
+
+    public function updateUserEcommerceStatusLastLogin()
+    {
+        $userId = user_id();
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
+        $user = $this->userModel->find($userId);
+        $userEcommerce = $this->userEcommerceModel->getUserLogin($user->username);
+        $data['id'] = $userEcommerce->id;
+        if ($user->active == 1 || $user->active == true) {
+            $data['status'] = "Active";
+        } else {
+            $data['status'] = "Inactive";
+        }
+        $data['last_login'] = date('Y-m-d H:i:s');
+        if (!$this->userEcommerceModel->save($data)) {
+            dd($this->userEcommerceModel->errors());
+        }
     }
 }
