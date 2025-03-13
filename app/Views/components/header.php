@@ -8,11 +8,19 @@
                     E-Commerce
                 </h1>
                 <nav>
-                    <a href="<?= base_url('/') ?>">Home</a>
-                    <a href="<?= base_url('/about-us') ?>">About Us</a>
-                    <a href="<?= route_to("user_dashboard") ?>">Dashboard</a>
-                    <a href="<?= base_url('/pesanan') ?>">Pesanan</a>
-                    <a href="<?= base_url('/product/catalog') ?>">Catalog</a>
+                    <?php if (logged_in()): ?>
+                        <a href="<?= base_url('/') ?>">Home</a>
+                        <a href="<?= base_url('/about-us') ?>">About Us</a>
+                        <a href="<?= route_to("user_dashboard") ?>">Dashboard</a>
+                        <a href="<?= base_url('/pesanan') ?>">Pesanan</a>
+                        <a href="<?= base_url('/product/catalog') ?>">Catalog</a>
+                        <a class="btn btn-danger nav-link text-white me-2" href="<?= base_url('/logout') ?>">Logout</a>
+                    <?php else: ?>
+                        <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/') ?>">Home</a>
+                        <a class="btn btn-success nav-link text-white me-2" href="<?= base_url('/login') ?>">Login</a>
+                        <a class="btn btn-warning nav-link text-white me-2"
+                            href="<?= base_url('/register') ?>">Register</a>
+                    <?php endif; ?>
                 </nav>
             </div>
         </div>

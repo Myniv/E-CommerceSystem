@@ -72,10 +72,16 @@ $routes->get('/health-check', function () {
     return view('v_health_check');
 });
 
-// $routes->resource('admin', [
-//     'controller' => 'Home',
-//     'only' => ['show']
-// ]);
-
 $routes->post('login', [Home::class, 'login']);
 $routes->get("unauthorized", [Home::class, "unauthorized"]);
+
+$routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
+    // Registrasi
+    $routes->get('register', 'AuthController::register', ['as' => 'register']);
+    $routes->post('register', 'AuthController::attemptRegister');
+
+
+    // Route lain seperti login, dll
+    $routes->get('login', 'AuthController::login', ['as' => 'login']);
+    $routes->post('login', 'AuthController::attemptLogin');
+});
