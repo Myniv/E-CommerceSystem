@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <h2 class="mb-3">User List</h2>
 
-    <a href="/admin/user/create" class="btn btn-success mb-3">Add User</a>
+    <a href="/admin/customer/create" class="btn btn-success mb-3">Add User</a>
     <a href="<?= base_url("api/json/user") ?>" class="btn btn-success mb-3">Get JSON Data</a>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
@@ -21,20 +21,10 @@
 
             <div class="col-md-2">
                 <div class="input-group ml-2">
-                    <select name="role" class="form-select" onchange="this.form.submit()">
-                        <option value="">All Role</option>
-                        <option value="Admin" <?= ($params->role == "Admin") ? 'selected' : '' ?>>Admin</option>
-                        <option value="User" <?= ($params->role == "User") ? 'selected' : '' ?>>User</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="input-group ml-2">
                     <select name="status" class="form-select" onchange="this.form.submit()">
                         <option value="">All Status</option>
-                        <option value="Active" <?= ($params->role == "Active") ? 'selected' : '' ?>>Active</option>
-                        <option value="Inactive" <?= ($params->role == "Inactive") ? 'selected' : '' ?>>Inactive</option>
+                        <option value="Active" <?= ($params->status == "Active") ? 'selected' : '' ?>>Active</option>
+                        <option value="Inactive" <?= ($params->status == "Inactive") ? 'selected' : '' ?>>Inactive</option>
                     </select>
                 </div>
             </div>
@@ -135,9 +125,9 @@
                         <td><?= $user->status ?></td>
                         <td><?= $user->timesAgo() ?></td>
                         <td>
-                            <a href="/admin/user/profile-parser/<?= $user->id ?>" class="btn btn-info btn-sm">Detail</a>
-                            <a href="/admin/user/update/<?= $user->id ?>" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="/admin/user/delete/<?= $user->id ?>" method="post" class="d-inline">
+                            <a href="/admin/customer/profile-parser/<?= $user->id ?>" class="btn btn-info btn-sm">Detail</a>
+                            <a href="/admin/customer/update/<?= $user->id ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/admin/customer/delete/<?= $user->id ?>" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure want to delete this user?');">

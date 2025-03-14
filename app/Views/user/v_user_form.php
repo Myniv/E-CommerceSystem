@@ -12,7 +12,7 @@
         </div>
         <div class="card-body">
             <form
-                action="<?= isset($user) ? base_url('admin/user/update/' . $user->id) : base_url('admin/user/create') ?>"
+                action="<?= isset($user) ? base_url('admin/customer/update/' . $user->id) : base_url('admin/customer/create') ?>"
                 method="post" id="formData" novalidate>
                 <?= csrf_field() ?>
                 <?php if (isset($user)): ?>
@@ -27,7 +27,7 @@
                         data-pristine-required-message="The username field is required." data-pristine-minlength="3"
                         data-pristine-minlength-message="The username must be at least 3 characters long."
                         data-pristine-maxlength="255"
-                        data-pristine-maxlength-message="The username cannot exceed 255 characters.">
+                        data-pristine-maxlength-message="The username cannot exceed 255 characters." <?= isset($user) ? 'disabled' : '' ?>>
                     <div class="text-danger"><?= session('errors.username') ?? '' ?></div>
                 </div>
 
@@ -36,9 +36,9 @@
                     <input type="email" name="email"
                         class="form-control <?= session('errors.email') ? 'is-invalid' : '' ?>"
                         value="<?= old('email', isset($user) ? $user->email : '') ?>" data-pristine-required
-                        data-pristine-required-message="The email field is required." 
+                        data-pristine-required-message="The email field is required."
                         data-pristine-type-message="Please enter a valid email address." data-pristine-maxlength="255"
-                        data-pristine-maxlength-message="Email cannot exceed 255 characters.">
+                        data-pristine-maxlength-message="Email cannot exceed 255 characters." <?= isset($user) ? 'disabled' : '' ?>>
                     <div class="text-danger"><?= session('errors.email') ?? '' ?></div>
                 </div>
 
@@ -74,8 +74,7 @@
                         <option value="" <?= old('role', isset($user) ? $user->role : '') ? 'disabled' : '' ?>
                             data-pristine-required data-pristine-required-message="The role field is required.">Select
                             Role</option>
-                        <option value="Admin" <?= old('role', isset($user) ? $user->role : '') == 'Admin' ? 'selected' : '' ?>>Admin</option>
-                        <option value="User" <?= old('role', isset($user) ? $user->role : '') == 'User' ? 'selected' : '' ?>>User</option>
+                        <option value="Customer" <?= old('role', isset($user) ? $user->role : '') == 'Admin' ? 'selected' : '' ?>>Customer</option>
                     </select>
                     <div class="text-danger"><?= session('errors.role') ?? '' ?></div>
                 </div>

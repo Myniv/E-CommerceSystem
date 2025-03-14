@@ -41,7 +41,7 @@ class UserEcommerceController extends BaseController
             'pager' => $result['pager'],
             'total' => $result['total'],
             'params' => $params,
-            'baseUrl' => base_url('admin/user'),
+            'baseUrl' => base_url('admin/customer'),
         ];
 
         return view('user/v_user_list', $data);
@@ -130,7 +130,7 @@ class UserEcommerceController extends BaseController
 
             $this->userEcommerceModel->save($data);
 
-            return redirect()->to("admin/user");
+            return redirect()->to("admin/customer");
         }
     }
 
@@ -164,13 +164,13 @@ class UserEcommerceController extends BaseController
 
             $this->userEcommerceModel->save($formData);
 
-            return redirect()->to("/admin/user");
+            return redirect()->to("/admin/customer");
         }
     }
 
     public function delete($id)
     {
         $this->userEcommerceModel->delete($id);
-        return redirect()->to("/admin/user");
+        return redirect()->to("/admin/customer");
     }
 }

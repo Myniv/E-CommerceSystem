@@ -50,14 +50,14 @@ $routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
     $routes->put('admin/users/update/(:num)', [UsersController::class, 'update/$1']);
     $routes->delete('admin/users/delete/(:num)', [UsersController::class, 'delete/$1']);
 
-    $routes->get('admin/user', [UserEcommerceController::class, 'index']);
-    $routes->get('admin/user/detail/(:num)', [UserEcommerceController::class, 'detail']);
-    $routes->get('admin/user/profile-parser/(:num)', [UserEcommerceController::class, 'detailParser']);
-    $routes->get('admin/user/role/(:alphanum)', [UserEcommerceController::class, 'role']);
-    $routes->get('admin/user/settings/(:alpha)', [UserEcommerceController::class, 'settings']);
-    $routes->match(['get', 'post'], 'admin/user/create', [UserEcommerceController::class, 'create']);
-    $routes->match(['get', 'put'], 'admin/user/update/(:num)', [UserEcommerceController::class, 'update/$1']);
-    $routes->delete('admin/user/delete/(:num)', [UserEcommerceController::class, 'delete']);
+    $routes->get('admin/customer', [UserEcommerceController::class, 'index']);
+    $routes->get('admin/customer/detail/(:num)', [UserEcommerceController::class, 'detail']);
+    $routes->get('admin/customer/profile-parser/(:num)', [UserEcommerceController::class, 'detailParser']);
+    $routes->get('admin/customer/role/(:alphanum)', [UserEcommerceController::class, 'role']);
+    $routes->get('admin/customer/settings/(:alpha)', [UserEcommerceController::class, 'settings']);
+    $routes->match(['get', 'post'], 'admin/customer/create', [UserEcommerceController::class, 'create']);
+    $routes->match(['get', 'put'], 'admin/customer/update/(:num)', [UserEcommerceController::class, 'update/$1']);
+    $routes->delete('admin/customer/delete/(:num)', [UserEcommerceController::class, 'delete']);
 });
 
 $routes->group('admin/user', ['filter' => 'role:Administrator'], function ($routes) {

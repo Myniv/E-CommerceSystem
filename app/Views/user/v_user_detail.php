@@ -24,7 +24,7 @@
                     </ul>
 
                     <div class="text-center mt-4">
-                        <a href="/admin/user" class="btn btn-secondary">Kembali</a>
+                        <a href="/admin/customer" class="btn btn-secondary">Kembali</a>
                     </div>
                 </div>
             </div>

@@ -18,7 +18,7 @@
                         <?php if (in_groups('Administrator')): ?>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/users') ?>">User</a>
                             <a class="btn btn-primary nav-link text-white me-2"
-                                href="<?= base_url('/admin/user') ?>">Customer</a>
+                                href="<?= base_url('/admin/customer') ?>">Customer</a>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
                         <?php endif; ?>
                         <?php if (in_groups('Product Manager')): ?>
