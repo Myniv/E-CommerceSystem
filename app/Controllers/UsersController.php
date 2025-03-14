@@ -139,20 +139,27 @@ class UsersController extends BaseController
         }
 
         $data = [
-            'id' => $id,
+            // 'id' => $id,
             'username' => $newUsername,
             'email' => $newEmail,
-            'password' => $password,
             'active' => $this->request->getVar('status') ? 1 : 0,
         ];
+        $user->username = $newUsername;
+        $user->email = $newEmail;
+        $user->active = $this->request->getVar('status') ? 1 : 0;
 
         if (!empty($password)) {
-            $data['password'] = $password;
+            $user->password = $password;
         }
 
-        $userObject = new User($data);
+        // $userObject = new User($user);
 
-        $this->userModel->save($userObject);
+        if (!$this->userModel->save($user)) {
+            return redirect()
+                ->back()
+                ->with('error', $this->userModel->errors())
+                ->withInput();
+        }
 
         $groupId = $this->request->getVar('group');
         if (!empty($groupId)) {

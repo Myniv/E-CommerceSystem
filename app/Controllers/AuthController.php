@@ -40,18 +40,20 @@ class AuthController extends MythController
     public function attemptRegister()
     {
         $result = parent::attemptRegister();
+        if ($this->users->errors()) {
+            return redirect()
+                ->back()
+                ->with('errors', $this->users->errors())
+                ->withInput();
+        }
 
         $email = $this->request->getPost('email');
         $user = $this->userModel->where('email', $email)->first();
-        $userArray = $this->userModel->asArray()->where('email', $email)->first();
-
 
         if ($user) {
-            // $studentGroup = $this->groupModel->where('name', 'admin')->first();
-            // $studentGroup = $this->groupModel->where('name', 'lecturer')->first();
-            $studentGroup = $this->groupModel->where('name', 'Customer')->first();
-            if ($studentGroup) {
-                $this->groupModel->addUserToGroup($user->id, $studentGroup->id);
+            $customerGroup = $this->groupModel->where('name', 'Customer')->first();
+            if ($customerGroup) {
+                $this->groupModel->addUserToGroup($user->id, $customerGroup->id);
             }
 
             $registUserEcommerce = [
@@ -60,7 +62,6 @@ class AuthController extends MythController
                 'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                 'full_name' => $this->request->getPost('full_name'),
                 'role' => 'Customer',
-                // 'status' => $user->active,
                 'last_login' => null,
             ];
 
