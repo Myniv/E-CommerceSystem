@@ -32,7 +32,7 @@ class Home extends BaseController
     {
         return view('about_us');
     }
-    
+
     public function show()
     {
         echo "Show Option Route";
@@ -53,4 +53,18 @@ class Home extends BaseController
     {
         return view("unauthorized_page");
     }
+
+    public function dashboard(): string
+    {
+        if (!logged_in()) {
+            return redirect()->to('/login'); // Ensure user is logged in
+        }
+
+        $data = [
+            'name' => user()->username,
+            'role' => implode(', ', user()->getRoles())
+        ];
+        return view('/dashboard/v_dashboard', $data);
+    }
+
 }

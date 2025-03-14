@@ -34,7 +34,6 @@ class AuthController extends MythController
     public function attemptLogin()
     {
         $result = parent::attemptLogin();
-        $this->updateUserEcommerceStatusLastLogin();
         return $this->redirectBasedOnRole();
     }
 
@@ -89,13 +88,17 @@ class AuthController extends MythController
         $userGroups = $this->groupModel->getGroupsForUser($userId);
         foreach ($userGroups as $group) {
             if ($group['name'] === 'Administrator') {
-                return redirect()->to('/admin/dashboard');
+                return redirect()->to('/dashboard');
             } else if ($group['name'] === 'Product Manager') {
-                return redirect()->to('/product-manager/dashboard');
+                return redirect()->to('/dashboard');
             } else if ($group['name'] === 'Customer') {
-                return redirect()->to('/customer/dashboard');
+                $this->updateUserEcommerceStatusLastLogin();
+                return redirect()->to('/dashboard');
             }
         }
+        // if (in_array($userGroups, ['Administrator', 'Product Manager', 'Customer'])) {
+        //     return redirect()->to('/dashboard');
+        // }
 
         return redirect()->to('/');
     }
@@ -113,7 +116,7 @@ class AuthController extends MythController
         }
 
         $user = $this->userModel->find($userId);
-        $userEcommerce = $this->userEcommerceModel->getUserLogin($user->username);
+        $userEcommerce = $this->userEcommerceModel->getUserByUsername($user->username);
         $data['id'] = $userEcommerce->id;
         if ($user->active == 1 || $user->active == true) {
             $data['status'] = "Active";

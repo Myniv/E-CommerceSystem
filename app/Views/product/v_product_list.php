@@ -173,15 +173,17 @@
                         <td>
                             <a href="<?= route_to("product_details", $product->id) ?>"
                                 class="btn btn-info btn-sm">Detail</a>
-                            <a href="/admin/product/<?= $product->id; ?>/edit" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="/admin/product/<?= $product->id; ?>" method="post" class="d-inline">
+                            <a href="/product/<?= $product->id; ?>/edit" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="/product/<?= $product->id; ?>" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure want to delete this product?');">
                                     Delete
                                 </button>
                             </form>
-                            <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
+                            <?php if(in_groups('Administrator')):?>
+                                <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
+                            <?php endif?>
                         </td>
                     </tr>
                 <?php } ?>

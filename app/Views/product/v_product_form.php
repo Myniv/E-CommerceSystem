@@ -12,7 +12,7 @@
         <div class="card-body">
 
             <form method="post"
-                action="<?= isset($products) ? base_url('admin/product/' . $products->id) : base_url('admin/product'); ?>"
+                action="<?= isset($products) ? base_url('product/' . $products->id) : base_url('product'); ?>"
                 id="formData">
                 <?php if (isset($products)) { ?>
                     <?= csrf_field() ?>

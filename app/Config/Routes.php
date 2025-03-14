@@ -2,6 +2,7 @@
 
 use App\Controllers\AdminController;
 use App\Controllers\ApiController;
+use App\Controllers\AuthController;
 use App\Controllers\Home;
 use App\Controllers\PesananController;
 use App\Controllers\ProductController;
@@ -20,30 +21,58 @@ $routes->environment('production', static function ($routes) {
     $routes->get('/', [Home::class, 'production']);
 });
 
+$routes->get('/health-check', function () {
+    return view('v_health_check');
+});
+
+//Public routes
 $routes->addRedirect('/home', '/');
 $routes->get('/about-us', [Home::class, 'aboutUs']);
+$routes->get('/dashboard', [Home::class, 'dashboard'], ['filter' => 'role:Administrator,Customer,Product Manager']);
+$routes->get("product/catalog", [ProductController::class, 'productCatalog']);
 
 
-$routes->group('api', ['filter' => 'role:Administrator'], function ($routes) {
-    $routes->get('detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
-    $routes->get('json', [Home::class, 'index']);
-    $routes->get('json/product', [ApiController::class, 'getAllProductJSON']);
-    $routes->get('json/product/(:num)', [ApiController::class, 'getProductJSONById/$1']);
-    $routes->get('json/user', [ApiController::class, 'getAllUserJSON']);
-    $routes->get('json/user/(:num)', [ApiController::class, 'getUserJSONById/$1']);
+
+
+//Admin routes
+$routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
+    $routes->get('api/detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
+    $routes->get('api/json', [Home::class, 'index']);
+    $routes->get('api/json/product', [ApiController::class, 'getAllProductJSON']);
+    $routes->get('api/json/product/(:num)', [ApiController::class, 'getProductJSONById/$1']);
+    $routes->get('api/json/user', [ApiController::class, 'getAllUserJSON']);
+    $routes->get('api/json/user/(:num)', [ApiController::class, 'getUserJSONById/$1']);
+
+    $routes->get('admin/users', [UsersController::class, 'index']);
+    $routes->get('admin/users/create', [UsersController::class, 'create']);
+    $routes->post('admin/users/store', [UsersController::class, 'store']);
+    $routes->get('admin/users/edit/(:num)', [UsersController::class, 'edit/$1']);
+    $routes->put('admin/users/update/(:num)', [UsersController::class, 'update/$1']);
+    $routes->delete('admin/users/delete/(:num)', [UsersController::class, 'delete/$1']);
+
+    $routes->get('admin/user', [UserEcommerceController::class, 'index']);
+    $routes->get('admin/user/detail/(:num)', [UserEcommerceController::class, 'detail']);
+    $routes->get('admin/user/profile-parser/(:num)', [UserEcommerceController::class, 'detailParser']);
+    $routes->get('admin/user/role/(:alphanum)', [UserEcommerceController::class, 'role']);
+    $routes->get('admin/user/settings/(:alpha)', [UserEcommerceController::class, 'settings']);
+    $routes->match(['get', 'post'], 'admin/user/create', [UserEcommerceController::class, 'create']);
+    $routes->match(['get', 'put'], 'admin/user/update/(:num)', [UserEcommerceController::class, 'update/$1']);
+    $routes->delete('admin/user/delete/(:num)', [UserEcommerceController::class, 'delete']);
 });
 
-$routes->group('pesanan', ['filter' => 'role:user'], function ($routes) {
-    $routes->get('/', [PesananController::class, 'allPesanan']);
-    $routes->get('create', [PesananController::class, 'goCreatePesanan']);
-    $routes->post('add', [PesananController::class, 'createPesanan']);
-    $routes->post('edit', [PesananController::class, 'editPesanan']);
-    $routes->get('edit/(:num)', [PesananController::class, 'goEditPesanan/$1']);
-    $routes->delete('delete/(:num)', [PesananController::class, 'deletePesanan/$1']);
-    $routes->get('detail/(:num)', [PesananController::class, 'detailPesanan/$1']);
-});
+$routes->group('admin/user', ['filter' => 'role:Administrator'], function ($routes) {
 
-$routes->group('admin', ['filter' => 'role:Administrator'], function ($routes) {
+});
+$routes->group(
+    'admin/users/',
+    ['filter' => 'role:Administrator'],
+    function ($routes) {
+
+    }
+);
+
+//Admin || Product Manager routes
+$routes->group('', ['filter' => 'role:Administrator,Product Manager'], function ($routes) {
     // $routes->resource("product", ['controller' => 'ProductController']);
     $routes->get('product', [ProductController::class, 'index']);
     $routes->get('product/new', [ProductController::class, 'new']);
@@ -53,49 +82,32 @@ $routes->group('admin', ['filter' => 'role:Administrator'], function ($routes) {
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);
 });
-$routes->get("product/catalog", [ProductController::class, 'productCatalog']);
 
-$routes->group('admin/user', ['filter' => 'role:Administrator'], function ($routes) {
-    $routes->get('/', [UserEcommerceController::class, 'index']);
-    $routes->get('profile/(:num)', [UserEcommerceController::class, 'detail']);
-    $routes->get('profile-parser/(:num)', [UserEcommerceController::class, 'detailParser']);
-    $routes->get('role/(:alphanum)', [UserEcommerceController::class, 'role']);
-    $routes->get('settings/(:alpha)', [UserEcommerceController::class, 'settings']);
-    $routes->match(['get', 'post'], 'create', [UserEcommerceController::class, 'create']);
-    $routes->match(['get', 'put'], 'update/(:num)', [UserEcommerceController::class, 'update/$1']);
-    $routes->delete('delete/(:num)', [UserEcommerceController::class, 'delete']);
+//Customer ||Administrator routes
+$routes->group('pesanan', ['filter' => 'role:Customer,Administrator'], function ($routes) {
+    $routes->get('/', [PesananController::class, 'allPesanan']);
+    $routes->get('create', [PesananController::class, 'goCreatePesanan']);
+    $routes->post('add', [PesananController::class, 'createPesanan']);
+    $routes->post('edit', [PesananController::class, 'editPesanan']);
+    $routes->get('edit/(:num)', [PesananController::class, 'goEditPesanan/$1']);
+    $routes->delete('delete/(:num)', [PesananController::class, 'deletePesanan/$1']);
+    $routes->get('detail/(:num)', [PesananController::class, 'detailPesanan/$1']);
+});
+//Customer routes
+$routes->group('', ['filter' => 'role:Customer'], function ($routes) {
+    $routes->get('profile', [UserEcommerceController::class, 'profile']);
 });
 
-$routes->get('/admin/dashboard', [AdminController::class, 'dashboard'], ['filter' => 'role:Administrator', 'as' => 'user_dashboard']);
-$routes->get('/admin/dashboard-parser', [AdminController::class, 'dashboardParser'], ['filter' => 'role:Administrator']);
-
-$routes->get('/health-check', function () {
-    return view('v_health_check');
-});
-
-// $routes->post('login', [Home::class, 'login']);
-// $routes->get("unauthorized", [Home::class, "unauthorized"]);
-
+//Auth routes
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     // Registrasi
     $routes->get('register', 'AuthController::register', ['as' => 'register']);
     $routes->post('register', 'AuthController::attemptRegister');
 
-
     // Route lain seperti login, dll
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');
+
+    $routes->get('unauthorized', [AuthController::class, 'unauthorized']);
 });
 
-$routes->group(
-    'admin/users',
-    ['filter' => 'role:Administrator'],
-    function ($routes) {
-        $routes->get('/', [UsersController::class, 'index']);
-        $routes->get('create', [UsersController::class, 'create']);
-        $routes->post('store', [UsersController::class, 'store']);
-        $routes->get('edit/(:num)', [UsersController::class, 'edit/$1']);
-        $routes->put('update/(:num)', [UsersController::class, 'update/$1']);
-        $routes->delete('delete/(:num)', [UsersController::class, 'delete/$1']);
-    }
-);

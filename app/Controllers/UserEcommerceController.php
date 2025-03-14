@@ -63,13 +63,30 @@ class UserEcommerceController extends BaseController
         $data["account_status"] = "Active";
         $data["backButton"] = view_cell('BackCell');
 
-
         $data['content'] = $this->parser->setData($data)
             ->render(
                 "user/v_user_detail_parser",
                 // ['cache' => 3600, 'cache_name' => 'user_profile']
             );
 
+        return view("components/v_parser_layout_admin", $data);
+    }
+    public function profile()
+    {
+        $user = user()->username;
+        $data = $this->userEcommerceModel->getUserByUsername($user)->toArray();
+
+        $data['profile_picture'] = base_url("iconOrang.png");
+        $dateTime = (new DateTime())->format("Y-m-d H:i:s");
+        $data["activity_history"] = view_cell('ActivityHistoryCell', ['dateTime' => $dateTime]);
+        $data["account_status"] = "Active";
+        $data["backButton"] = view_cell('BackCell');
+
+        $data['content'] = $this->parser->setData($data)
+            ->render(
+                "user/v_user_detail_parser",
+                // ['cache' => 3600, 'cache_name' => 'user_profile']
+            );
 
         return view("components/v_parser_layout_admin", $data);
     }

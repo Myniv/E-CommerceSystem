@@ -154,7 +154,7 @@ class UserEcommerceModel extends Model
         return $result;
     }
 
-    public function getUserLogin($username)
+    public function getUserByUsername($username)
     {
         return $this->select('users_ecommerce.*')
             ->where('users_ecommerce.username', $username)

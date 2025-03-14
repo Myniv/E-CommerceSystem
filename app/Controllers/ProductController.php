@@ -47,7 +47,7 @@ class ProductController extends BaseController
             'params' => $params,
             'categories' => $this->categoryModel->findAll(),
             'statuss' => $this->productModel->getAllStatus(),
-            'baseUrl' => base_url('admin/product'),
+            'baseUrl' => base_url('product'),
         ];
         return view("product/v_product_list", $data);
     }
@@ -205,7 +205,7 @@ class ProductController extends BaseController
         cache()->delete("product-catalog");
 
         $this->productModel->save($formData);
-        return redirect()->to("admin/product");
+        return redirect()->to("product");
     }
 
     public function edit($id = null)
@@ -242,7 +242,7 @@ class ProductController extends BaseController
         cache()->delete("product-catalog");
 
         $this->productModel->save($formData);
-        return redirect()->to("admin/product");
+        return redirect()->to("product");
     }
 
 
@@ -250,7 +250,7 @@ class ProductController extends BaseController
     {
         $this->productModel->delete($id);
         cache()->delete("product-catalog");
-        return redirect()->to("admin/product");
+        return redirect()->to("product");
     }
 
 

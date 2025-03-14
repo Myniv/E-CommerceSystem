@@ -1,6 +1,7 @@
 <?= $this->extend('layout/master') ?>
 <?= $this->section('content') ?>
 
-<h1>Welcome to the E-Commerce Management System</h1>
+<h1>Dashboard <?= $role ?></h1>
+<h2>Welcome <?= $name ?></h2>
 
 <?= $this->endSection() ?>
