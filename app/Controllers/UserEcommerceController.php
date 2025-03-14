@@ -62,6 +62,7 @@ class UserEcommerceController extends BaseController
         $data["activity_history"] = view_cell('ActivityHistoryCell', ['dateTime' => $dateTime]);
         $data["account_status"] = "Active";
         $data["backButton"] = view_cell('BackCell');
+        $data['editButton'] = "";
 
         $data['content'] = $this->parser->setData($data)
             ->render(
@@ -81,6 +82,7 @@ class UserEcommerceController extends BaseController
         $data["activity_history"] = view_cell('ActivityHistoryCell', ['dateTime' => $dateTime]);
         $data["account_status"] = "Active";
         $data["backButton"] = view_cell('BackCell');
+        $data['editButton'] = "<a class='btn btn-primary mb-3' href='/profile/edit'>Edit</a>";
 
         $data['content'] = $this->parser->setData($data)
             ->render(
@@ -89,6 +91,32 @@ class UserEcommerceController extends BaseController
             );
 
         return view("components/v_parser_layout_admin", $data);
+    }
+
+    public function editProfile()
+    {
+        $user = user()->username;
+        $getUser = $this->userEcommerceModel->getUserByUsername($user);
+
+        $type = $this->request->getMethod();
+        if ($type == "GET") {
+            $data['user'] = $getUser;
+            return view('user/v_user_form', $data);
+        }
+
+        $formData = [
+            'id' => $getUser->id,
+            'full_name' => $this->request->getPost("full_name"),
+            'status' => $this->request->getPost("status"),
+        ];
+
+        if (!$this->userEcommerceModel->validate($formData)) {
+            return redirect()->back()->withInput()->with('errors', $this->userEcommerceModel->errors());
+        }
+
+        $this->userEcommerceModel->save($formData);
+
+        return redirect()->to("/profile");
     }
 
     public function role($username)

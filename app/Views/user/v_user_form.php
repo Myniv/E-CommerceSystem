@@ -11,8 +11,11 @@
             </h4>
         </div>
         <div class="card-body">
-            <form
-                action="<?= isset($user) ? base_url('admin/customer/update/' . $user->id) : base_url('admin/customer/create') ?>"
+            <form <?php if (in_groups('Administrator')): ?>
+                    action="<?= isset($user) ? base_url('admin/customer/update/' . $user->id) : base_url('admin/customer/create') ?>"
+                <?php endif; ?> <?php if (in_groups('Customer')): ?>
+                    action="<?= base_url('profile/edit') ?>"
+                <?php endif; ?> 
                 method="post" id="formData" novalidate>
                 <?= csrf_field() ?>
                 <?php if (isset($user)): ?>

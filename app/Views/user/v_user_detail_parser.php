@@ -1,7 +1,10 @@
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            {!backButton!}
+            <div class="d-flex justify-content-between">
+                {!backButton!}
+                {!editButton!}
+            </div>
             <div class="card shadow">
                 <div class="card-body text-center">
                     <!-- Profile Picture -->
@@ -23,7 +26,6 @@
                             <p><strong>Status:</strong> {status}</p>
                             <p><strong>Last Login:</strong> {last_login}</p>
                         </div>
-
                     </div>
                 </div>
             </div>
