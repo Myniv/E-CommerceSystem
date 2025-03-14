@@ -2,10 +2,10 @@
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <h1>Role Management</h1>
+    <h2 class="mb-3">Role List</h2>
 
     <div class="mb-3">
-        <a href="<?= base_url('admin/roles/create'); ?>" class="btn btn-primary">Add New User</a>
+        <a href="<?= base_url('admin/roles/create'); ?>" class="btn btn-success">Add New User</a>
     </div>
 
     <div class="table-responsive">

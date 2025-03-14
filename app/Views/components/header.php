@@ -17,8 +17,6 @@
                             href="<?= base_url('/product/catalog') ?>">Catalog</a>
                         <?php if (in_groups('Administrator')): ?>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/users') ?>">User</a>
-                            <a class="btn btn-primary nav-link text-white me-2"
-                                href="<?= base_url('/admin/customer') ?>">Customer</a>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/roles') ?>">Role</a>
                         <?php endif; ?>
