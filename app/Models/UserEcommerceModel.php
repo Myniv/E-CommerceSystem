@@ -42,9 +42,9 @@ class UserEcommerceModel extends Model
     protected $validationRules = [
         'username' => 'required|min_length[3]|max_length[255]',
         'email' => 'required|valid_email|max_length[255]',
-        'password' => 'required|min_length[8]|max_length[255]',
+        // 'password' => 'required|min_length[8]|max_length[255]',
         'full_name' => 'required|min_length[3]|max_length[255]',
-        'role' => 'required|in_list[Administrator,Customer,Product Manager]',
+        // 'role' => 'required|in_list[Administrator,Customer,Product Manager]',
         // 'status' => 'required|in_list[Active,Inactive]',
     ];
     protected $validationMessages = [
@@ -72,7 +72,7 @@ class UserEcommerceModel extends Model
         ],
         'role' => [
             'required' => 'The role field is required.',
-            'in_list' => 'The role must be either Administrator, Customer, or Product Manager.'
+            // 'in_list' => 'The role must be either Administrator, Customer, or Product Manager.'
         ],
         // 'status' => [
         //     'required' => 'The status field is required.',

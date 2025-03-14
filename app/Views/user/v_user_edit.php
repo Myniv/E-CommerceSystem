@@ -23,6 +23,17 @@
                 <input type="hidden" name="_method" value="PUT">
 
                 <div class="mb-3">
+                    <label for="full_name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control <?= session('errors.username') ? 'is-invalid' : '' ?>"
+                        name="full_name" id="full_name" placeholder="Full Name"
+                        value="<?= old('full_name', $user->full_name); ?>" required>
+
+                    <div class="invalid-feedback">
+                        <?= session('errors.username') ?? '' ?>
+                    </div>
+                </div>
+
+                <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control <?= session('errors.username') ? 'is-invalid' : '' ?>"
                         name="username" id="username" placeholder="Username"

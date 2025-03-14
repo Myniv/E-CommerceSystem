@@ -31,6 +31,22 @@
 
             <div class="col-md-2">
                 <div class="input-group ml-2">
+                    <select class="form-select <?= session('errors.group') ? 'is-invalid' : '' ?>" name="role" id="role"
+                        required onchange="this.form.submit()">
+                        <option value="">All Role</option>
+                        <?php foreach ($groups as $group): ?>
+                            <option value=" <?= $group->id ?>" <?= $params->role == $group->id ? 'selected' : '' ?>>
+                                <?= $group->name ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-2">
+                <div class="input-group ml-2">
                     <select name="perPage" class="form-select" onchange="this.form.submit()">
                         <option value="2" <?= ($params->perPage == 2) ? 'selected' : '' ?>>
                             2 per Page
@@ -115,9 +131,16 @@
                         <td><?= $user->id ?></td>
                         <td><?= $user->username ?></td>
                         <td><?= $user->email ?></td>
-                        <!-- <td><?= $user->password ?></td> -->
                         <td><?= $user->full_name ?></td>
-                        <td><?= $user->role ?></td>
+                        <td>
+                            <?php
+                            $groupModel = new \Myth\Auth\Models\GroupModel();
+                            $groups = $groupModel->getGroupsForUser($user->id);
+                            foreach ($groups as $group) {
+                                echo '<span class="badge bg-info me-1">' . $group['name'] . '</span>';
+                            }
+                            ?>
+                        </td>
                         <td><?= $user->status ?></td>
                         <td>
                             <a href="/admin/customer/profile-parser/<?= $user->id ?>" class="btn btn-info btn-sm">Detail</a>

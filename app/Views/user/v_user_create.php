@@ -20,6 +20,15 @@
                 <?= csrf_field(); ?>
 
                 <div class="mb-3">
+                    <label for="full_name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control <?= session('errors.full_name') ? 'is-invalid' : '' ?>"
+                        name="full_name" id="full_name" placeholder="Full Name" value="<?= old('full_name') ?>" required>
+                    <div class="invalid-feedback">
+                        <?= session('errors.full_name') ?? '' ?>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control <?= session('errors.username') ? 'is-invalid' : '' ?>"
                         name="username" id="username" placeholder="Username" value="<?= old('username') ?>" required>

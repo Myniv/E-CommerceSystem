@@ -2,6 +2,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Libraries\DataParams;
+use App\Models\UserEcommerceModel;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\GroupModel;
 use Myth\Auth\Models\UserModel;
@@ -10,6 +12,7 @@ use Myth\Auth\Models\UserModel;
 class UsersController extends BaseController
 {
     protected $userModel;
+    protected $userEcommerceModel;
 
     protected $groupModel;
     protected $db;
@@ -21,6 +24,7 @@ class UsersController extends BaseController
         $this->groupModel = new GroupModel();
         $this->db = \Config\Database::connect();
         $this->config = config('Auth');
+        $this->userEcommerceModel = new UserEcommerceModel();
 
         helper(['auth']);
         if (!in_groups('admin')) {
@@ -29,12 +33,32 @@ class UsersController extends BaseController
     }
     public function index()
     {
-        $data = [
-            'title' => 'User Management',
-            'users' => $this->userModel->findAll()
-        ];
+        $params = new DataParams([
+            "search" => $this->request->getGet("search"),
 
-        return view('users/v_user_list', $data);
+            "status" => $this->request->getGet("status"),
+            "role" => $this->request->getGet("role"),
+
+            "sort" => $this->request->getGet("sort"),
+            "order" => $this->request->getGet("order"),
+            "perPage" => $this->request->getGet("perPage"),
+            "page" => $this->request->getGet("page_users"),
+        ]);
+
+        $result = $this->userModel->getFilteredUser($params);
+
+        $data = [
+            'users' => $result['users'],
+            'pager' => $result['pager'],
+            'total' => $result['total'],
+            'groups' => $this->groupModel->findAll(),
+            'params' => $params,
+            'baseUrl' => base_url('admin/users'),
+        ];
+        // dd($data['groups']);  // Debug output
+
+
+        return view('user/v_user_list', $data);
     }
 
     public function create()
@@ -45,14 +69,14 @@ class UsersController extends BaseController
             'validation' => \Config\Services::validation()
         ];
 
-        return view('users/v_user_create', $data);
+        return view('user/v_user_create', $data);
     }
 
     public function edit($id)
     {
         $data = [
             'title' => 'Edit User',
-            'user' => $this->userModel->find($id),
+            'user' => $this->userModel->getUserWithFullName()->find($id),
             'groups' => $this->groupModel->findAll(),
             'userGroups' => $this->groupModel->getGroupsForUser($id),
             'validation' => \Config\Services::validation()
@@ -62,7 +86,7 @@ class UsersController extends BaseController
             return redirect()->to('/users')->with('error', 'User Not Found');
         }
 
-        return view('users/v_user_edit', $data);
+        return view('user/v_user_edit', $data);
     }
 
     public function store()
@@ -97,6 +121,19 @@ class UsersController extends BaseController
 
         $groupId = $this->request->getVar('group');
         $this->groupModel->addUserToGroup($userId, $groupId);
+
+
+        //Save data to user_ecommerce
+        $data = [
+            'username' => $user->username,
+            'email' => $user->email,
+            'password' => $user->password,
+            'full_name' => $this->request->getPost('full_name'),
+            'role' => $user->getRoles()[0],
+            'status' => 'Active',
+            'last_login' => null
+        ];
+        $this->userEcommerceModel->save($data);
 
         return redirect()->to('admin/users')->with('message', 'User Created Successfully');
     }
@@ -138,12 +175,6 @@ class UsersController extends BaseController
             }
         }
 
-        $data = [
-            // 'id' => $id,
-            'username' => $newUsername,
-            'email' => $newEmail,
-            'active' => $this->request->getVar('status') ? 1 : 0,
-        ];
         $user->username = $newUsername;
         $user->email = $newEmail;
         $user->active = $this->request->getVar('status') ? 1 : 0;
@@ -151,8 +182,6 @@ class UsersController extends BaseController
         if (!empty($password)) {
             $user->password = $password;
         }
-
-        // $userObject = new User($user);
 
         if (!$this->userModel->save($user)) {
             return redirect()
@@ -172,6 +201,29 @@ class UsersController extends BaseController
             $this->groupModel->addUserToGroup($id, $groupId);
         }
 
+        //Save data to user_ecommerce
+        $userEcommerceId = $this->userEcommerceModel->getUserByUsername($user->username)->id;
+        $roles = $user->getRoles();
+        $roleString = implode(', ', $roles);
+        $data = [
+            'id' => $userEcommerceId,
+            'username' => $user->username,
+            'email' => $user->email,
+            'full_name' => $this->request->getPost('full_name'),
+            'role' => $roleString,
+            'status' => $user->active ? 'Active' : 'Inactive',
+        ];
+        if (!empty($password)) {
+            $data['password'] = $password;
+        }
+
+        if (!$this->userEcommerceModel->save($data)) {
+            // dd($this->userEcommerceModel->errors());
+            return redirect()
+                ->back()
+                ->with('error', $this->userEcommerceModel->errors())
+                ->withInput();
+        }
         return redirect()->to('admin/users')->with('message', 'User Updated Successfully');
     }
 
@@ -183,7 +235,10 @@ class UsersController extends BaseController
             return redirect()->to('admin/users')->with('error', 'User Not Found');
         }
 
+        $userEcommerce = $this->userEcommerceModel->getUserByUsername($user->username);
+
         $this->userModel->delete($id);
+        $this->userEcommerceModel->delete($userEcommerce->id);
 
         return redirect()->to('admin/users')->with('message', 'User Deleted Successfully');
     }

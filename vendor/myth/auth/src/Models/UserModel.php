@@ -169,7 +169,7 @@ class UserModel extends Model
 
         // Filter by role
         if (!empty($params->role)) {
-            $this->where('auth_groups.name', $params->role);
+            $this->where('auth_groups.id', $params->role);
         }
 
         // Filter by status
@@ -204,5 +204,12 @@ class UserModel extends Model
         return $result;
     }
 
+    public function getUserWithFullName()
+    {
+        return $this->select('users.*, users_ecommerce.full_name as full_name')
+            ->join('users_ecommerce', 'users.username = users_ecommerce.username', 'left');
+            //In the controller just using ->findAll(); for getting all the user with full name
+            //or using ->find($id); for getting a single user with full name
+    }
 
 }
