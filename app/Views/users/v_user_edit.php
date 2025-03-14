@@ -2,10 +2,11 @@
 <?= $this->section('content'); ?>
 
 <div class="container mt-4 mb-4">
-    <?php if (session()->has('errors')): ?>
+
+    <?php if (session()->has('error')): ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach (session('errors') as $error): ?>
+                <?php foreach (session('error') as $error): ?>
                     <li><?= $error; ?></li>
                 <?php endforeach; ?>
             </ul>

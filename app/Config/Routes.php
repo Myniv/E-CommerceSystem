@@ -6,6 +6,7 @@ use App\Controllers\AuthController;
 use App\Controllers\Home;
 use App\Controllers\PesananController;
 use App\Controllers\ProductController;
+use App\Controllers\RoleController;
 use App\Controllers\UserEcommerceController;
 use App\Controllers\UsersController;
 use CodeIgniter\Router\RouteCollection;
@@ -58,6 +59,11 @@ $routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
     $routes->match(['get', 'post'], 'admin/customer/create', [UserEcommerceController::class, 'create']);
     $routes->match(['get', 'put'], 'admin/customer/update/(:num)', [UserEcommerceController::class, 'update/$1']);
     $routes->delete('admin/customer/delete/(:num)', [UserEcommerceController::class, 'delete']);
+
+    $routes->get('admin/roles', [RoleController::class, 'index']);
+    $routes->match(['get', 'post'], 'admin/roles/create', [RoleController::class, 'create']);
+    $routes->match(['get', 'post'], 'admin/roles/update/(:num)', [RoleController::class, 'update']);
+    $routes->delete('admin/roles/delete/(:num)', [RoleController::class, 'delete']);
 });
 
 $routes->group('admin/user', ['filter' => 'role:Administrator'], function ($routes) {
@@ -96,6 +102,7 @@ $routes->group('pesanan', ['filter' => 'role:Customer,Administrator'], function 
 //Customer routes
 $routes->group('', ['filter' => 'role:Customer'], function ($routes) {
     $routes->get('profile', [UserEcommerceController::class, 'profile']);
+    $routes->match(['get', 'put'], 'profile/edit', [UserEcommerceController::class, 'editProfile']);
 });
 
 //Auth routes
