@@ -6,13 +6,14 @@
     <button class="menu-btn btn text-white" onclick="toggleSidebar()">
         ☰
     </button>
-    <h4 class="text-light text-center">Academics</h4>
+    <h4 class="text-light text-center">Management</h4>
     <hr class="text-light">
     <nav>
-        <a class="text-white" href="<?= base_url('/admin/user') ?>">User</a>
-        <!-- <a class="text-white" href="<?= base_url('/admin/dashboard') ?>">Dashboard</a> -->
-        <a href="<?= route_to("user_dashboard") ?>">Dashboard</a>
-        <a class="text-white" href="<?= base_url('/admin/product') ?>">Product</a>
+        <?php if (in_groups('Administrator')): ?>
+            <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/users') ?>">User</a>
+            <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/customer') ?>">Customer</a>
+            <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
+        <?php endif; ?>
     </nav>
 </div>
 

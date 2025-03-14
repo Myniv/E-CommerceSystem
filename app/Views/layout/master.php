@@ -67,6 +67,11 @@
     <?= $this->include('components/header') ?>
     <div class="d-flex flex-grow-1">
         <div class="container mt-4">
+            <?php if (logged_in()): ?>
+                <?php if (in_groups('Administrator')): ?>
+                    <?= $this->include('components/sidebar') ?>
+                <?php endif; ?>
+            <?php endif; ?>
             <?= $this->renderSection('content') ?>
         </div>
     </div>

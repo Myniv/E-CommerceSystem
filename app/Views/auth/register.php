@@ -4,7 +4,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">Registrasi</div>
+                <div class="card-header bg-dark text-white">
+                    <h3>Register</h3>
+                </div>
                 <div class="card-body">
                     <?php if (session('errors')): ?>
                         <div class="alert alert-danger">
@@ -41,21 +43,21 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="pass_confirm" class="form-label">Konfirmasi Password</label>
+                            <label for="pass_confirm" class="form-label">Confirm Password</label>
                             <input type="password" class="form-control 
                  <?= session('errors.pass_confirm') ? 'is-invalid' : '' ?>" name="pass_confirm"
-                                placeholder="Konfirmasi Password">
+                                placeholder="Confirm Password">
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Daftar</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="text-center mt-3">
-                Sudah punya akun? <a href="<?= route_to('login') ?>">Login</a>
+            <div class="text-center mt-3 mb-3">
+                Already have an account? <a href="<?= route_to('login') ?>">Login</a>
             </div>
         </div>
     </div>

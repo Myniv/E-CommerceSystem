@@ -20,12 +20,13 @@
                             <a class="btn btn-primary nav-link text-white me-2"
                                 href="<?= base_url('/admin/customer') ?>">Customer</a>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
+                            <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/roles') ?>">Role</a>
                         <?php endif; ?>
                         <?php if (in_groups('Product Manager')): ?>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
                         <?php endif; ?>
                         <?php if (in_groups('Customer')): ?>
-                            <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/pesanan') ?>">Pesanan</a>
+                            <!-- <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/pesanan') ?>">Pesanan</a> -->
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/profile') ?>">Profile</a>
                         <?php endif; ?>
                         <a class="btn btn-danger nav-link text-white me-2" href="<?= base_url('/logout') ?>">Logout</a>
