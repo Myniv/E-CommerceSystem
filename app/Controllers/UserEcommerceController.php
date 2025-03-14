@@ -7,16 +7,19 @@ use App\Libraries\DataParams;
 use App\Models\M_User;
 use App\Models\UserEcommerceModel;
 use DateTime;
+use Myth\Auth\Models\UserModel;
 
 class UserEcommerceController extends BaseController
 {
     private $userEcommerceModel;
+    protected $userModel;
     private $userEcommerceEntities;
     private $parser;
     public function __construct()
     {
         $this->userEcommerceModel = new UserEcommerceModel();
         $this->userEcommerceEntities = new UserEcommerce();
+        $this->userModel = new UserModel();
         $this->parser = \Config\Services::parser();
     }
 
@@ -34,7 +37,7 @@ class UserEcommerceController extends BaseController
             "page" => $this->request->getGet("page_users"),
         ]);
 
-        $result = $this->userEcommerceModel->getFilteredUser($params);
+        $result = $this->userModel->getFilteredUser($params);
 
         $data = [
             'users' => $result['users'],

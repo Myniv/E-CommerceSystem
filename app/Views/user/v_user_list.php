@@ -65,48 +65,44 @@
             <thead class="table-dark">
                 <tr>
                     <th>
-                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('id', $baseUrl) ?>">
-                            ID <?= $params->isSortedBy('id') ? ($params->getSortDirection() == 'asc' ?
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('users.id', $baseUrl) ?>">
+                            ID <?= $params->isSortedBy('users.id') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
-                            href="<?= $params->getSortUrl('username', $baseUrl) ?>">
-                            Username <?= $params->isSortedBy('username') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '↕' ?>
-                        </a>
-                    </th>
-                    <th>
-                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('email', $baseUrl) ?>">
-                            Email <?= $params->isSortedBy('email') ? ($params->getSortDirection() == 'asc' ?
+                            href="<?= $params->getSortUrl('users.username', $baseUrl) ?>">
+                            Username <?= $params->isSortedBy('users.username') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
-                            href="<?= $params->getSortUrl('full_name', $baseUrl) ?>">
-                            Name <?= $params->isSortedBy('full_name') ? ($params->getSortDirection() == 'asc' ?
-                                '↑' : '↓') : '↕' ?>
-                        </a>
-                    </th>
-                    <th>
-                        <a class="text-white text-decoration-none" href="<?= $params->getSortUrl('role', $baseUrl) ?>">
-                            Role <?= $params->isSortedBy('role') ? ($params->getSortDirection() == 'asc' ?
+                            href="<?= $params->getSortUrl('users.email', $baseUrl) ?>">
+                            Email <?= $params->isSortedBy('users.email') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
-                            href="<?= $params->getSortUrl('status', $baseUrl) ?>">
-                            Status <?= $params->isSortedBy('status') ? ($params->getSortDirection() == 'asc' ?
+                            href="<?= $params->getSortUrl('users_ecommerce.full_name', $baseUrl) ?>">
+                            Name <?= $params->isSortedBy('users_ecommerce.full_name') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
                     <th>
                         <a class="text-white text-decoration-none"
-                            href="<?= $params->getSortUrl('last_login', $baseUrl) ?>">
-                            Last Login <?= $params->isSortedBy('last_login') ? ($params->getSortDirection() == 'asc' ?
+                            href="<?= $params->getSortUrl('auth_groups.name', $baseUrl) ?>">
+                            Role <?= $params->isSortedBy('auth_groups.name') ? ($params->getSortDirection() == 'asc' ?
+                                '↑' : '↓') : '↕' ?>
+                        </a>
+                    </th>
+                    <th>
+                        <a class="text-white text-decoration-none"
+                            href="<?= $params->getSortUrl('users_ecommerce.status', $baseUrl) ?>">
+                            Status <?= $params->isSortedBy('users_ecommerce.status') ? ($params->getSortDirection() == 'asc' ?
                                 '↑' : '↓') : '↕' ?>
                         </a>
                     </th>
@@ -123,7 +119,6 @@
                         <td><?= $user->full_name ?></td>
                         <td><?= $user->role ?></td>
                         <td><?= $user->status ?></td>
-                        <td><?= $user->timesAgo() ?></td>
                         <td>
                             <a href="/admin/customer/profile-parser/<?= $user->id ?>" class="btn btn-info btn-sm">Detail</a>
                             <a href="/admin/customer/update/<?= $user->id ?>" class="btn btn-warning btn-sm">Edit</a>

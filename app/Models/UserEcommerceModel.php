@@ -122,6 +122,8 @@ class UserEcommerceModel extends Model
 
     public function getFilteredUser(DataParams $params)
     {
+        $this->select('users.*, users_ecommerce.id as ecommerce_id, users_ecommerce.full_name') // Select data from both tables
+            ->join('users_ecommerce', 'users.username = users_ecommerce.username', 'left');
         if (!empty($params->search)) {
             $this->groupStart()
                 ->like('username', $params->search, 'both', null, true)

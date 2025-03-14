@@ -2,6 +2,7 @@
 
 namespace Myth\Auth\Models;
 
+use App\Libraries\DataParams;
 use CodeIgniter\Model;
 use Faker\Generator;
 use Myth\Auth\Authorization\GroupModel;
@@ -139,18 +140,69 @@ class UserModel extends Model
         ]);
     }
 
-    // public function validate($data): bool
-    // {
-    //     if (!empty($data['id'])) {
-    //         return parent::validate($data);
-    //     }
+    public function getFilteredUser(DataParams $params)
+    {
+        $this->select('users.*, 
+                   users.id as user_id, 
+                   users_ecommerce.status as status, 
+                   users_ecommerce.id as ecommerce_id, 
+                   users_ecommerce.full_name as full_name, 
+                   auth_groups_users.*, 
+                   auth_groups.name as role, 
+                   auth_groups.id as group_id, 
+                   auth_groups.description')
+            ->join('users_ecommerce', 'users.username = users_ecommerce.username', 'left')
+            ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
+            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id', 'left');
 
-    //     if ($this->validation === null) {
-    //         $this->validation = \Config\Services::validation();
-    //     }
+        // Searching
+        if (!empty($params->search)) {
+            $this->groupStart()
+                ->like('users.username', $params->search, 'both', null, true)
+                ->orLike('users.email', $params->search, 'both', null, true)
+                ->orLike('users_ecommerce.full_name', $params->search, 'both', null, true)
+                ->orLike('auth_groups.name', $params->search, 'both', null, true)
+                ->orLike('users_ecommerce.status', $params->search, 'both', null, true)
+                ->orWhere('CAST(users.id AS TEXT) LIKE', "%$params->search%")
+                ->groupEnd();
+        }
 
-    //     return $this->validation->setRules($this->validationRulesForInsert)
-    //         ->run($data);
-    // }
+        // Filter by role
+        if (!empty($params->role)) {
+            $this->where('auth_groups.name', $params->role);
+        }
+
+        // Filter by status
+        if (!empty($params->status)) {
+            $this->where('users_ecommerce.status', $params->status);
+        }
+
+        // Define allowed sort columns with explicit table names
+        $allowedSortColumns = [
+            'users.id',
+            'users.username',
+            'users.email',
+            'users_ecommerce.full_name',
+            'auth_groups.name', // role
+            'users_ecommerce.status'
+        ];
+
+        // Validate sorting column
+        $sort = in_array($params->sort, $allowedSortColumns) ? $params->sort : 'users.id';
+        $order = ($params->order === 'desc') ? 'DESC' : 'ASC';
+
+        // Order results
+        $this->orderBy($sort, $order);
+
+        // Fetch results with pagination
+        $result = [
+            'users' => $this->paginate($params->perPage, 'users', $params->page),
+            'pager' => $this->pager,
+            'total' => $this->countAllResults(false),
+        ];
+
+        return $result;
+    }
+
 
 }
