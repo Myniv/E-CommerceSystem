@@ -1,11 +1,14 @@
 <?= $this->extend('layout/admin') ?>
 <?= $this->section('admin_content') ?>
+<?php use Config\Roles; ?>
 
 <div class="container mt-4">
     <h2 class="mb-3">Produk List</h2>
 
     <a href="<?= base_url("admin/product/new") ?>" class="btn btn-success mb-3">Add Products</a>
+    <?php if(in_groups(Roles::ADMIN)):?>
     <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
+    <?php endif?>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
         <div class="row mb-4">
@@ -181,7 +184,7 @@
                                     Delete
                                 </button>
                             </form>
-                            <?php if(in_groups('Administrator')):?>
+                            <?php if(in_groups(Roles::ADMIN)):?>
                                 <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
                             <?php endif?>
                         </td>

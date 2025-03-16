@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php use Config\Roles; ?> 
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <title><?= $this->renderSection('title') ?? 'E-Commerce' ?></title>
     <script src="<?= base_url('js/pristine/dist/pristine.js') ?>" type="text/javascript"></script>
-
 
     <style>
         .sidebar {
@@ -61,14 +61,13 @@
             margin-left: 250px;
         }
     </style>
-
 </head>
 <div class="d-flex flex-column min-vh-100">
     <?= $this->include('components/header') ?>
     <div class="d-flex flex-grow-1">
         <div class="container mt-4">
             <?php if (logged_in()): ?>
-                <?php if (in_groups('Administrator')): ?>
+                <?php if (in_groups(Roles::ADMIN)): ?>
                     <?= $this->include('components/sidebar') ?>
                 <?php endif; ?>
             <?php endif; ?>

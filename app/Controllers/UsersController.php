@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Libraries\DataParams;
 use App\Models\UserEcommerceModel;
+use Config\Roles;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\GroupModel;
 use Myth\Auth\Models\UserModel;
@@ -27,7 +28,7 @@ class UsersController extends BaseController
         $this->userEcommerceModel = new UserEcommerceModel();
 
         helper(['auth']);
-        if (!in_groups('admin')) {
+        if (!in_groups(Roles::ADMIN)) {
             return redirect()->to('/');
         }
     }
