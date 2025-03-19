@@ -62,4 +62,11 @@ class ProductImageModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+    public function getPrimaryImage($productId)
+    {
+        $this->select('image_path')->where('product_id =', $productId)
+            ->where('is_primary', 'true')
+            ->find();
+    }
 }

@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <h2 class="mb-3">Produk List</h2>
 
-    <a href="<?= base_url("admin/product/new") ?>" class="btn btn-success mb-3">Add Products</a>
+    <a href="<?= base_url("product/new") ?>" class="btn btn-success mb-3">Add Products</a>
     <?php if(in_groups(Roles::ADMIN)):?>
     <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
     <?php endif?>

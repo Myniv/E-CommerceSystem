@@ -4,6 +4,7 @@ namespace Myth\Auth\Models;
 
 use App\Libraries\DataParams;
 use CodeIgniter\Model;
+use Config\Roles;
 use Faker\Generator;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Entities\User;
@@ -208,8 +209,18 @@ class UserModel extends Model
     {
         return $this->select('users.*, users_ecommerce.full_name as full_name')
             ->join('users_ecommerce', 'users.username = users_ecommerce.username', 'left');
-            //In the controller just using ->findAll(); for getting all the user with full name
-            //or using ->find($id); for getting a single user with full name
+        //In the controller just using ->findAll(); for getting all the user with full name
+        //or using ->find($id); for getting a single user with full name
+    }
+
+    public function getUserWithRoleAdminPM()
+    {
+        return $this->select('users.*, auth_groups.name as role')
+            ->join('auth_groups_users', 'users.id = auth_groups_users.user_id', 'left')
+            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id', 'left')
+            ->where('auth_groups.name', Roles::ADMIN)
+            ->orWhere('auth_groups.name', Roles::PRODUCT_MANAGER)
+            ->findAll();
     }
 
 }

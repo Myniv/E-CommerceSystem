@@ -9,11 +9,13 @@ use App\Models\M_Product;
 use App\Models\ProductImageModel;
 use App\Models\ProductModel;
 use CodeIgniter\RESTful\ResourceController;
+use Myth\Auth\Models\UserModel;
 
 class ProductController extends BaseController
 {
     private $productModel;
     private $categoryModel;
+    private $userModel;
 
     private $productImageModel;
 
@@ -22,6 +24,7 @@ class ProductController extends BaseController
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
         $this->productImageModel = new ProductImageModel();
+        $this->userModel = new UserModel();
     }
 
     public function index()
@@ -202,9 +205,49 @@ class ProductController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->productModel->errors());
         }
 
-        cache()->delete("product-catalog");
 
+        cache()->delete("product-catalog");
         $this->productModel->save($formData);
+
+        //Send Email
+        $category = $this->categoryModel->find($formData['category_id']);
+
+        $ccUsers = $this->userModel->getUserWithRoleAdminPM();
+        $ccList = array_column($ccUsers, 'email');
+
+        $ccNames = array_column($ccUsers, 'username');
+        $ccNamesString = implode(', ', $ccNames);
+
+
+        $email = service('email');
+        $email->setFrom('mulyanan@solecode.id');
+        $email->setTo(user()->email);
+        $email->setCC($ccList);
+        $email->setSubject('New Product');
+        $data = [
+            'title' => 'New Product Has Been Added',
+            'name' => $ccNamesString,
+            'content' => user()->username . ' has been added a new product. Please check it out.',
+            'features_title' => 'Product Details',
+            'features' => [
+                'Name : ' . $formData['name'],
+                'Description : ' . $formData['description'],
+                'Category : ' . $category->name,
+                'Price : ' . $formData['price'],
+                'Stock : ' . $formData['stock'],
+                'View Product : ' . base_url('product/' . $this->productModel->getInsertID())
+            ],
+        ];
+
+        $email->setMessage(view('email/email_template', $data));
+        $thumbnailPath = $this->productImageModel->getPrimaryImage($this->productModel->getInsertID());
+        $thumbnailPath = basename($thumbnailPath);
+        if (file_exists($thumbnailPath)) {
+            $email->attach($thumbnailPath);
+        }
+        $email->send();
+
+
         return redirect()->to("product");
     }
 
