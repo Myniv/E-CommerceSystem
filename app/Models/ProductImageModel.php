@@ -66,7 +66,7 @@ class ProductImageModel extends Model
     public function getPrimaryImage($productId)
     {
         $this->select('image_path')->where('product_id =', $productId)
-            ->where('is_primary', 'true')
+            ->where('is_primary', true)
             ->find();
     }
 }
