@@ -17,7 +17,7 @@ class ProductImage extends Entity
         'id' => 'integer',
         'product_id' => 'integer',
         'image_path' => 'string',
-        'is_primary' => 'string',
+        'is_primary' => 'boolean',
         'created_at' => 'datetime',
     ];
 }

@@ -21,7 +21,9 @@ class ProductImageModel extends Model
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        'is_primary' => 'boolean',
+    ];
     protected array $castHandlers = [];
 
     // Dates
