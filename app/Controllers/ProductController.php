@@ -174,6 +174,8 @@ class ProductController extends BaseController
     {
         $data['products'] = $this->productModel->getProductWithCategoriesAndImagePrimary()
             ->find($id);
+
+        // dd($data['products']);
         // $data['image_path'] = $this->productImageModel->select('image_path')->where('product_id =', $id)->find($id);
 
         // print_r($data['products']);
@@ -232,8 +234,7 @@ class ProductController extends BaseController
         $this->productModel->save($formData);
         $productId = $this->productModel->getInsertID();
 
-        // Ensure the upload directory exists
-        $uploadPath = WRITEPATH . 'uploads/products/' . $productId . '/';
+        $uploadPath = FCPATH . 'uploads/products/' . $productId . '/';
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
