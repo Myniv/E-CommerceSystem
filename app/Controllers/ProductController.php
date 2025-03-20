@@ -243,8 +243,7 @@ class ProductController extends BaseController
         }
 
 
-
-        $imageName = $productId . '_' . $formData['name'] . '_' . time() . '.' . $productImage->getClientExtension();
+        $imageName = $productId . '_' . $formData['name'] . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
         $filePath = $uploadPath . 'original_' . $imageName;
         $productImage->move($uploadPath, "original_" . $imageName);
 
@@ -357,7 +356,7 @@ class ProductController extends BaseController
 
     private function createImageVersions($filePath, $fileName)
     {
-        $date = date(format: 'Y-m-d');
+        $date = date('Y');
 
         $image = service('image');
 
@@ -369,7 +368,7 @@ class ProductController extends BaseController
             ->save($directory . "/" . "thumbnail_" . $fileName);
 
         $image->withFile($filePath)
-            ->text('Copyright 2024 My Photo Co', [
+            ->text('Copyright ' . $date . ' My Photo Co', [
                 'color' => '#fff',
                 'opacity' => 1,
                 'withShadow' => true,
@@ -381,7 +380,7 @@ class ProductController extends BaseController
             ->save($filePath, 80);
 
         $image->withFile($filePath)
-            ->text('Copyright 2024 My Photo Co', [
+            ->text('Copyright' . $date . 'My Photo Co', [
                 'color' => '#fff',
                 'opacity' => 1,
                 'withShadow' => true,
