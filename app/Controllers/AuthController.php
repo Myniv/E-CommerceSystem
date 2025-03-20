@@ -37,6 +37,25 @@ class AuthController extends MythController
         return $this->redirectBasedOnRole();
     }
 
+    public function forgotPassword()
+    {
+        return parent::forgotPassword();
+    }
+    public function attemptForgotPassword()
+    {
+        return parent::attemptForgot();
+    }
+
+    public function resetPassword()
+    {
+        return parent::resetPassword();
+    }
+
+    public function attemptResetPassword()
+    {
+        return parent::attemptReset();
+    }
+
     public function attemptRegister()
     {
         $result = parent::attemptRegister();

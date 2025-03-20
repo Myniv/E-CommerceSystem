@@ -19,7 +19,7 @@
         }
 
         .header {
-            background-color: rgb(1, 15, 113);
+            background-color: rgb(0, 0, 0);
             padding: 10px;
             text-align: center;
             color: white;
@@ -30,7 +30,7 @@
         }
 
         .footer {
-            background-color: rgb(1, 15, 113);
+            background-color: rgb(0, 0, 0);
             padding: 10px;
             text-align: center;
             font-size: 12px;
@@ -42,24 +42,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><?= $title ?></h1>
+            <h1>Activation Email</h1>
         </div>
         <div class="content">
-            <h2>Halo, <?= $name ?></h2>
-            <p><?= $content ?></p>
-            <p>Thanks for reading this email.</p>
-        </div>
-        <div class="card mb-4">
-            <div class="card-header">
-                <strong><?= $features_title ?></strong>
-            </div>
-            <div class="card-body">
-                <ul class="list-unstyled">
-                    <?php foreach ($features as $feature): ?>
-                        <li><?= $feature ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
+            <h2>This is activation email for your account.</h2>
+            <p>To activate your account use this URL.</p>
+            <p><a href="<?= url_to('activate-account') . '?token=' . $hash ?>">Activate account</a>.</p>
+            <br>
+            <p>If you did not registered on this website, you can safely ignore this email.</p>
         </div>
         <div class="footer">
             <p>This email is automatically sended. Please do not reply this email</p>

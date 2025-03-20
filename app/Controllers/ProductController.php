@@ -239,7 +239,7 @@ class ProductController extends BaseController
             ],
         ];
 
-        $email->setMessage(view('email/email_template', $data));
+        $email->setMessage(view('auth/emails/email_template', $data));
         $thumbnailPath = $this->productImageModel->getPrimaryImage($this->productModel->getInsertID());
         $thumbnailPath = basename($thumbnailPath);
         if (file_exists($thumbnailPath)) {

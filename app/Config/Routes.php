@@ -115,6 +115,14 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');
 
+    //Forgot Password
+    $routes->get('forgot-password', 'AuthController::forgotPassword', ['as' => 'forgot']);
+    $routes->post('forgot-password', 'AuthController::attemptForgotPassword');
+
+    //Reset Password
+    $routes->get('reset-password', 'AuthController::resetPassword', ['as' => 'reset-password']);
+    $routes->post('reset-password', 'AuthController::attemptResetPassword');
+
     $routes->get('unauthorized', [AuthController::class, 'unauthorized']);
 });
 
