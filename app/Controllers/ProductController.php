@@ -365,20 +365,32 @@ class ProductController extends BaseController
 
 
         $image->withFile($filePath)
-            ->text('Copyright ' . $date . ' Myniv Photo Co', [
+            ->resize(150, 150, true, 'height')
+            ->save($directory . "/" . "thumbnail_" . $fileName);
+
+        $image->withFile($filePath)
+            ->text('Copyright 2024 My Photo Co', [
                 'color' => '#fff',
-                'opacity' => 0.5,
+                'opacity' => 1,
                 'withShadow' => true,
                 'hAlign' => 'center',
                 'vAlign' => 'bottom',
-                'fontSize' => 25,
+                'fontSize' => 50,
             ])
-            ->resize(300, 300, true, 'height')
-            ->save($directory . "/" . "medium_" . $fileName);
+            ->resize(500, 500, true, 'height')
+            ->save($filePath, 80);
 
         $image->withFile($filePath)
-            ->resize(300, 300, true, 'height')
-            ->save($directory . "/" . "thumbnail_" . $fileName);
+            ->text('Copyright 2024 My Photo Co', [
+                'color' => '#fff',
+                'opacity' => 1,
+                'withShadow' => true,
+                'hAlign' => 'center',
+                'vAlign' => 'bottom',
+                'fontSize' => 50,
+            ])
+            ->resize(500, 500, true, 'height')
+            ->save($directory . "/" . "medium_" . $fileName);
 
     }
 
