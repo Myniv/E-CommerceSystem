@@ -10,6 +10,7 @@ use App\Models\ProductImageModel;
 use App\Models\ProductModel;
 use CodeIgniter\RESTful\ResourceController;
 use Myth\Auth\Models\UserModel;
+use CodeIgniter\Files\File;
 
 class ProductController extends BaseController
 {
@@ -189,45 +190,94 @@ class ProductController extends BaseController
 
     public function create()
     {
+        $validationRules = [
+            'userfile' => [
+                'label' => 'Gambar',
+                'rules' => [
+                    'uploaded[userfile]',
+                    'is_image[userfile]',
+                    'mime_in[userfile,image/jpg,image/jpeg,image/png,image/gif,image/webp]',
+                    'max_size[userfile,5120]', // 5MB in KB (5 * 1024)
+                ],
+                'errors' => [
+                    'uploaded' => 'Choose Uploaded File',
+                    'is_image' => 'File Must be an Image',
+                    'mime_in' => 'File must be in format JPG, JPEG, PNG, WEBP, or GIF',
+                    'max_size' => 'File size must not exceed more than 5MB'
+                ]
+            ]
+        ];
+
         $formData = [
             'name' => $this->request->getPost('name'),
             'description' => $this->request->getPost('description'),
             'price' => $this->request->getPost('price'),
             'stock' => $this->request->getPost('stock'),
-            // 'category_id' => explode(",", $this->request->getPost('category_id')),
             'category_id' => $this->request->getPost('category_id'),
             'status' => $this->request->getPost('status'),
             'is_new' => $this->request->getPost('is_new'),
             'is_sale' => $this->request->getPost('is_sale'),
         ];
 
+        $productImage = $this->request->getFile('userfile');
+
+        if (!$this->validate($validationRules)) {
+            return redirect()->back()->withInput()->with(['errors' => $this->validator->getErrors()]);
+        }
+
         if (!$this->productModel->validate($formData)) {
             return redirect()->back()->withInput()->with('errors', $this->productModel->errors());
         }
 
-
-        cache()->delete("product-catalog");
         $this->productModel->save($formData);
+        $productId = $this->productModel->getInsertID();
 
-        //Send Email
+        // Ensure the upload directory exists
+        $uploadPath = WRITEPATH . 'uploads/products/' . $productId . '/';
+
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+        if (!is_writable($uploadPath)) {
+            die("Directory is not writable: " . $uploadPath);
+        }
+
+
+
+        $imageName = $productId . '_' . $formData['name'] . '_' . time() . '.' . $productImage->getClientExtension();
+        $filePath = $uploadPath . 'original_' . $imageName;
+        $productImage->move($uploadPath, "original_" . $imageName);
+
+        $this->createImageVersions($filePath, $imageName);
+
+        $relativePath = 'uploads/products/' . $productId . '/thumbnail_' . $imageName;
+
+
+        // Save image data to the database
+        $productImageData = [
+            'product_id' => $productId,
+            'image_path' => $relativePath,
+            'is_primary' => true
+        ];
+        $this->productImageModel->save($productImageData);
+
+        // Send Email
         $category = $this->categoryModel->find($formData['category_id']);
-
         $ccUsers = $this->userModel->getUserWithRoleAdminPM();
         $ccList = array_column($ccUsers, 'email');
-
         $ccNames = array_column($ccUsers, 'username');
         $ccNamesString = implode(', ', $ccNames);
-
 
         $email = service('email');
         $email->setFrom('mulyanan@solecode.id');
         $email->setTo(user()->email);
         $email->setCC($ccList);
         $email->setSubject('New Product');
+
         $data = [
             'title' => 'New Product Has Been Added',
             'name' => $ccNamesString,
-            'content' => user()->username . ' has been added a new product. Please check it out.',
+            'content' => user()->username . ' has added a new product. Please check it out.',
             'features_title' => 'Product Details',
             'features' => [
                 'Name : ' . $formData['name'],
@@ -235,21 +285,30 @@ class ProductController extends BaseController
                 'Category : ' . $category->name,
                 'Price : ' . $formData['price'],
                 'Stock : ' . $formData['stock'],
-                'View Product : ' . base_url('product/' . $this->productModel->getInsertID())
+                'View Product : ' . base_url('product/' . $productId)
             ],
         ];
 
         $email->setMessage(view('auth/emails/email_template', $data));
-        $thumbnailPath = $this->productImageModel->getPrimaryImage($this->productModel->getInsertID());
-        $thumbnailPath = basename($thumbnailPath);
-        if (file_exists($thumbnailPath)) {
-            $email->attach($thumbnailPath);
-        }
-        $email->send();
 
+        $thumbnailPath = $this->productImageModel->getPrimaryImage($productId)->image_path;
+        if (empty($thumbnailPath)) {
+            die("Error: No image path returned from database.");
+        }
+        $absolutePath = WRITEPATH . $thumbnailPath;
+        if (file_exists($absolutePath)) {
+            $email->attach($absolutePath);
+            echo "File exists: " . $absolutePath;
+        } else {
+            echo "File does not exist: " . $absolutePath;
+        }
+
+        $email->send();
+        cache()->delete("product-catalog");
 
         return redirect()->to("product");
     }
+
 
     public function edit($id = null)
     {
@@ -294,6 +353,33 @@ class ProductController extends BaseController
         $this->productModel->delete($id);
         cache()->delete("product-catalog");
         return redirect()->to("product");
+    }
+
+    private function createImageVersions($filePath, $fileName)
+    {
+        $date = date(format: 'Y-m-d');
+
+        $image = service('image');
+
+        $directory = dirname($filePath);
+
+
+        $image->withFile($filePath)
+            ->text('Copyright ' . $date . ' Myniv Photo Co', [
+                'color' => '#fff',
+                'opacity' => 0.5,
+                'withShadow' => true,
+                'hAlign' => 'center',
+                'vAlign' => 'bottom',
+                'fontSize' => 25,
+            ])
+            ->resize(300, 300, true, 'height')
+            ->save($directory . "/" . "medium_" . $fileName);
+
+        $image->withFile($filePath)
+            ->resize(300, 300, true, 'height')
+            ->save($directory . "/" . "thumbnail_" . $fileName);
+
     }
 
 

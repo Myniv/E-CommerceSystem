@@ -37,7 +37,6 @@ $routes->get("product/catalog", [ProductController::class, 'productCatalog']);
 
 //Admin routes
 $routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
-    $routes->get('api/detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
     $routes->get('api/json', [Home::class, 'index']);
     $routes->get('api/json/product', [ApiController::class, 'getAllProductJSON']);
     $routes->get('api/json/product/(:num)', [ApiController::class, 'getProductJSONById/$1']);
@@ -84,6 +83,7 @@ $routes->group('', ['filter' => 'role:Administrator,Product Manager'], function 
     $routes->get('product/new', [ProductController::class, 'new']);
     $routes->post('product', [ProductController::class, 'create']);
     $routes->get('product/(:num)', [ProductController::class, 'show/$1']);
+    $routes->get('product/detail/(:num)', [ProductController::class, 'show/$1'], ['as' => 'product_details']);
     $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']);
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);

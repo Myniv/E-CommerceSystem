@@ -30,8 +30,8 @@ class ProductImageModel extends Model
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
-    protected $deletedField = 'deleted_at';
+    protected $updatedField = '';
+    protected $deletedField = '';
 
     // Validation
     protected $validationRules = [
@@ -67,8 +67,10 @@ class ProductImageModel extends Model
 
     public function getPrimaryImage($productId)
     {
-        $this->select('image_path')->where('product_id =', $productId)
+        return $this->select('image_path')
+            ->where('product_id', $productId)
             ->where('is_primary', true)
-            ->find();
+            ->first();
     }
+
 }
