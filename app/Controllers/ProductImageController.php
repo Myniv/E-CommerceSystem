@@ -172,6 +172,18 @@ class ProductImageController extends BaseController
     }
 
 
+    public function delete($id)
+    {
+        $image = $this->productImageModel->find($id);
+        if ($image) {
+            $folderPath = dirname(FCPATH . $image->image_path);
+            $this->deleteFolder($folderPath);
+            $this->productImageModel->delete($id);
+        }
+        return redirect()->to("product");
+    }
+
+
     private function createImageVersions($filePath, $fileName)
     {
         $date = date('Y');
@@ -229,6 +241,6 @@ class ProductImageController extends BaseController
             }
         }
 
-        rmdir($folderPath); // Remove the folder after files are deleted
+        rmdir($folderPath); 
     }
 }
