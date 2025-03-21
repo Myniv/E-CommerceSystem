@@ -231,28 +231,33 @@ class ProductController extends BaseController
 
         $this->productModel->save($formData);
         $productId = $this->productModel->getInsertID();
+        $tempData = [
+            'product_id' => $productId,
+            'image_path' => 'temp_path',
+            'is_primary' => false
+        ];
+        $this->productImageModel->save($tempData);
 
-        $uploadPath = FCPATH . 'uploads/products/' . $productId . '/' . $productImage->getRandomName() . '/';
+        $newId = $this->productImageModel->getInsertID();
+        $uploadPath = FCPATH . 'uploads/products/' . $productId . '/' . $newId . '/';
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
-        if (!is_writable($uploadPath)) {
-            die("Directory is not writable: " . $uploadPath);
-        }
 
-
-        $imageName = $productId . '_' . $formData['name'] . '_' . $productImage->getClientName() . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
+        $productName = $this->productModel->find($productId)->name;
+        $imageName = $productId . '_' . $productName . '_' . $newId . '.' . $productImage->getClientExtension();
         $filePath = $uploadPath . 'original_' . $imageName;
         $productImage->move($uploadPath, "original_" . $imageName);
 
         $this->createImageVersions($filePath, $imageName);
 
-        $relativePath = 'uploads/products/' . $productId . '/thumbnail_' . $imageName;
+        $relativePath = 'uploads/products/' . $productId . '/' . $newId . '/thumbnail_' . $imageName;
 
 
         // Save image data to the database
         $productImageData = [
+            'id' => $newId,
             'product_id' => $productId,
             'image_path' => $relativePath,
             'is_primary' => true
@@ -290,15 +295,16 @@ class ProductController extends BaseController
         $email->setMessage(view('auth/emails/email_template', $data));
 
         $thumbnailPath = $this->productImageModel->getPrimaryImage($productId)->image_path;
+        // dd($thumbnailPath);
         if (empty($thumbnailPath)) {
             die("Error: No image path returned from database.");
         }
-        $absolutePath = FCPATH . $thumbnailPath;
+        $absolutePath = FCPATH . str_replace('/', DIRECTORY_SEPARATOR, ltrim($thumbnailPath, '/'));
+        // dd($absolutePath);
         if (file_exists($absolutePath)) {
             $email->attach($absolutePath);
-            echo "File exists: " . $absolutePath;
         } else {
-            echo "File does not exist: " . $absolutePath;
+            die("Error: File does not exist.");
         }
 
         $email->send();
