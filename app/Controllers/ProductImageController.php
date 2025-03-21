@@ -232,15 +232,10 @@ class ProductImageController extends BaseController
             return;
         }
 
-        foreach (scandir($folderPath) as $file) {
-            if ($file == '.' || $file == '..')
-                continue;
-            $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
-
-            if (is_dir($filePath)) {
-                $this->deleteFolder($filePath); // Recursive delete
-            } else {
-                unlink($filePath);
+        $files = glob($folderPath . '/*');
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                unlink($file);
             }
         }
 
