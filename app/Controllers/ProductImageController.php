@@ -66,7 +66,7 @@ class ProductImageController extends BaseController
         }
 
         $productName = $this->productModel->find($productId)->name;
-        $imageName = $productId . '_' . $productName . '_' . $productImage->getClientName() . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
+        $imageName = $productId . '_' . $productName . '_' . $newId . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
         $filePath = $uploadPath . 'original_' . $imageName;
         $productImage->move($uploadPath, "original_" . $imageName);
 
@@ -89,7 +89,7 @@ class ProductImageController extends BaseController
         ];
         $this->productImageModel->save($updateData);
 
-        return redirect()->to("product");
+        return redirect()->to("/product/detail/{$productId}");
     }
 
 
@@ -101,75 +101,91 @@ class ProductImageController extends BaseController
             return view('/product/v_product_image_form', $data);
         }
 
-        $validationRules = [
-            'userfile' => [
-                'label' => 'Gambar',
-                'rules' => [
-                    'uploaded[userfile]',
-                    'is_image[userfile]',
-                    'mime_in[userfile,image/jpg,image/jpeg,image/png,image/gif,image/webp]',
-                    'max_size[userfile,5120]', // 5MB in KB (5 * 1024)
-                ],
-                'errors' => [
-                    'uploaded' => 'Choose Uploaded File',
-                    'is_image' => 'File Must be an Image',
-                    'mime_in' => 'File must be in format JPG, JPEG, PNG, WEBP, or GIF',
-                    'max_size' => 'File size must not exceed more than 5MB'
-                ]
-            ]
-        ];
-
         $imageData = $this->productImageModel->find($id);
-        if (!$imageData) {
-            return redirect()->back()->with('error', 'Image not found.');
-        }
 
         $productId = $imageData->product_id;
         $productImage = $this->request->getFile('userfile');
         $isPrimary = $this->request->getPost('is_primary');
         $isPrimary = filter_var($isPrimary, FILTER_VALIDATE_BOOLEAN);
+        $productName = $this->productModel->find($productId)->name;
 
-        $formData = ['id' => $id];
+        $uploadPath = FCPATH . 'uploads/products/' . $productId . '/' . $id . '/';
 
         if ($productImage && $productImage->isValid()) {
+
+            $validationRules = [
+                'userfile' => [
+                    'label' => 'Gambar',
+                    'rules' => [
+                        'is_image[userfile]',
+                        'mime_in[userfile,image/jpg,image/jpeg,image/png,image/gif,image/webp]',
+                        'max_size[userfile,5120]', // 5MB in KB (5 * 1024)
+                    ],
+                    'errors' => [
+                        'is_image' => 'File Must be an Image',
+                        'mime_in' => 'File must be in format JPG, JPEG, PNG, WEBP, or GIF',
+                        'max_size' => 'File size must not exceed more than 5MB'
+                    ]
+                ]
+            ];
 
             if (!$this->validate($validationRules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
-            $folderPath = dirname(FCPATH . $imageData->image_path);
-            $this->deleteFolder($folderPath);
+            $this->deleteFolder(dirname(FCPATH . $imageData->image_path));
 
-            // Generate new file details
-            $uploadPath = FCPATH . 'uploads/products/' . $productId . '/' . $id . '/';
+            $imageName = "{$productId}_{$productName}_{$id}_" . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
+
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
             }
 
-            $productName = $this->productModel->find($productId)->name;
-            $imageName = $productId . '_' . $productName . '_' . $productImage->getFilename() . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
             $filePath = $uploadPath . 'original_' . $imageName;
             $productImage->move($uploadPath, "original_" . $imageName);
-
             $this->createImageVersions($filePath, $imageName);
+
+        } else {
+            // get the filename and the .jpg or .png or anything else
+            $existingFileName = basename($imageData->image_path);
+            $existingExtension = pathinfo($existingFileName, PATHINFO_EXTENSION);
+
+            $imageName = "{$productId}_{$productName}_{$id}_" . date('Y-m-d_H-i-s') . ".{$existingExtension}";
+
+            // rename file based on is_primary
+            $oldFilePath = FCPATH . $imageData->image_path;
+            if ($isPrimary) {
+                $newFileName = "thumbnail_{$imageName}";
+            } else {
+                $newFileName = "medium_{$imageName}";
+            }
+            $newFilePath = $uploadPath . $newFileName;
+
+            if (file_exists($oldFilePath)) {
+                rename($oldFilePath, $newFilePath);
+            }
         }
 
-        $relativePath = 'uploads/products/' . $productId . '/' . $id . '/medium_' . $imageName;
-        if ($isPrimary == true) {
-            $relativePath = 'uploads/products/' . $productId . '/' . $id . '/thumbnail_' . $imageName;
+        if ($isPrimary) {
+            $relativePath = 'uploads/products/' . $productId . '/' . $id . '/' . 'thumbnail_' . $imageName;
+        } else {
+            $relativePath = 'uploads/products/' . $productId . '/' . $id . '/' . 'medium_' . $imageName;
         }
-        $formData['image_path'] = $relativePath;
-
-        $formData['is_primary'] = $isPrimary;
+        $formData = [
+            'id' => $id,
+            'image_path' => $relativePath,
+            'is_primary' => $isPrimary
+        ];
 
         if (!$this->productImageModel->validate($formData)) {
             return redirect()->back()->withInput()->with('errors', $this->productImageModel->errors());
         }
 
-        $this->productImageModel->save($formData); // Update record
+        $this->productImageModel->save($formData);
 
-        return redirect()->to("product");
+        return redirect()->to("/product/detail/{$productId}")->with('success', 'Image updated successfully.');
     }
+
 
 
     public function delete($id)
@@ -180,7 +196,7 @@ class ProductImageController extends BaseController
             $this->deleteFolder($folderPath);
             $this->productImageModel->delete($id);
         }
-        return redirect()->to("product");
+        return redirect()->to("/product/detail/{$image->product_id}");
     }
 
 
@@ -241,6 +257,6 @@ class ProductImageController extends BaseController
             }
         }
 
-        rmdir($folderPath); 
+        rmdir($folderPath);
     }
 }

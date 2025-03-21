@@ -79,4 +79,9 @@ class ProductImageModel extends Model
         return $this->find($id);
     }
 
+    public function getAllProductImageByProductId($productId)
+    {
+        return $this->where('product_id', $productId)->findAll();
+    }
+
 }

@@ -175,10 +175,7 @@ class ProductController extends BaseController
         $data['products'] = $this->productModel->getProductWithCategoriesAndImagePrimary()
             ->find($id);
 
-        // dd($data['products']);
-        // $data['image_path'] = $this->productImageModel->select('image_path')->where('product_id =', $id)->find($id);
-
-        // print_r($data['products']);
+        $data['product_images'] = $this->productImageModel->getAllProductImageByProductId($id);
         return view('/product/v_product_detail', $data);
     }
 

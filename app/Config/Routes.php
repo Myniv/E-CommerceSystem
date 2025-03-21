@@ -88,8 +88,10 @@ $routes->group('', ['filter' => 'role:Administrator,Product Manager'], function 
     $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']);
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);
+
     $routes->match(['get', 'post'], 'product/(:num)/image', [ProductImageController::class, 'create/$1']);
     $routes->match(['get', 'put'], 'product/(:num)/image/edit', [ProductImageController::class, 'update/$1']);
+    $routes->delete('product/(:num)/image/delete', [ProductImageController::class, 'delete/$1']);
 });
 
 //Customer ||Administrator routes
