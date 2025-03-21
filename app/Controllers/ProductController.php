@@ -295,10 +295,7 @@ class ProductController extends BaseController
         $email->setMessage(view('auth/emails/email_template', $data));
 
         $thumbnailPath = $this->productImageModel->getPrimaryImage($productId)->image_path;
-        // dd($thumbnailPath);
-        if (empty($thumbnailPath)) {
-            die("Error: No image path returned from database.");
-        }
+
         $absolutePath = FCPATH . str_replace('/', DIRECTORY_SEPARATOR, ltrim($thumbnailPath, '/'));
         // dd($absolutePath);
         if (file_exists($absolutePath)) {
