@@ -224,7 +224,7 @@ class ProductController extends BaseController
         $productImage = $this->request->getFile('userfile');
 
         if (!$this->validate($validationRules)) {
-            return redirect()->back()->withInput()->with(['errors' => $this->validator->getErrors()]);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         if (!$this->productModel->validate($formData)) {
@@ -234,7 +234,7 @@ class ProductController extends BaseController
         $this->productModel->save($formData);
         $productId = $this->productModel->getInsertID();
 
-        $uploadPath = FCPATH . 'uploads/products/' . $productId . '/';
+        $uploadPath = FCPATH . 'uploads/products/' . $productId . '/' . $productImage->getRandomName() . '/';
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -244,7 +244,7 @@ class ProductController extends BaseController
         }
 
 
-        $imageName = $productId . '_' . $formData['name'] . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
+        $imageName = $productId . '_' . $formData['name'] . '_' . $productImage->getClientName() . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
         $filePath = $uploadPath . 'original_' . $imageName;
         $productImage->move($uploadPath, "original_" . $imageName);
 
@@ -295,7 +295,7 @@ class ProductController extends BaseController
         if (empty($thumbnailPath)) {
             die("Error: No image path returned from database.");
         }
-        $absolutePath = WRITEPATH . $thumbnailPath;
+        $absolutePath = FCPATH . $thumbnailPath;
         if (file_exists($absolutePath)) {
             $email->attach($absolutePath);
             echo "File exists: " . $absolutePath;

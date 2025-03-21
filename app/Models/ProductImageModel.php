@@ -22,7 +22,6 @@ class ProductImageModel extends Model
     protected bool $updateOnlyChanged = true;
 
     protected array $casts = [
-        'is_primary' => 'boolean',
     ];
     protected array $castHandlers = [];
 
@@ -37,7 +36,7 @@ class ProductImageModel extends Model
     protected $validationRules = [
         'product_id' => 'required|integer',
         'image_path' => 'required',
-        'is_primary' => 'required',
+        // 'is_primary' => 'required',
     ];
     protected $validationMessages = [
         'product_id' => [
@@ -47,9 +46,10 @@ class ProductImageModel extends Model
         'image_path' => [
             'required' => 'The image path field is required.',
         ],
-        'is_primary' => [
-            'required' => 'The is primary field is required.',
-        ],
+        // 'is_primary' => [
+        //     'required' => 'The is primary field is required.',
+        //     // 'in_list' => 'The is primary field must be true or false.',
+        // ],
     ];
     protected $skipValidation = false;
     protected $cleanValidationRules = true;
@@ -67,10 +67,16 @@ class ProductImageModel extends Model
 
     public function getPrimaryImage($productId)
     {
-        return $this->select('image_path')
-            ->where('product_id', $productId)
+        $query = $this->where('product_id', $productId)
             ->where('is_primary', true)
             ->first();
+
+        return $query;
+    }
+
+    public function getProductImages($id)
+    {
+        return $this->find($id);
     }
 
 }

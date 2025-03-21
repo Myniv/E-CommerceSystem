@@ -187,6 +187,7 @@
                             <?php if(in_groups(Roles::ADMIN)):?>
                                 <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
                             <?php endif?>
+                            <a href="/product/<?= $product->id; ?>/image" class="btn btn-success btn-sm">Add Image</a>
                         </td>
                     </tr>
                 <?php } ?>
