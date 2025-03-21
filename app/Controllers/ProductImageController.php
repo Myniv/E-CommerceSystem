@@ -66,7 +66,7 @@ class ProductImageController extends BaseController
         }
 
         $productName = $this->productModel->find($productId)->name;
-        $imageName = $productId . '_' . $productName . '_' . $newId . '_' . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
+        $imageName = $productId . '_' . $productName . '_' . $newId . '.' . $productImage->getClientExtension();
         $filePath = $uploadPath . 'original_' . $imageName;
         $productImage->move($uploadPath, "original_" . $imageName);
 
@@ -135,7 +135,7 @@ class ProductImageController extends BaseController
 
             $this->deleteFolder(dirname(FCPATH . $imageData->image_path));
 
-            $imageName = "{$productId}_{$productName}_{$id}_" . date('Y-m-d_H-i-s') . '.' . $productImage->getClientExtension();
+            $imageName = "{$productId}_{$productName}_{$id}" . '.' . $productImage->getClientExtension();
 
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
@@ -150,20 +150,7 @@ class ProductImageController extends BaseController
             $existingFileName = basename($imageData->image_path);
             $existingExtension = pathinfo($existingFileName, PATHINFO_EXTENSION);
 
-            $imageName = "{$productId}_{$productName}_{$id}_" . date('Y-m-d_H-i-s') . ".{$existingExtension}";
-
-            // rename file based on is_primary
-            $oldFilePath = FCPATH . $imageData->image_path;
-            if ($isPrimary) {
-                $newFileName = "thumbnail_{$imageName}";
-            } else {
-                $newFileName = "medium_{$imageName}";
-            }
-            $newFilePath = $uploadPath . $newFileName;
-
-            if (file_exists($oldFilePath)) {
-                rename($oldFilePath, $newFilePath);
-            }
+            $imageName = "{$productId}_{$productName}_{$id}" . ".{$existingExtension}";
         }
 
         if ($isPrimary) {

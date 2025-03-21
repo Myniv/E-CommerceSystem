@@ -10,7 +10,7 @@
                     <h4>Detail Produk</h4>
                 </div>
                 <div class="card-body">
-                    <img src="<?= isset($products->image_path) ? base_url($products->image_path) : base_url("products/search-image.svg") ?>"
+                    <img src="<?= isset($image_primary) ? base_url($image_primary->image_path) : base_url("products/search-image.svg") ?>"
                         class="card-img-top" alt="<?= isset($products->name) ? $products->name : "Product" ?>">
 
                     <ul class="list-group list-group-flush">
@@ -28,33 +28,36 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <a href="/product/<?= $products->id ?>/image" class="btn btn-success btn-sm">Add Image</a>
-                <table class="table table-striped table-bordered">
-                    <tbody>
-                        <?php foreach ($product_images as $image): ?>
-                            <tr>
-                                <td>
-                                    <img src="<?= base_url($image->image_path) ?>" class="card-img-top"
-                                        alt="<?= isset($products->name) ? $products->name : "Product" ?>">
-                                </td>
-                                <td>
-                                    <a href="/product/<?= $image->id; ?>/image/edit" class="btn btn-primary btn-sm">Edit
-                                        Image</a>
-                                    <form action="/product/<?= $image->id ?>/image/delete" method="post" class="d-inline">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure want to delete this Image?');">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+            <a href="/product/<?= $products->id ?>/image" class="btn btn-success btn-sm">Add Image</a>
+            <?php if (isset($product_images)): ?>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <tbody>
+                            <?php foreach ($product_images as $image): ?>
+                                <tr>
+                                    <td>
+                                        <img src="<?= base_url($image->image_path) ?>" class="card-img-top"
+                                            alt="<?= isset($products->name) ? $products->name : "Product" ?>">
+                                    </td>
+                                    <td>
+                                        <a href="/product/<?= $image->id; ?>/image/edit" class="btn btn-primary btn-sm">Edit
+                                            Image</a>
+                                        <form action="/product/<?= $image->id ?>/image/delete" method="post" class="d-inline">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure want to delete this Image?');">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
+</div>
 
-    <?= $this->endSection() ?>
+<?= $this->endSection() ?>

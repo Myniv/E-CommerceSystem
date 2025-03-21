@@ -128,7 +128,14 @@ class ProductModel extends Model
     {
         return $this->select('products.*, categories.name as category_name, product_images.image_path as image_path')
             ->join('categories', 'categories.id = products.category_id', 'left')
-            ->join('product_images', "product_images.product_id = products.id", 'left')
+            ->join('product_images', 'product_images.product_id = products.id', 'left')
+            ->where('product_images.is_primary', true);
+    }
+
+    public function getProductImagePrimary()
+    {
+        return $this->select('product_images.image_path as image_path')
+            ->join('product_images', 'product_images.product_id = products.id', 'left')
             ->where('product_images.is_primary', true);
     }
 

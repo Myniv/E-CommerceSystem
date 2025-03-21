@@ -172,8 +172,9 @@ class ProductController extends BaseController
 
     public function show($id = null)
     {
-        $data['products'] = $this->productModel->getProductWithCategoriesAndImagePrimary()
-            ->find($id);
+        $data['products'] = $this->productModel->getProductWithCategories()->find($id);
+        $data['image_primary'] = $this->productModel->getProductImagePrimary()->find($id);
+        // dd($data['products']);
 
         $data['product_images'] = $this->productImageModel->getAllProductImageByProductId($id);
         return view('/product/v_product_detail', $data);
