@@ -31,8 +31,8 @@
                 <?php endif; ?>
 
                 <label for="userfile" class="form-label">Choose Image (JPG, JPEG, PNG, GIF - MAX 5MB)</label>
-                <input class="form-control mb-3" type="file" name="userfile" id="userfile" size="20" required
-                    data-pristine-required="Silahkan Pilih file untuk diunggah">
+                <input class="form-control mb-3" type="file" name="userfile" id="userfile" size="20"
+                    <?= isset($productsImage) ? '' : 'required data-pristine-required-message="Please choose file for uploaded"' ?>>
                 <div id="file-type-error" class="text-danger mt-2" style="display: none">
                     File must be an image (JPG, JPEG, PNG, GIF)
                 </div>
