@@ -33,12 +33,14 @@ class ProductImageController extends BaseController
                     'is_image[userfile]',
                     'mime_in[userfile,image/jpg,image/jpeg,image/png,image/gif,image/webp]',
                     'max_size[userfile,5120]', // 5MB
+                    'min_dims[userfile,600,600]',
                 ],
                 'errors' => [
                     'uploaded' => 'Choose Uploaded File',
                     'is_image' => 'File Must be an Image',
                     'mime_in' => 'File must be JPG, JPEG, PNG, WEBP, or GIF',
-                    'max_size' => 'File size must not exceed 5MB'
+                    'max_size' => 'File size must not exceed 5MB',
+                    'min_dims' => 'Image must be at least 600x600',
                 ]
             ]
         ];
@@ -120,11 +122,13 @@ class ProductImageController extends BaseController
                         'is_image[userfile]',
                         'mime_in[userfile,image/jpg,image/jpeg,image/png,image/gif,image/webp]',
                         'max_size[userfile,5120]', // 5MB in KB (5 * 1024)
+                        'min_dims[userfile,600,600]',
                     ],
                     'errors' => [
                         'is_image' => 'File Must be an Image',
                         'mime_in' => 'File must be in format JPG, JPEG, PNG, WEBP, or GIF',
-                        'max_size' => 'File size must not exceed more than 5MB'
+                        'max_size' => 'File size must not exceed more than 5MB',
+                        'min_dims' => 'Image must be at least 600x600',
                     ]
                 ]
             ];
