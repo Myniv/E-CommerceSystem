@@ -56,11 +56,7 @@ class ProductController extends BaseController
             'statuss' => $this->productModel->getAllStatus(),
             'baseUrl' => base_url('product'),
         ];
-        $categoryPercentages = $this->productModel->getProductPercentageByCategory();
-        dd($categoryPercentages);
-        // foreach ($categoryPercentages as $category) {
-        //     echo "Category: {$category->category_name}, Products: {$category->product_count}, Percentage: {$category->percentage}%<br>";
-        // }
+
         return view("product/v_product_list", $data);
     }
 
@@ -410,7 +406,7 @@ class ProductController extends BaseController
         $category_id = $this->request->getGet("category_id");
         if (!empty($category_id)) {
             $products = $this->productModel->getProductsByCategory($category_id);
-            $categoryName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $this->categoryModel->find($category_id)->name);
+            $categoryName = $this->categoryModel->find($category_id)->name;
             $name = $this->categoryModel->find($category_id)->name;
             $filename = 'Reports_Product_With_Category_' . $categoryName . '_' . date('Y-m-d-His') . '.xlsx';
         } else {
@@ -506,7 +502,7 @@ class ProductController extends BaseController
     private function getPercentageProductsByCategory()
     {
         $data = [];
-        $products = $this->productModel->getProductPercentageByCategory();
+        $products = $this->categoryModel->getProductPercentageByCategory();
         // dd($products);   
 
         foreach ($products as $product) {

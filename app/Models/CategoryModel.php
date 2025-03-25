@@ -67,4 +67,16 @@ class CategoryModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+    public function getProductPercentageByCategory()
+    {
+        return $this
+            ->select('categories.name AS category_name, COUNT(products.id) AS product_count, 
+                 (COUNT(products.id) * 100.0 / (SELECT COUNT(*) FROM products)) AS percentage')
+            ->join('products', 'products.category_id = categories.id', 'left')
+            ->groupBy('categories.id, categories.name')
+            ->orderBy('percentage', 'DESC')
+            ->get()
+            ->getResult();
+    }
 }
