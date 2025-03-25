@@ -225,7 +225,7 @@ class ProductModel extends Model
         return array_column($categories, 'categories');
     }
 
-    function formatDate($datetime)
+    public function formatDate($datetime)
     {
         $timestamp = strtotime($datetime);
         $timeDiff = time() - $timestamp;
@@ -249,6 +249,19 @@ class ProductModel extends Model
 
         return 'Just now';
     }
+
+    public function getProductPercentageByCategory()
+    {
+        return $this->db->table('categories')
+            ->select('categories.name AS category_name, COUNT(products.id) AS product_count, 
+                 (COUNT(products.id) * 100.0 / (SELECT COUNT(*) FROM products)) AS percentage')
+            ->join('products', 'products.category_id = categories.id', 'left')
+            ->groupBy('categories.id, categories.name')
+            ->orderBy('percentage', 'DESC')
+            ->get()
+            ->getResult();
+    }
+
 
 
 }

@@ -56,6 +56,11 @@ class ProductController extends BaseController
             'statuss' => $this->productModel->getAllStatus(),
             'baseUrl' => base_url('product'),
         ];
+        $categoryPercentages = $this->productModel->getProductPercentageByCategory();
+        dd($categoryPercentages);
+        // foreach ($categoryPercentages as $category) {
+        //     echo "Category: {$category->category_name}, Products: {$category->product_count}, Percentage: {$category->percentage}%<br>";
+        // }
         return view("product/v_product_list", $data);
     }
 
@@ -486,6 +491,70 @@ class ProductController extends BaseController
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
         exit();
+    }
+
+    public function dashboardProducts()
+    {
+        $data['percentageProductsByCategory'] = json_encode($this->getPercentageProductsByCategory());
+        // $data['creditsByGrade'] = json_encode($this->getCreditsByGrade($student->id));
+        // $data['gpaData'] = json_encode($this->getGpaPerSemester($student->id));
+        // print_r($data['creditComparison']);
+
+        return view('dashboard/v_dashboard_products', $data);
+    }
+
+    private function getPercentageProductsByCategory()
+    {
+        $data = [];
+        $products = $this->productModel->getProductPercentageByCategory();
+        // dd($products);   
+
+        foreach ($products as $product) {
+            $data[] = [
+                'category_name' => $product->category_name,
+                'percentage' => round($product->percentage, 2),
+                'product_count' => $product->product_count,
+            ];
+        }
+
+        $categories = $this->categoryModel->select('name')->findAll();
+
+        $backgroundColors = [];
+        foreach ($categories as $row) {
+            $backgroundColors[$row->name] = 'rgb(' . rand(0, 255) . ', ' . rand(0, 255) . ', ' . rand(0, 255) . ')';
+        }
+        // dd($backgroundColors);
+
+
+        // $backgroundColors = [
+        //     'Shoes' => 'rgb(54, 162, 235)', // Biru 
+        //     'Tshirt' => 'rgb(75, 192, 192)', // Cyan 
+        //     'Food' => 'rgb(153, 102, 255)', // Ungu 
+        //     'Drink' => 'rgb(255, 205, 86)', // Kuning
+        //     'C' => 'rgb(255, 159, 64)', // Oranye 
+        //     'D' => 'rgb(255, 99, 132)' // Merah
+        // ];
+
+        $labels = [];
+        $counts = [];
+        $colors = [];
+        foreach ($data as $row) {
+            $labels[] = $row['category_name'] . '=' . $row['percentage'] . ' %';
+            $counts[] = (int) $row['product_count'];
+            $colors[] = $backgroundColors[$row['category_name']];
+        }
+
+        return [
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Total Products',
+                    'data' => $counts,
+                    'backgroundColor' => $colors,
+                    'hoverOffset' => 4
+                ]
+            ]
+        ];
     }
 
 

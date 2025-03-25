@@ -32,6 +32,7 @@ $routes->addRedirect('/home', '/');
 $routes->get('/about-us', [Home::class, 'aboutUs']);
 $routes->get('/dashboard', [Home::class, 'dashboard'], ['filter' => 'role:Administrator,Customer,Product Manager']);
 $routes->get("product/catalog", [ProductController::class, 'productCatalog']);
+$routes->get("dashboard-products", [ProductController::class, 'dashboardProducts'], ['filter' => 'role:Administrator,Product Manager']);
 
 
 
