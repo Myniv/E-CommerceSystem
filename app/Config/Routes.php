@@ -65,6 +65,8 @@ $routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
     $routes->match(['get', 'post'], 'admin/roles/create', [RoleController::class, 'create']);
     $routes->match(['get', 'post'], 'admin/roles/update/(:num)', [RoleController::class, 'update']);
     $routes->delete('admin/roles/delete/(:num)', [RoleController::class, 'delete']);
+
+
 });
 
 $routes->group('admin/user', ['filter' => 'role:Administrator'], function ($routes) {
@@ -89,10 +91,12 @@ $routes->group('', ['filter' => 'role:Administrator,Product Manager'], function 
     $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']);
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);
-
+    
     $routes->match(['get', 'post'], 'product/(:num)/image', [ProductImageController::class, 'create/$1']);
     $routes->match(['get', 'put'], 'product/(:num)/image/edit', [ProductImageController::class, 'update/$1']);
     $routes->delete('product/(:num)/image/delete', [ProductImageController::class, 'delete/$1']);
+
+    $routes->get('product/reports/excel', [ProductController::class, 'reportProductExcel']);
 });
 
 //Customer ||Administrator routes

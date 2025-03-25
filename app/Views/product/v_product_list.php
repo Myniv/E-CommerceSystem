@@ -6,9 +6,14 @@
     <h2 class="mb-3">Produk List</h2>
 
     <a href="<?= base_url("product/new") ?>" class="btn btn-success mb-3">Add Products</a>
-    <?php if(in_groups(Roles::ADMIN)):?>
-    <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
-    <?php endif?>
+    <?php if (in_groups(Roles::ADMIN)): ?>
+        <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
+    <?php endif ?>
+    <a href="<?= base_url('product/reports/excel') . '?' . http_build_query([
+        'category_id' => $params->category_id,
+    ]) ?>" class="btn btn-success" target="_blank">
+        <i class="bi bi-file-excel me-1"></i> Export PDF
+    </a>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
         <div class="row mb-4">
@@ -184,9 +189,9 @@
                                     Delete
                                 </button>
                             </form>
-                            <?php if(in_groups(Roles::ADMIN)):?>
+                            <?php if (in_groups(Roles::ADMIN)): ?>
                                 <a href="/api/json/product/<?= $product->id; ?>" class="btn btn-info btn-sm">JSON By Id</a>
-                            <?php endif?>
+                            <?php endif ?>
                             <a href="/product/<?= $product->id; ?>/image" class="btn btn-success btn-sm">Add Image</a>
                         </td>
                     </tr>

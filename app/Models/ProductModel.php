@@ -116,7 +116,15 @@ class ProductModel extends Model
 
     public function getProductsByCategory($category_id)
     {
-        return $this->where("category_id", $category_id)->findAll();
+        return $this->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id', 'left')
+            ->where("category_id", $category_id)->findAll();
+    }
+    public function getAllProductsWithCategories()
+    {
+        return $this->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id', 'left')
+            ->findAll();
     }
 
     public function getTotalProducts()

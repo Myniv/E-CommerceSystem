@@ -11,6 +11,9 @@ use App\Models\ProductModel;
 use CodeIgniter\RESTful\ResourceController;
 use Myth\Auth\Models\UserModel;
 use CodeIgniter\Files\File;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment as Alignment;
 
 class ProductController extends BaseController
 {
@@ -395,6 +398,94 @@ class ProductController extends BaseController
             ->resize(500, 500, true, 'height')
             ->save($directory . "/" . "medium_" . $fileName);
 
+    }
+
+    public function reportProductExcel()
+    {
+        $category_id = $this->request->getGet("category_id");
+        if (!empty($category_id)) {
+            $products = $this->productModel->getProductsByCategory($category_id);
+            $categoryName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $this->categoryModel->find($category_id)->name);
+            $name = $this->categoryModel->find($category_id)->name;
+            $filename = 'Reports_Product_With_Category_' . $categoryName . '_' . date('Y-m-d-His') . '.xlsx';
+        } else {
+            $products = $this->productModel->getAllProductsWithCategories();
+            $filename = 'Reports_Product_' . date('Y-m-d-His') . '.xlsx';
+        }
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Products Report');
+        $sheet->mergeCells('A1:J1');
+        $sheet->getStyle('A1')->getFont()->setBold(true);
+        $sheet->getStyle('A1')->getFont()->setSize(14);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $sheet->setCellValue('A3', 'Filter');
+        $sheet->setCellValue('B3', 'Category Id :' . ($category_id ?? 'All'));
+        $sheet->setCellValue('D3', 'Category Name:' . ($name ?? 'All'));
+        $sheet->getStyle('A3:D3')->getFont()->setBold(true);
+
+        $headers = [
+            'A5' => 'No',
+            'B5' => 'Name',
+            'C5' => 'Price',
+            'D5' => 'Stock',
+            'E5' => 'Category',
+            'F5' => 'Status',
+            'G5' => 'Is New',
+            'H5' => 'Is Sale',
+            'I5' => 'Created Add',
+        ];
+
+        foreach ($headers as $cell => $value) {
+            $sheet->setCellValue($cell, $value);
+            $sheet->getStyle($cell)->getFont()->setBold(true);
+            $sheet->getStyle($cell)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        }
+
+        $row = 6;
+        $no = 1;
+        foreach ($products as $product) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $product->name);
+            $sheet->setCellValue('C' . $row, $product->price);
+            $sheet->setCellValue('D' . $row, $product->stock);
+            $sheet->setCellValue('E' . $row, $product->category_name);
+            $sheet->setCellValue('F' . $row, $product->status);
+            $sheet->setCellValue('G' . $row, $product->is_new);
+            $sheet->setCellValue('H' . $row, $product->is_sale);
+            $sheet->setCellValue('I' . $row, $product->created_at);
+
+            $row++;
+            $no++;
+        }
+
+        foreach (range('A', 'J') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->getStyle('A5:J' . ($row - 1))->applyFromArray($styleArray);
+
+
+
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit();
     }
 
 
