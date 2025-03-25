@@ -6,6 +6,9 @@
 
     <a href="/admin/customer/create" class="btn btn-success mb-3">Add User</a>
     <a href="<?= base_url("api/json/user") ?>" class="btn btn-success mb-3">Get JSON Data</a>
+    <a href="<?= base_url("admin/users/reports") ?>" class="btn btn-success" target="_blank">
+        <i class="bi bi-file-excel me-1"></i> Export PDF
+    </a>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
         <div class="row mb-4">

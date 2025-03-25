@@ -50,6 +50,7 @@ $routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
     $routes->get('admin/users/edit/(:num)', [UsersController::class, 'edit/$1']);
     $routes->put('admin/users/update/(:num)', [UsersController::class, 'update/$1']);
     $routes->delete('admin/users/delete/(:num)', [UsersController::class, 'delete/$1']);
+    $routes->get('admin/users/reports', [UsersController::class, 'studentsByProgramPdf']);
 
     $routes->get('admin/customer', [UserEcommerceController::class, 'index']);
     $routes->get('admin/customer/detail/(:num)', [UserEcommerceController::class, 'detail']);

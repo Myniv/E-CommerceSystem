@@ -8,6 +8,8 @@ use Config\Roles;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\GroupModel;
 use Myth\Auth\Models\UserModel;
+use TCPDF;
+
 
 
 class UsersController extends BaseController
@@ -242,6 +244,102 @@ class UsersController extends BaseController
         $this->userEcommerceModel->delete($userEcommerce->id);
 
         return redirect()->to('admin/users')->with('message', 'User Deleted Successfully');
+    }
+
+    public function studentsByProgramPdf()
+    {
+        $user = $this->userEcommerceModel->getUserByUsername(user()->username);
+        $pdf = $this->initTcpdf($user->full_name, $user->full_name, "User Reports", "User Reports", );
+
+        $datas = $this->userModel->getFullUserInfo();
+        // dd($datas);
+        $this->generatePdfHtmlContent($pdf, $datas, "User Reports");
+
+        // Output PDF
+        $filename = 'User_Reports_' . date('Y-m-d') . '.pdf';
+        $pdf->Output($filename, 'I');
+        exit;
+    }
+
+    private function initTcpdf($creator, $author, $title, $subject, )
+    {
+        $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
+
+        $pdf->SetCreator($creator ?? 'User');
+        $pdf->SetAuthor($author ?? 'Administrator');
+        $pdf->SetTitle($title ?? 'User Reports');
+        $pdf->SetSubject($subject ?? 'User Reports');
+
+        $pdf->SetHeaderData('', 0, 'E-Commerce', '', [0, 0, 0], [0, 64, 128]);
+        $pdf->setFooterData([0, 64, 0], [0, 64, 128]);
+
+        $pdf->setHeaderFont(['helvetica', '', 12]);
+        $pdf->setFooterFont(['helvetica', '', 8]);
+
+        $pdf->SetMargins(15, 20, 15);
+        $pdf->SetHeaderMargin(5);
+        $pdf->SetFooterMargin(10);
+
+        $pdf->SetAutoPageBreak(true, 25);
+
+        $pdf->SetFont('helvetica', '', 10);
+
+        $pdf->AddPage();
+
+        return $pdf;
+    }
+
+    private function generatePdfHtmlContent($pdf, $datas, $title)
+    {
+        $image_file = K_PATH_IMAGES . 'iconOrang.png';
+        $pdf->Image($image_file, 10, 10, 15, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+
+        $titleReports = $title ?? 'USER REPORTS';
+
+        $html = '<h2 style="text-align:center;">' . $titleReports . '</h2>
+      <table border="1" cellpadding="5" cellspacing="0" style="width:100%;">
+        <thead>
+          <tr style="background-color:#CCCCCC; font-weight:bold; text-align:center;">
+            <th>No</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Registration Date</th>
+            <th>Last Login</th>
+          </tr>
+         </thead>
+         <tbody>';
+
+        $no = 1;
+        foreach ($datas as $data) {
+            $html .= '
+           <tr>
+            <td style="text-align:center;">' . $no . '</td>
+            <td>' . $data->username . '</td>
+            <td>' . $data->full_name . '</td>
+            <td>' . $data->email . '</td>
+            <td>' . $data->role . '</td>
+            <td>' . $data->status . '</td>
+            <td>' . $data->created_at . '</td>
+            <td>' . ($data->last_login ?? 'N/A') . '</td>
+           </tr>';
+            $no++;
+        }
+
+        $html .= '
+               </tbody>
+           </table>
+           
+           <p style="margin-top:30px; text-align:left;">      
+               Total Users: ' . count($datas) . ' 
+           </p>
+   
+           <p style="margin-top:30px; text-align:right;">    
+               Print Date: ' . date('d-m-Y H:i:s') . '<br> 
+           </p>';
+        $pdf->writeHTML($html, true, false, true, false, '');
     }
 
 }

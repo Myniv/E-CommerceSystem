@@ -223,4 +223,22 @@ class UserModel extends Model
             ->findAll();
     }
 
+    public function getFullUserInfo()
+    {
+        return $this->select('users.*, 
+                   users.id as user_id, 
+                   users_ecommerce.status as status, 
+                   users_ecommerce.id as ecommerce_id, 
+                   users_ecommerce.full_name as full_name,
+                   users_ecommerce.last_login as last_login, 
+                   auth_groups_users.*, 
+                   auth_groups.name as role, 
+                   auth_groups.id as group_id, 
+                   auth_groups.description')
+            ->join('users_ecommerce', 'users.username = users_ecommerce.username', 'left')
+            ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
+            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id', 'left')
+            ->findAll();
+    }
+
 }
