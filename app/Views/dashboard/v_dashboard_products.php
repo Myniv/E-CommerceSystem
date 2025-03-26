@@ -45,6 +45,7 @@
 
     const percentageProductsByCategory = <?= $percentageProductsByCategory ?>;
     const highestCategoriesOfProducts = <?= $highestCategoriesOfProducts ?>;
+    const productsPerMonth = <?= $productsPerMonth ?>;
     
 
 
@@ -62,7 +63,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Credit Distribution by Grade'
+                        text: 'Product Distribution by Category'
                     },
                     legend: {
                         position: 'right'
@@ -107,48 +108,48 @@
         }
     );
 
-    // //JS Line Chart
-    // const gpaChart = new Chart(
-    //     document.getElementById('gpaChart'),
-    //     {
-    //         type: 'line',
-    //         //Change the data here
-    //         data: gpaData,
-    //         options: {
-    //             responsive: true,
-    //             maintainAspectRatio: false,
-    //             scales: {
-    //                 y: {
-    //                     min: 0,
-    //                     max: 4,
-    //                     title: {
-    //                         display: true,
-    //                         text: 'GPA'
-    //                     }
-    //                 },
-    //                 x: {
-    //                     title: {
-    //                         display: true,
-    //                         text: 'Semester'
-    //                     }
-    //                 }
-    //             },
-    //             plugins: {
-    //                 title: {
-    //                     display: true,
-    //                     text: 'Academic Progress (GPA per Semester)'
-    //                 },
-    //                 tooltip: {
-    //                     callbacks: {
-    //                         label: function (context) {
-    //                             return `GPA: ${context.raw}`;
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // );
+    //JS Line Chart
+    const gpaChart = new Chart(
+        document.getElementById('gpaChart'),
+        {
+            type: 'line',
+            //Change the data here
+            data: productsPerMonth,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 50,
+                        title: {
+                            display: true,
+                            text: 'Products'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Products per Month'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return `Products: ${context.raw}`;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    );
 
 </script>
 <?= $this->endSection() ?>

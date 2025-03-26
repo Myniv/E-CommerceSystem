@@ -493,6 +493,7 @@ class ProductController extends BaseController
     {
         $data['percentageProductsByCategory'] = json_encode($this->getPercentageProductsByCategory());
         $data['highestCategoriesOfProducts'] = json_encode($this->get5HighestCategoriesOfProducts());
+        $data['productsPerMonth'] = json_encode($this->getProductsPerMonth());
         // print_r($data['creditComparison']);
 
         return view('dashboard/v_dashboard_products', $data);
@@ -574,6 +575,33 @@ class ProductController extends BaseController
                     'backgroundColor' => 'rgba(158, 0, 61, 0.5)',
                     'borderColor' => 'rgb(86, 3, 10)',
                     'borderWidth' => 1
+                ]
+            ]
+        ];
+    }
+
+    private function getProductsPerMonth()
+    {
+        $data = $this->productModel->getProductsPerMonth();
+        // dd($data);
+
+        $month = [];
+        $product = [];
+        foreach ($data as $row) {
+            $month[] =  $row['month'];
+            $product[] = $row['product_count'];
+            // $gpaData[] = $row['gpa'];
+        }
+
+        return [
+            'labels' => $month,
+            'datasets' => [
+                [
+                    'label' => 'Product',
+                    'data' => $product,
+                    'borderColor' => 'rgb(129, 8, 8)',
+                    'tension' => 0.1,
+                    'fill' => false
                 ]
             ]
         ];

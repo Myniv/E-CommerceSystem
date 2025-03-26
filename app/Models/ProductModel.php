@@ -250,7 +250,19 @@ class ProductModel extends Model
         return 'Just now';
     }
 
-    
+    public function getProductsPerMonth()
+    {
+        return $this
+            ->select("TO_CHAR(created_at, 'Month') AS month, COUNT(id) AS product_count", false)
+            ->where("EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM CURRENT_DATE)", null, false)
+            ->groupBy("TO_CHAR(created_at, 'Month'), EXTRACT(MONTH FROM created_at)")
+            ->orderBy("EXTRACT(MONTH FROM created_at)", "ASC")
+            ->get()
+            ->getResultArray();
+    }
+
+
+
 
 
 
