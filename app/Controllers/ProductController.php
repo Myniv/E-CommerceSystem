@@ -492,13 +492,13 @@ class ProductController extends BaseController
     public function dashboardProducts()
     {
         $data['percentageProductsByCategory'] = json_encode($this->getPercentageProductsByCategory());
-        // $data['creditsByGrade'] = json_encode($this->getCreditsByGrade($student->id));
-        // $data['gpaData'] = json_encode($this->getGpaPerSemester($student->id));
+        $data['highestCategoriesOfProducts'] = json_encode($this->get5HighestCategoriesOfProducts());
         // print_r($data['creditComparison']);
 
         return view('dashboard/v_dashboard_products', $data);
     }
 
+    //Pie chart
     private function getPercentageProductsByCategory()
     {
         $data = [];
@@ -548,6 +548,32 @@ class ProductController extends BaseController
                     'data' => $counts,
                     'backgroundColor' => $colors,
                     'hoverOffset' => 4
+                ]
+            ]
+        ];
+    }
+
+    //Bar chart
+    private function get5HighestCategoriesOfProducts()
+    {
+        $categories = $this->categoryModel->get5HighestProductByCategory();
+
+        $labels = [];
+        $productCount = [];
+        foreach ($categories as $row) {
+            $labels[] = 'Category : ' . $row->category_name;
+            $productCount[] = (int) $row->product_count;
+        }
+
+        return [
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Category',
+                    'data' => $productCount,
+                    'backgroundColor' => 'rgba(158, 0, 61, 0.5)',
+                    'borderColor' => 'rgb(86, 3, 10)',
+                    'borderWidth' => 1
                 ]
             ]
         ];

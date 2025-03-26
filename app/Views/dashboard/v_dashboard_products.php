@@ -44,6 +44,7 @@
     // Data dari controller
 
     const percentageProductsByCategory = <?= $percentageProductsByCategory ?>;
+    const highestCategoriesOfProducts = <?= $highestCategoriesOfProducts ?>;
     
 
 
@@ -71,40 +72,40 @@
         }
     );
 
-    // //JS Bar Chart
-    // const creditChart = new Chart(
-    //     document.getElementById('creditChart'),
-    //     {
-    //         type: 'bar',
-    //         //Change the data here
-    //         data: creditComparison,
-    //         options: {
-    //             responsive: true,
-    //             maintainAspectRatio: false,
-    //             scales: {
-    //                 y: {
-    //                     beginAtZero: true,
-    //                     title: {
-    //                         display: true,
-    //                         text: 'Credits'
-    //                     }
-    //                 },
-    //                 x: {
-    //                     title: {
-    //                         display: true,
-    //                         text: 'Semester'
-    //                     }
-    //                 }
-    //             },
-    //             plugins: {
-    //                 title: {
-    //                     display: true,
-    //                     text: 'Credits Taken vs. Credits Required by Semester'
-    //                 }
-    //             }
-    //         }
-    //     }
-    // );
+    //JS Bar Chart
+    const creditChart = new Chart(
+        document.getElementById('creditChart'),
+        {
+            type: 'bar',
+            //Change the data here
+            data: highestCategoriesOfProducts,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Products'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Category'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Total Products Based On Categories'
+                    }
+                }
+            }
+        }
+    );
 
     // //JS Line Chart
     // const gpaChart = new Chart(

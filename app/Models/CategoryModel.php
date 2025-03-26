@@ -79,4 +79,14 @@ class CategoryModel extends Model
             ->get()
             ->getResult();
     }
+    public function get5HighestProductByCategory(){
+        return $this
+            ->select('categories.name AS category_name, COUNT(products.id) AS product_count')
+            ->join('products', 'products.category_id = categories.id', 'left')
+            ->groupBy('categories.id, categories.name')
+            ->orderBy('product_count', 'DESC')
+            ->limit(5)
+            ->get()
+            ->getResult();
+    }
 }
