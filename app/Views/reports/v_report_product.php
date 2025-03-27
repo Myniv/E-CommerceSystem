@@ -9,12 +9,10 @@
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
 
         <div class="row d-flex justify-content-between align-items-center">
-            <!-- Left Side (Preview) -->
             <div class="col-auto">
                 <h4>Preview :</h4>
             </div>
 
-            <!-- Right Side (Filters & Buttons) -->
             <div class="col d-flex justify-content-end gap-2">
                 <div class="col-md-3">
                     <div class="input-group">

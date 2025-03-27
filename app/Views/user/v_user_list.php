@@ -6,7 +6,9 @@
 
     <a href="/admin/customer/create" class="btn btn-success mb-3">Add User</a>
     <a href="<?= base_url("api/json/user") ?>" class="btn btn-success mb-3">Get JSON Data</a>
-    <a href="<?= base_url("admin/users/reports") ?>" class="btn btn-success mb-3">
+    <a href="<?= base_url("admin/users/reports"). '?' . http_build_query([
+        'role' => $params->role,
+    ]) ?>" class="btn btn-success mb-3">
         <i class="bi bi-file-excel me-1"></i> User Reports
     </a>
 

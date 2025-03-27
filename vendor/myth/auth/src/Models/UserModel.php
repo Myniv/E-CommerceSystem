@@ -223,9 +223,9 @@ class UserModel extends Model
             ->findAll();
     }
 
-    public function getFullUserInfo()
+    public function getFullUserInfo($roles)
     {
-        return $this->select('users.*, 
+        $this->select('users.*, 
                    users.id as user_id, 
                    users_ecommerce.status as status, 
                    users_ecommerce.id as ecommerce_id, 
@@ -237,8 +237,11 @@ class UserModel extends Model
                    auth_groups.description')
             ->join('users_ecommerce', 'users.username = users_ecommerce.username', 'left')
             ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
-            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id', 'left')
-            ->findAll();
+            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id', 'left');
+            if(!empty($roles)){
+                $this->where('auth_groups.id', $roles);
+            }
+            return $this->findAll();
     }
 
 }

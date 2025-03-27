@@ -248,15 +248,33 @@ class UsersController extends BaseController
 
     public function getReportUserPdf()
     {
-        return view('reports/v_report_user');
+        $params = new DataParams([
+            "role" => $this->request->getGet("role"),
+            
+            "page" => $this->request->getGet("page_users"),
+        ]);
+
+        $result = $this->userModel->getFilteredUser($params);
+
+        $data = [
+            'users' => $result['users'],
+            'pager' => $result['pager'],
+            'total' => $result['total'],
+            'groups' => $this->groupModel->findAll(),
+            'params' => $params,
+            'baseUrl' => base_url('admin/users/reports'),
+        ];
+        return view('reports/v_report_user', $data);
     }
 
     public function reportUserPdf()
     {
+        $role = $this->request->getGet("role");
+
         $user = $this->userEcommerceModel->getUserByUsername(user()->username);
         $pdf = $this->initTcpdf($user->full_name, $user->full_name, "User Reports", "User Reports", );
 
-        $datas = $this->userModel->getFullUserInfo();
+        $datas = $this->userModel->getFullUserInfo($role);
         // dd($datas);
         $this->generatePdfHtmlContent($pdf, $datas, "User Reports");
 
