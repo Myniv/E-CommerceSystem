@@ -474,6 +474,7 @@ class ProductController extends BaseController
             $sheet->setCellValue('A' . $row, $no);
             $sheet->setCellValue('B' . $row, $product->name);
             $sheet->setCellValue('C' . $row, $product->price);
+            $sheet->getStyle('C' . $row)->getNumberFormat()->setFormatCode('"Rp" #,##0.00');
             $sheet->setCellValue('D' . $row, $product->stock);
             $sheet->setCellValue('E' . $row, $product->category_name);
             $sheet->setCellValue('F' . $row, $product->status);
