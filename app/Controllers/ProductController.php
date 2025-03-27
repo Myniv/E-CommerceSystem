@@ -603,14 +603,33 @@ class ProductController extends BaseController
     private function getProductsPerMonth()
     {
         $data = $this->productModel->getProductsPerMonth();
-        // dd($data);
+        $dataMonth = [
+            ['month' => 'January', 'product_count' => 0],
+            ['month' => 'February', 'product_count' => 0],
+            ['month' => 'Maret', 'product_count' => 0],
+            ['month' => 'April', 'product_count' => 0],
+            ['month' => 'Mei', 'product_count' => 0],
+            ['month' => 'June', 'product_count' => 0],
+            ['month' => 'July', 'product_count' => 0],
+            ['month' => 'August', 'product_count' => 0],
+            ['month' => 'September', 'product_count' => 0],
+            ['month' => 'October', 'product_count' => 0],
+            ['month' => 'November', 'product_count' => 0],
+            ['month' => 'December', 'product_count' => 0],
+        ];
 
         $month = [];
         $product = [];
-        foreach ($data as $row) {
+        foreach ($dataMonth as $row) {
+            $tempProductCount = 0;
+            foreach ($data as $value) {
+                if ($value['month'] == $row['month']) {
+                    $tempProductCount = $value['product_count'];
+                    break;
+                }
+            }
             $month[] = $row['month'];
-            $product[] = $row['product_count'];
-            // $gpaData[] = $row['gpa'];
+            $product[] = $tempProductCount;
         }
 
         return [
