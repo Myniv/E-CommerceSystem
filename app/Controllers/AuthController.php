@@ -113,7 +113,7 @@ class AuthController extends MythController
                 return redirect()->to('/dashboard');
             } else if ($group['name'] === 'Customer') {
                 $this->updateUserEcommerceStatusLastLogin();
-                return redirect()->to('/dashboard');
+                return redirect()->to('/product/catalog');
             }
         }
         // if (in_array($userGroups, ['Administrator', 'Product Manager', 'Customer'])) {

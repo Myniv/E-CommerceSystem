@@ -1,4 +1,5 @@
 <?php use Config\Roles; ?>
+
 <body>
     <header
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark text-white">
@@ -13,16 +14,18 @@
                         <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/') ?>">Home</a>
                         <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/about-us') ?>">About Us</a>
                         <a class="btn btn-primary nav-link text-white me-2"
-                            href="<?= base_url('/dashboard') ?>">Dashboard</a>
-                        <a class="btn btn-primary nav-link text-white me-2"
                             href="<?= base_url('/product/catalog') ?>">Catalog</a>
                         <?php if (in_groups(Roles::ADMIN)): ?>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/users') ?>">User</a>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/admin/roles') ?>">Role</a>
+                            <a class="btn btn-primary nav-link text-white me-2"
+                                href="<?= base_url('/dashboard') ?>">Dashboard</a>
                         <?php endif; ?>
                         <?php if (in_groups(Roles::PRODUCT_MANAGER)): ?>
                             <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/product') ?>">Product</a>
+                            <a class="btn btn-primary nav-link text-white me-2"
+                                href="<?= base_url('/dashboard') ?>">Dashboard</a>
                         <?php endif; ?>
                         <?php if (in_groups(Roles::CUSTOMER)): ?>
                             <!-- <a class="btn btn-primary nav-link text-white me-2" href="<?= base_url('/pesanan') ?>">Pesanan</a> -->
