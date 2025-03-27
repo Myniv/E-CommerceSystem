@@ -3,6 +3,7 @@
 <?php use Config\Roles; ?>
 
 <div class="container mt-4">
+    <?= view_cell('BackCell') ?>
     <h2 class="mb-3 d-flex justify-content-center">User Reports</h2>
 
     <div class="d-flex justify-content-center">

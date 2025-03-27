@@ -3,6 +3,7 @@
 <?php use Config\Roles; ?>
 
 <div class="container mt-4">
+    <?= view_cell('BackCell', ['backLink' => 'product']) ?>
     <h2 class="mb-3 d-flex justify-content-center">Product Reports</h2>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">

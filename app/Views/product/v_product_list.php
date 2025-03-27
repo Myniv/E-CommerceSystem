@@ -9,10 +9,10 @@
     <?php if (in_groups(Roles::ADMIN)): ?>
         <a href="<?= base_url("api/json/product") ?>" class="btn btn-success mb-3">Get JSON Data</a>
     <?php endif ?>
-    <a href="<?= base_url('product/reports/excel') . '?' . http_build_query([
+    <a href="<?= base_url('product/reports') . '?' . http_build_query([
         'category_id' => $params->category_id,
-    ]) ?>" class="btn btn-success" target="_blank">
-        <i class="bi bi-file-excel me-1"></i> Export PDF
+    ]) ?>" class="btn btn-success mb-3">
+        <i class="bi bi-file-excel me-1"></i> Products Report
     </a>
 
     <form action="<?= $baseUrl ?>" method="get" class="form-inline mb-3">
