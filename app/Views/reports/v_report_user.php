@@ -15,6 +15,7 @@
             <div class="col d-flex justify-content-end gap-2">
                 <div class="col-md-3">
                     <div class="input-group">
+                        <label class="input-group-text">Filter</label>
                         <select class="form-select <?= session('errors.group') ? 'is-invalid' : '' ?>" name="role"
                             id="role" required onchange="this.form.submit()">
                             <option value="">All Role</option>

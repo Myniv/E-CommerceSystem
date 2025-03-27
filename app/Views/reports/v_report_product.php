@@ -16,6 +16,7 @@
             <div class="col d-flex justify-content-end gap-2">
                 <div class="col-md-3">
                     <div class="input-group">
+                        <label class="input-group-text">Filter</label>
                         <select name="category_id" class="form-select" onchange="this.form.submit()">
                             <option value="">All Category</option>
                             <?php foreach ($categories as $category): ?>
