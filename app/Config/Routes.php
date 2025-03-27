@@ -98,6 +98,7 @@ $routes->group('', ['filter' => 'role:Administrator,Product Manager'], function 
     $routes->delete('product/(:num)/image/delete', [ProductImageController::class, 'delete/$1']);
 
     $routes->get('product/reports/excel', [ProductController::class, 'reportProductExcel']);
+    $routes->get('product/reports', [ProductController::class, 'getReportProudctsExcel']);
 });
 
 //Customer ||Administrator routes

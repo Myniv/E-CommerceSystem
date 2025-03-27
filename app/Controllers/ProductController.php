@@ -401,6 +401,28 @@ class ProductController extends BaseController
 
     }
 
+    public function getReportProudctsExcel()
+    {
+        $params = new DataParams([
+            "category_id" => $this->request->getGet("category_id"),
+
+            "page" => $this->request->getGet("page_products"),
+        ]);
+
+        $result = $this->productModel->getFilteredProducts($params);
+
+        $data = [
+            'products' => $result['products'],
+            'pager' => $result['pager'],
+            'total' => $result['total'],
+            'params' => $params,
+            'categories' => $this->categoryModel->findAll(),
+            'baseUrl' => base_url('product/reports'),
+        ];
+
+        return view("reports/v_report_product", $data);
+    }
+
     public function reportProductExcel()
     {
         $category_id = $this->request->getGet("category_id");
@@ -476,9 +498,6 @@ class ProductController extends BaseController
         ];
 
         $sheet->getStyle('A5:J' . ($row - 1))->applyFromArray($styleArray);
-
-
-
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
@@ -588,7 +607,7 @@ class ProductController extends BaseController
         $month = [];
         $product = [];
         foreach ($data as $row) {
-            $month[] =  $row['month'];
+            $month[] = $row['month'];
             $product[] = $row['product_count'];
             // $gpaData[] = $row['gpa'];
         }
@@ -606,6 +625,5 @@ class ProductController extends BaseController
             ]
         ];
     }
-
 
 }
