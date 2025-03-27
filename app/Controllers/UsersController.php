@@ -250,7 +250,7 @@ class UsersController extends BaseController
     {
         $params = new DataParams([
             "role" => $this->request->getGet("role"),
-            
+
             "page" => $this->request->getGet("page_users"),
         ]);
 
@@ -276,10 +276,14 @@ class UsersController extends BaseController
 
         $datas = $this->userModel->getFullUserInfo($role);
         // dd($datas);
-        $this->generatePdfHtmlContent($pdf, $datas, "User Reports");
+        $roleName = 'All';
+        if (!empty($role)) {
+            $roleName = $this->groupModel->find($role)->name;
+        }
+        $this->generatePdfHtmlContent($pdf, $datas, "User Reports", $roleName);
 
         // Output PDF
-        $filename = 'User_Reports_' . date('Y-m-d') . '.pdf';
+        $filename = 'User_Reports_' . $roleName . '_' . date('Y-m-d') . '.pdf';
         $pdf->Output($filename, 'I');
         exit;
     }
@@ -315,14 +319,16 @@ class UsersController extends BaseController
         return $pdf;
     }
 
-    private function generatePdfHtmlContent($pdf, $datas, $title)
+    private function generatePdfHtmlContent($pdf, $datas, $title, $subject)
     {
         // $image_file = K_PATH_IMAGES . 'iconOrang.png';
         // $pdf->Image($image_file, 10, 10, 15, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 
         $titleReports = $title ?? 'USER REPORTS';
+        $subjectReports = $subject ?? '';
 
         $html = '<h2 style="text-align:center;">' . $titleReports . '</h2>
+        <h4 style="text-align:center;">' . $subjectReports . '</h2>
       <table border="1" cellpadding="5" cellspacing="0" style="width:100%;">
         <thead>
           <tr style="background-color:#CCCCCC; font-weight:bold; text-align:center;">
