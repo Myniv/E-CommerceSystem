@@ -51,7 +51,8 @@ $routes->group('', ['filter' => 'role:Administrator'], function ($routes) {
     $routes->get('admin/users/edit/(:num)', [UsersController::class, 'edit/$1']);
     $routes->put('admin/users/update/(:num)', [UsersController::class, 'update/$1']);
     $routes->delete('admin/users/delete/(:num)', [UsersController::class, 'delete/$1']);
-    $routes->get('admin/users/reports', [UsersController::class, 'studentsByProgramPdf']);
+    $routes->get('admin/users/reports/pdf', [UsersController::class, 'reportUserPdf']);
+    $routes->get('admin/users/reports', [UsersController::class, 'getReportUserPdf']);
 
     $routes->get('admin/customer', [UserEcommerceController::class, 'index']);
     $routes->get('admin/customer/detail/(:num)', [UserEcommerceController::class, 'detail']);
@@ -92,7 +93,7 @@ $routes->group('', ['filter' => 'role:Administrator,Product Manager'], function 
     $routes->get('product/(:num)/edit', [ProductController::class, 'edit/$1']);
     $routes->put('product/(:num)', [ProductController::class, 'update/$1']);
     $routes->delete('product/(:num)', [ProductController::class, 'delete/$1']);
-    
+
     $routes->match(['get', 'post'], 'product/(:num)/image', [ProductImageController::class, 'create/$1']);
     $routes->match(['get', 'put'], 'product/(:num)/image/edit', [ProductImageController::class, 'update/$1']);
     $routes->delete('product/(:num)/image/delete', [ProductImageController::class, 'delete/$1']);

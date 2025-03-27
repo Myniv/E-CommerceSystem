@@ -34,7 +34,7 @@
                     <a href="<?= base_url('product/reports/excel') . '?' . http_build_query([
                         'category_id' => $params->category_id,
                     ]) ?>" class="btn btn-success w-100" target="_blank">
-                        <i class="bi bi-file-excel me-1"></i> Export PDF
+                        <i class="bi bi-file-excel me-1"></i> Export Excel
                     </a>
                 </div>
             </div>

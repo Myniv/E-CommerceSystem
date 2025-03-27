@@ -246,7 +246,12 @@ class UsersController extends BaseController
         return redirect()->to('admin/users')->with('message', 'User Deleted Successfully');
     }
 
-    public function studentsByProgramPdf()
+    public function getReportUserPdf()
+    {
+        return view('reports/v_report_user');
+    }
+
+    public function reportUserPdf()
     {
         $user = $this->userEcommerceModel->getUserByUsername(user()->username);
         $pdf = $this->initTcpdf($user->full_name, $user->full_name, "User Reports", "User Reports", );
@@ -270,7 +275,10 @@ class UsersController extends BaseController
         $pdf->SetTitle($title ?? 'User Reports');
         $pdf->SetSubject($subject ?? 'User Reports');
 
-        $pdf->SetHeaderData('', 0, 'E-Commerce', '', [0, 0, 0], [0, 64, 128]);
+        //To set the image in pdf, 
+        //set this : define ('K_PATH_IMAGES', FCPATH. '/');
+        //in this path : vendor/tecnickcom/tcpdf/config/tcpdf_config:
+        $pdf->SetHeaderData('iconOrang.png', 10, 'E-Commerce', 'Shopping Online', [0, 0, 0], [0, 64, 128]);
         $pdf->setFooterData([0, 64, 0], [0, 64, 128]);
 
         $pdf->setHeaderFont(['helvetica', '', 12]);
@@ -291,8 +299,8 @@ class UsersController extends BaseController
 
     private function generatePdfHtmlContent($pdf, $datas, $title)
     {
-        $image_file = K_PATH_IMAGES . 'iconOrang.png';
-        $pdf->Image($image_file, 10, 10, 15, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        // $image_file = K_PATH_IMAGES . 'iconOrang.png';
+        // $pdf->Image($image_file, 10, 10, 15, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 
         $titleReports = $title ?? 'USER REPORTS';
 
